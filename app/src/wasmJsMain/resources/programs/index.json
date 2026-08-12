@@ -1,0 +1,494 @@
+{
+  "programs": [
+    {
+      "id": "advanced-abs-gym",
+      "title": "12 Week Advanced Abs (Gym)",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "ABS"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-abs-gym.json",
+      "sessionMinutes": 38
+    },
+    {
+      "id": "advanced-abs-home",
+      "title": "12 Week Advanced Abs (Home)",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "ABS"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-abs-home.json",
+      "sessionMinutes": 36
+    },
+    {
+      "id": "advanced-core-gym",
+      "title": "12 Week Advanced Core (Gym)",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "CORE"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-core-gym.json",
+      "sessionMinutes": 42
+    },
+    {
+      "id": "advanced-core-home",
+      "title": "12 Week Advanced Core (Home)",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "CORE"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-core-home.json",
+      "sessionMinutes": 32
+    },
+    {
+      "id": "advanced-full-body-home",
+      "title": "12 Week Advanced Full Body",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "FULL_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-full-body-home.json",
+      "sessionMinutes": 34
+    },
+    {
+      "id": "advanced-legs-gym",
+      "title": "12 Week Advanced Legs (Gym)",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "LEGS"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-legs-gym.json",
+      "sessionMinutes": 39
+    },
+    {
+      "id": "advanced-legs-home",
+      "title": "12 Week Advanced Legs (Home)",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "LEGS"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-legs-home.json",
+      "sessionMinutes": 37
+    },
+    {
+      "id": "advanced-strength-gym",
+      "title": "12 Week Advanced Strength (Gym)",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "STRENGTH"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-strength-gym.json",
+      "sessionMinutes": 33
+    },
+    {
+      "id": "advanced-strength-home",
+      "title": "12 Week Advanced Strength",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "STRENGTH"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-strength-home.json",
+      "sessionMinutes": 30
+    },
+    {
+      "id": "advanced-upper-body-gym",
+      "title": "12 Week Advanced Upper Body (Gym)",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "UPPER_BODY"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-upper-body-gym.json",
+      "sessionMinutes": 32
+    },
+    {
+      "id": "advanced-upper-body-home",
+      "title": "12 Week Advanced Upper Body",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "UPPER_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-upper-body-home.json",
+      "sessionMinutes": 41
+    },
+    {
+      "id": "beginner-abs-gym",
+      "title": "12 Week Beginner Abs (Gym)",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "ABS"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-abs-gym.json",
+      "sessionMinutes": 19
+    },
+    {
+      "id": "beginner-abs-home",
+      "title": "12 Week Beginner Abs (Home)",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "ABS"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-abs-home.json",
+      "sessionMinutes": 22
+    },
+    {
+      "id": "beginner-core-gym",
+      "title": "12 Week Beginner Core (Gym)",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "CORE"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-core-gym.json",
+      "sessionMinutes": 28
+    },
+    {
+      "id": "beginner-core-home",
+      "title": "12 Week Beginner Core (Home)",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "CORE"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-core-home.json",
+      "sessionMinutes": 19
+    },
+    {
+      "id": "beginner-full-body-home",
+      "title": "12 Week Beginner Full Body",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "FULL_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-full-body-home.json",
+      "sessionMinutes": 20
+    },
+    {
+      "id": "beginner-legs-gym",
+      "title": "12 Week Beginner Legs (Gym)",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "LEGS"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-legs-gym.json",
+      "sessionMinutes": 31
+    },
+    {
+      "id": "beginner-legs-home",
+      "title": "12 Week Beginner Legs (Home)",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "LEGS"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-legs-home.json",
+      "sessionMinutes": 29
+    },
+    {
+      "id": "beginner-strength-gym",
+      "title": "12 Week Beginner Strength (Gym)",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "STRENGTH"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-strength-gym.json",
+      "sessionMinutes": 22
+    },
+    {
+      "id": "beginner-strength-home",
+      "title": "12 Week Beginner Strength",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "STRENGTH"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-strength-home.json",
+      "sessionMinutes": 17
+    },
+    {
+      "id": "beginner-upper-body-gym",
+      "title": "12 Week Beginner Upper Body (Gym)",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "UPPER_BODY"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-upper-body-gym.json",
+      "sessionMinutes": 20
+    },
+    {
+      "id": "beginner-upper-body-home",
+      "title": "12 Week Beginner Upper Body",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "UPPER_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-upper-body-home.json",
+      "sessionMinutes": 29
+    },
+    {
+      "id": "intermediate-abs-gym",
+      "title": "12 Week Intermediate Abs (Gym)",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "ABS"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/intermediate-abs-gym.json",
+      "sessionMinutes": 26
+    },
+    {
+      "id": "intermediate-abs-home",
+      "title": "12 Week Intermediate Abs (Home)",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "ABS"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/intermediate-abs-home.json",
+      "sessionMinutes": 28
+    },
+    {
+      "id": "intermediate-core-gym",
+      "title": "12 Week Intermediate Core (Gym)",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "CORE"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/intermediate-core-gym.json",
+      "sessionMinutes": 34
+    },
+    {
+      "id": "intermediate-core-home",
+      "title": "12 Week Intermediate Core (Home)",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "CORE"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/intermediate-core-home.json",
+      "sessionMinutes": 25
+    },
+    {
+      "id": "intermediate-legs-gym",
+      "title": "12 Week Intermediate Legs (Gym)",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "LEGS"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/intermediate-legs-gym.json",
+      "sessionMinutes": 34
+    },
+    {
+      "id": "intermediate-legs-home",
+      "title": "12 Week Intermediate Legs (Home)",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "LEGS"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/intermediate-legs-home.json",
+      "sessionMinutes": 34
+    },
+    {
+      "id": "intermediate-strength-gym",
+      "title": "12 Week Intermediate Strength (Gym)",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "STRENGTH"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/intermediate-strength-gym.json",
+      "sessionMinutes": 30
+    },
+    {
+      "id": "intermediate-strength-home",
+      "title": "12 Week Intermediate Strength",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "STRENGTH"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/intermediate-strength-home.json",
+      "sessionMinutes": 21
+    },
+    {
+      "id": "intermediate-upper-body-gym",
+      "title": "12 Week Intermediate Upper Body (Gym)",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "UPPER_BODY"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "weeks": 12,
+      "file": "programs/intermediate-upper-body-gym.json",
+      "sessionMinutes": 30
+    },
+    {
+      "id": "intermediate-upper-body-home",
+      "title": "12 Week Intermediate Upper Body",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "UPPER_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/intermediate-upper-body-home.json",
+      "sessionMinutes": 36
+    },
+    {
+      "id": "program-1",
+      "title": "12 Week Full Body",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "FULL_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/program-1.json",
+      "sessionMinutes": 35
+    },
+    {
+      "id": "quick-10-full-body-home",
+      "title": "10-Minute Quick Full Body",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "FULL_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/quick-10-full-body-home.json",
+      "sessionMinutes": 8
+    },
+    {
+      "id": "quick-15-full-body-home",
+      "title": "15-Minute Quick Full Body",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "FULL_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/quick-15-full-body-home.json",
+      "sessionMinutes": 12
+    }
+  ]
+}

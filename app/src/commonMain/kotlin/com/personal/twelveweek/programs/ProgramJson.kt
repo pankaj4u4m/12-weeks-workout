@@ -66,15 +66,15 @@ private data class IndexEntryDto(
 @Serializable
 private data class IndexDto(val programs: List<IndexEntryDto> = emptyList())
 
-private fun parseLevel(raw: String): ProgramLevel =
+internal fun parseLevel(raw: String): ProgramLevel =
     raw.takeIf { it.isNotBlank() }
         ?.let { runCatching { ProgramLevel.valueOf(it) }.getOrNull() }
         ?: ProgramLevel.INTERMEDIATE
 
-private fun parseFocusAreas(values: List<String>): List<FocusArea> =
+internal fun parseFocusAreas(values: List<String>): List<FocusArea> =
     values.mapNotNull { runCatching { FocusArea.valueOf(it) }.getOrNull() }
 
-private fun parseEquipment(values: List<String>): List<Equipment> =
+internal fun parseEquipment(values: List<String>): List<Equipment> =
     values.mapNotNull { runCatching { Equipment.valueOf(it) }.getOrNull() }
 
 private fun ExerciseDto.toDomain() = Exercise(
