@@ -11,7 +11,8 @@
         "HOME"
       ],
       "weeks": 12,
-      "file": "programs/beginner-full-body-home.json"
+      "file": "programs/beginner-full-body-home.json",
+      "sessionMinutes": 20
     },
     {
       "id": "program-1",
@@ -24,7 +25,8 @@
         "HOME"
       ],
       "weeks": 12,
-      "file": "programs/program-1.json"
+      "file": "programs/program-1.json",
+      "sessionMinutes": 35
     },
     {
       "id": "advanced-full-body-home",
@@ -37,7 +39,8 @@
         "HOME"
       ],
       "weeks": 12,
-      "file": "programs/advanced-full-body-home.json"
+      "file": "programs/advanced-full-body-home.json",
+      "sessionMinutes": 34
     }
   ]
 }

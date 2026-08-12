@@ -382,7 +382,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 24
         },
         {
           "index": 2,
@@ -754,7 +755,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 24
         },
         {
           "index": 3,
@@ -1126,7 +1128,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 26
         }
       ]
     },
@@ -1503,7 +1506,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 25
         },
         {
           "index": 2,
@@ -1875,7 +1879,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 25
         },
         {
           "index": 3,
@@ -2247,7 +2252,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 27
         }
       ]
     },
@@ -2624,7 +2630,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 26
         },
         {
           "index": 2,
@@ -2996,7 +3003,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 26
         },
         {
           "index": 3,
@@ -3368,7 +3376,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 27
         }
       ]
     },
@@ -3804,7 +3813,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 31
         },
         {
           "index": 2,
@@ -4235,7 +4245,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 31
         },
         {
           "index": 3,
@@ -4666,7 +4677,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 33
         }
       ]
     },
@@ -5102,7 +5114,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 32
         },
         {
           "index": 2,
@@ -5533,7 +5546,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 32
         },
         {
           "index": 3,
@@ -5964,7 +5978,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 34
         }
       ]
     },
@@ -6400,7 +6415,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 33
         },
         {
           "index": 2,
@@ -6831,7 +6847,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 34
         },
         {
           "index": 3,
@@ -7262,7 +7279,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 36
         }
       ]
     },
@@ -7698,7 +7716,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 33
         },
         {
           "index": 2,
@@ -8129,7 +8148,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 33
         },
         {
           "index": 3,
@@ -8560,7 +8580,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 38
         }
       ]
     },
@@ -8996,7 +9017,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 34
         },
         {
           "index": 2,
@@ -9427,7 +9449,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 34
         },
         {
           "index": 3,
@@ -9858,7 +9881,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 40
         }
       ]
     },
@@ -10294,7 +10318,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 35
         },
         {
           "index": 2,
@@ -10725,7 +10750,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 35
         },
         {
           "index": 3,
@@ -11156,7 +11182,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 41
         }
       ]
     },
@@ -11651,7 +11678,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 41
         },
         {
           "index": 2,
@@ -12141,7 +12169,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 39
         },
         {
           "index": 3,
@@ -12631,7 +12660,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 46
         }
       ]
     },
@@ -13126,7 +13156,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 42
         },
         {
           "index": 2,
@@ -13616,7 +13647,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 40
         },
         {
           "index": 3,
@@ -14106,7 +14138,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 47
         }
       ]
     },
@@ -14601,7 +14634,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 44
         },
         {
           "index": 2,
@@ -15091,7 +15125,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 42
         },
         {
           "index": 3,
@@ -15581,9 +15616,11 @@
                 }
               ]
             }
-          ]
+          ],
+          "estimatedMinutes": 48
         }
       ]
     }
-  ]
+  ],
+  "sessionMinutes": 34
 }
