@@ -11,3 +11,5 @@
 .claude
 .agents
 .impeccable
+keystore.properties
+*.jks
