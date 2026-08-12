@@ -461,6 +461,34 @@
       "weeks": 12,
       "file": "programs/program-1.json",
       "sessionMinutes": 35
+    },
+    {
+      "id": "quick-10-full-body-home",
+      "title": "10-Minute Quick Full Body",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "FULL_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/quick-10-full-body-home.json",
+      "sessionMinutes": 8
+    },
+    {
+      "id": "quick-15-full-body-home",
+      "title": "15-Minute Quick Full Body",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "FULL_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/quick-15-full-body-home.json",
+      "sessionMinutes": 12
     }
   ]
 }
