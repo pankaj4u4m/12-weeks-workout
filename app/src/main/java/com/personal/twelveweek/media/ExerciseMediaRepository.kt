@@ -3,6 +3,8 @@ package com.personal.twelveweek.media
 import android.content.Context
 import com.personal.twelveweek.Exercise
 import com.personal.twelveweek.security.ApiKeyManager
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import java.io.File
@@ -35,10 +37,13 @@ class ExerciseMediaRepository(
          *  views (across the 60 workouts sharing ~65 exercises) are instant/offline. */
         fun default(context: Context, keyManager: ApiKeyManager): ExerciseMediaRepository {
             val cacheDir = File(context.cacheDir, "exercise_media_http")
-            val client = OkHttpClient.Builder()
+            val okHttpClient = OkHttpClient.Builder()
                 .cache(Cache(cacheDir, 100L * 1024 * 1024))
                 .build()
-            return ExerciseMediaRepository(keyManager, ExerciseDbApi(client))
+            val ktorClient = HttpClient(OkHttp) {
+                engine { preconfigured = okHttpClient }
+            }
+            return ExerciseMediaRepository(keyManager, ExerciseDbApi(ktorClient))
         }
     }
 }
