@@ -48,7 +48,7 @@ private data class ProgramDto(
     val focusAreas: List<String> = emptyList(),
     val equipment: List<String> = emptyList(),
     val sessionMinutes: Int = 0,
-    val weeks: List<WeekDto> = emptyList()
+    val weeks: List<WeekDto>
 )
 
 @Serializable
