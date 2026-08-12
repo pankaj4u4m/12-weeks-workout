@@ -26,7 +26,7 @@ Legend: ✅ full parity · 🟡 partial · ❌ missing
 | **Guided session runner** | Full-screen one-exercise-at-a-time flow: circular timer, voice announcements, rep-prep countdown, auto-advance, completion sound/vibration | Ported (`WebGuidedSession.kt`) | ✅ | Voice via Web Speech API, haptics via Vibration API, completion tone via Web Audio API |
 | **Settings screen** | Full page: voice mute, transition-seconds, rep-prep-seconds, API key connect/disconnect | Ported (`WebSettingsScreen.kt`) | ✅ | |
 | Exercise media — images / photo loops | wger static image, FreeExerciseDb 2-photo loop | Ported, renders inline (`WebAsyncImage.kt` via Skia decode) | ✅ | |
-| Exercise media — video | wger/ExerciseDB video, autoplay/loop/muted in-place | Opens in a new tab instead of inline | 🟡 | No DOM `<video>`-over-canvas overlay bridge built yet; still a real, working demo link |
+| Exercise media — video | wger/ExerciseDB video, autoplay/loop/muted in-place | Ported (`WebVideoView.kt`) — real HTML `<video>` overlaid on the canvas, position-synced every layout pass | ✅ | |
 | Encrypted API key storage | `ApiKeyManager` (Android Keystore-backed) | Ported (`WebApiKeyManager.kt`, Web Crypto AES-GCM) | ✅ | Different threat model — no browser-exposed secure enclave, see file comment |
 | Voice / TTS (`VoiceCoach`) | Android `TextToSpeech` | Ported (`WebVoiceCoach.kt`, Web Speech API) | ✅ | |
 | Vibration on completion | Android `Vibrator` | Ported (`WebHaptics.kt`, Vibration API) | ✅ | Known weaker/inconsistent on iOS Safari — platform limitation, not a bug |
@@ -45,9 +45,7 @@ vibration, encrypted API-key storage, exercise media (images/loops inline,
 video via link), onboarding, tablet nav rail, and PWA installability are all
 ported and live. Remaining gaps are narrow and explicitly platform-limited,
 not missing effort:
-1. **Inline video** — opens externally instead of autoplaying in the movement
-   stage; needs a DOM `<video>`-over-canvas overlay bridge, not yet built.
-2. **GitHub-synced program updates** — web always reads the bundled/cached
+1. **GitHub-synced program updates** — web always reads the bundled/cached
    copy shipped in the dist; no background sync from the program-library repo.
 3. **Custom font (Barlow Semi Condensed)** — headlines use the system default
    font at the same size/weight instead of the real face; needs a

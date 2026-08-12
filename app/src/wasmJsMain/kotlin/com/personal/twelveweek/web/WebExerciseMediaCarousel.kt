@@ -1,24 +1,15 @@
 package com.personal.twelveweek.web
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.OpenInNew
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,9 +26,9 @@ import kotlinx.coroutines.delay
 /**
  * Web port of the Android app's `media.ExerciseMediaCarousel` — same
  * horizontal-pager-of-pages shape with dot indicators. [WebMediaPage.Video]
- * doesn't autoplay inline here (no wasmJs `<video>` DOM-overlay bridge
- * yet) — it shows an "Open video" tile that opens the clip in a new tab
- * instead, which is still a real, working demo, just not embedded.
+ * plays inline via [WebVideoView] (a real HTML `<video>` overlaid on the
+ * canvas), muted/looped/autoplaying, matching the Android app's ExoPlayer
+ * behavior.
  */
 @Composable
 fun WebExerciseMediaCarousel(pages: List<WebMediaPage>, contentDescription: String, modifier: Modifier = Modifier) {
@@ -58,7 +49,7 @@ fun WebExerciseMediaCarousel(pages: List<WebMediaPage>, contentDescription: Stri
                     contentDescription = contentDescription,
                     modifier = Modifier.fillMaxSize()
                 )
-                is WebMediaPage.Video -> WebVideoLinkTile(url = p.url, modifier = Modifier.fillMaxSize())
+                is WebMediaPage.Video -> WebVideoView(url = p.url, modifier = Modifier.fillMaxSize())
             }
         }
 
@@ -100,19 +91,3 @@ private fun WebImageLoopPlayer(urls: List<String>, contentDescription: String, m
     )
 }
 
-@Composable
-private fun WebVideoLinkTile(url: String, modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier.clickable { webOpenUrl(url) },
-        color = MaterialTheme.colorScheme.surfaceVariant
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(Icons.Filled.OpenInNew, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-            Text("Open video demo", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelLarge)
-        }
-    }
-}
