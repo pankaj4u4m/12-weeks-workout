@@ -31,6 +31,13 @@ class VoiceCoach(context: Context, private val isEnabled: () -> Boolean = { true
         }
     }
 
+    /** Stops whatever's currently playing without tearing down the TTS
+     *  engine — used when the user mutes mid-utterance, so the cue cuts off
+     *  immediately instead of finishing before the mute takes effect. */
+    fun stop() {
+        runCatching { tts.stop() }
+    }
+
     fun shutdown() {
         runCatching {
             tts.stop()
