@@ -1,0 +1,43 @@
+{
+  "programs": [
+    {
+      "id": "beginner-full-body-home",
+      "title": "12 Week Beginner Full Body",
+      "level": "BEGINNER",
+      "focusAreas": [
+        "FULL_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/beginner-full-body-home.json"
+    },
+    {
+      "id": "program-1",
+      "title": "12 Week Full Body",
+      "level": "INTERMEDIATE",
+      "focusAreas": [
+        "FULL_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/program-1.json"
+    },
+    {
+      "id": "advanced-full-body-home",
+      "title": "12 Week Advanced Full Body",
+      "level": "ADVANCED",
+      "focusAreas": [
+        "FULL_BODY"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "weeks": 12,
+      "file": "programs/advanced-full-body-home.json"
+    }
+  ]
+}
