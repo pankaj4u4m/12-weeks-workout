@@ -17,8 +17,9 @@ import androidx.compose.ui.unit.dp
 import com.personal.twelveweek.media.ApiResult
 import com.personal.twelveweek.media.ExerciseDbApi
 import com.personal.twelveweek.security.ApiKeyManager
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
 
 private const val SIGNUP_URL =
     "https://rapidapi.com/auth/login?referral=%2Fascendapi%2Fapi%2Fedb-with-videos-and-images-by-ascendapi%2Fpricing"
@@ -36,7 +37,7 @@ fun ConnectMediaScreen(
     var error by remember { mutableStateOf<String?>(null) }
     var checking by remember { mutableStateOf(false) }
     var showKey by remember { mutableStateOf(false) }
-    val api = remember { ExerciseDbApi(OkHttpClient()) }
+    val api = remember { ExerciseDbApi(HttpClient(OkHttp)) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -52,7 +53,8 @@ fun ConnectMediaScreen(
                     onClick = {
                         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(SIGNUP_URL)))
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium
                 ) {
                     Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
@@ -95,6 +97,7 @@ fun ConnectMediaScreen(
         confirmButton = {
             Button(
                 enabled = keyInput.isNotBlank() && !checking,
+                shape = MaterialTheme.shapes.medium,
                 onClick = {
                     checking = true
                     scope.launch {

@@ -11,30 +11,62 @@ import java.io.File
 
 class ExerciseMediaRepository(
     private val keyManager: ApiKeyManager,
-    private val api: ExerciseDbApi
+    private val exerciseDbApi: ExerciseDbApi,
+    private val wgerApi: WgerApi
 ) {
     /**
-     * Returns curated media/instructions for [exercise], or null when there's
-     * no stored key, no curated `exerciseId` for this exercise, or the fetch
-     * failed — callers render the existing fallback UI in every null case,
-     * never crash.
+     * Every curated media page available for [exercise], most-preferred
+     * first — empty when there's nothing (callers render the existing
+     * fallback UI). Fixed priority, but every page that actually exists is
+     * included, not just the top pick, so the UI can let the user swipe
+     * through the rest:
+     *
+     * 1. wger *video* only (free, no key) — wger's own image is deliberately
+     *    NOT used here; it's demoted to priority 4 so a real video anywhere
+     *    always wins over a static photo.
+     * 2. [FreeExerciseDb] photo loop (free, no key, public domain) — exactly
+     *    that source's own two step photos, never mixed with another
+     *    provider's images.
+     * 3. ExerciseDB (RapidAPI, needs the user's own free key) — whichever it
+     *    actually has, video or image.
+     * 4. wger's static photo, as a last resort.
      */
-    suspend fun get(exercise: Exercise): ExerciseDbDetail? {
-        val apiKey = keyManager.get() ?: return null
-        val exerciseId = exercise.exerciseId ?: return null
-        return when (val result = api.fetchExercise(exerciseId, apiKey)) {
-            is ApiResult.Success -> result.detail
-            ApiResult.Unauthorized -> {
-                keyManager.clear()
-                null
-            }
-            ApiResult.NetworkError -> null
+    suspend fun getBundle(exercise: Exercise): List<MediaPage> {
+        val pages = mutableListOf<MediaPage>()
+
+        val wgerDetail = exercise.wgerId?.let { wgerApi.fetchExercise(it) }
+        wgerDetail?.videoUrl?.let { pages += MediaPage.Video(it, wgerDetail.instructions) }
+
+        exercise.freeExerciseDbId?.let { id ->
+            val urls = FreeExerciseDb.imageUrls(id)
+            if (urls.isNotEmpty()) pages += MediaPage.ImageLoop(urls)
         }
+
+        val apiKey = keyManager.get()
+        if (apiKey != null) {
+            exercise.exerciseDbId?.let { id ->
+                when (val result = exerciseDbApi.fetchExercise(id, apiKey)) {
+                    is ApiResult.Success -> {
+                        val d = result.detail
+                        when {
+                            d.videoUrl != null -> pages += MediaPage.Video(d.videoUrl, d.instructions)
+                            d.imageUrl != null -> pages += MediaPage.Image(d.imageUrl, d.instructions)
+                        }
+                    }
+                    ApiResult.Unauthorized -> keyManager.clear()
+                    ApiResult.NetworkError -> {}
+                }
+            }
+        }
+
+        wgerDetail?.imageUrl?.let { pages += MediaPage.Image(it, wgerDetail.instructions) }
+
+        return pages
     }
 
     companion object {
-        /** Composition-root factory: wires a disk-cached OkHttpClient so repeat
-         *  views (across the 60 workouts sharing ~65 exercises) are instant/offline. */
+        /** Composition-root factory: wires a disk-cached OkHttpClient (shared
+         *  by both providers) so repeat views are instant/offline. */
         fun default(context: Context, keyManager: ApiKeyManager): ExerciseMediaRepository {
             val cacheDir = File(context.cacheDir, "exercise_media_http")
             val okHttpClient = OkHttpClient.Builder()
@@ -43,7 +75,7 @@ class ExerciseMediaRepository(
             val ktorClient = HttpClient(OkHttp) {
                 engine { preconfigured = okHttpClient }
             }
-            return ExerciseMediaRepository(keyManager, ExerciseDbApi(ktorClient))
+            return ExerciseMediaRepository(keyManager, ExerciseDbApi(ktorClient), WgerApi(ktorClient))
         }
     }
 }

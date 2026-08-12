@@ -13,3 +13,5 @@
 .impeccable
 keystore.properties
 *.jks
+/kotlin-js-store
+/json

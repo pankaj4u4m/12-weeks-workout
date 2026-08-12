@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -47,20 +48,33 @@ fun ProgramPickerScreen(
     onSelect: (String) -> Unit,
     onSkip: (() -> Unit)? = null,
     onBack: (() -> Unit)? = null,
+    /** Launches a file picker for a hand-authored/LLM-generated program
+     *  `.json` — null hides the import entry point entirely (e.g. during
+     *  first-run onboarding, where we don't want to introduce this yet). */
+    onImport: (() -> Unit)? = null,
+    importError: String? = null,
+    onDismissImportError: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var levelFilter by remember { mutableStateOf<ProgramLevel?>(null) }
     var focusFilter by remember { mutableStateOf<FocusArea?>(null) }
     var equipmentFilter by remember { mutableStateOf<Equipment?>(null) }
+    // "Up to N minutes/day" — an independent filter dimension, same pattern as
+    // level/focus/space. Any level can be paired with any time budget; picking
+    // one narrows which programs show, same as the others (never a separate
+    // per-time program set to author — sessionMinutes is precomputed once in
+    // the GitHub repo per program, this just filters on it).
+    var durationFilter by remember { mutableStateOf<Int?>(null) }
 
     val allFocusAreas = remember(entries) { entries.flatMap { it.meta.focusAreas }.distinct() }
     val allEquipment = remember(entries) { entries.flatMap { it.meta.equipment }.distinct() }
-    val hasFilters = levelFilter != null || focusFilter != null || equipmentFilter != null
+    val hasFilters = levelFilter != null || focusFilter != null || equipmentFilter != null || durationFilter != null
 
     val filtered = entries.filter { entry ->
         (levelFilter == null || entry.meta.level == levelFilter) &&
             (focusFilter == null || focusFilter in entry.meta.focusAreas) &&
-            (equipmentFilter == null || equipmentFilter in entry.meta.equipment)
+            (equipmentFilter == null || equipmentFilter in entry.meta.equipment) &&
+            (durationFilter == null || entry.meta.sessionMinutes == 0 || entry.meta.sessionMinutes <= durationFilter!!)
     }
 
     LazyColumn(
@@ -90,6 +104,41 @@ fun ProgramPickerScreen(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+            onImport?.let {
+                Spacer(Modifier.height(14.dp))
+                OutlinedButton(onClick = it, modifier = Modifier.fillMaxWidth()) {
+                    Icon(Icons.Filled.UploadFile, contentDescription = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text("Import a program (.json)")
+                }
+            }
+            importError?.let { message ->
+                Spacer(Modifier.height(10.dp))
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium,
+                    color = MaterialTheme.colorScheme.errorContainer
+                ) {
+                    Row(
+                        modifier = Modifier.padding(14.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            message,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconButton(onClick = onDismissImportError) {
+                            Icon(
+                                Icons.Filled.Close,
+                                contentDescription = "Dismiss",
+                                tint = MaterialTheme.colorScheme.onErrorContainer
+                            )
+                        }
+                    }
+                }
+            }
         }
 
         if (entries.isEmpty()) {
@@ -135,6 +184,15 @@ fun ProgramPickerScreen(
                     )
                 }
             }
+            item {
+                FilterRow(
+                    label = "Time per day",
+                    options = listOf(10, 15, 20, 30, 45, 60),
+                    selected = durationFilter,
+                    text = { "≤ $it min" },
+                    onToggle = { durationFilter = if (durationFilter == it) null else it }
+                )
+            }
 
             if (hasFilters) {
                 item {
@@ -143,6 +201,7 @@ fun ProgramPickerScreen(
                             levelFilter = null
                             focusFilter = null
                             equipmentFilter = null
+                            durationFilter = null
                         }
                     ) {
                         Icon(Icons.Filled.Close, contentDescription = null)
@@ -246,7 +305,8 @@ private fun ProgramCard(
                     Spacer(Modifier.height(6.dp))
                     Text(
                         "${meta.level.label()} · ${meta.weekCount} weeks · " +
-                            meta.equipment.joinToString("/") { it.label() },
+                            meta.equipment.joinToString("/") { it.label() } +
+                            if (meta.sessionMinutes > 0) " · ~${meta.sessionMinutes} min/day" else "",
                         style = MaterialTheme.typography.bodyMedium,
                         color = if (selected) {
                             MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.76f)
