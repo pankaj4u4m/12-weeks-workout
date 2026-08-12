@@ -37,11 +37,15 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+                implementation("io.ktor:ktor-client-core:3.5.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation("io.ktor:ktor-client-mock:3.5.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
             }
         }
         val androidMain by getting {
@@ -54,6 +58,7 @@ kotlin {
                 implementation("androidx.compose.material:material-icons-extended")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
                 implementation("com.squareup.okhttp3:okhttp:4.12.0")
+                implementation("io.ktor:ktor-client-okhttp:3.5.2")
                 implementation("androidx.media3:media3-exoplayer:1.4.1")
                 implementation("androidx.media3:media3-ui:1.4.1")
                 implementation("io.coil-kt:coil-compose:2.6.0")
@@ -69,6 +74,7 @@ kotlin {
                 // CanvasBasedWindow (main.kt) needs compose.ui explicitly — not transitively
                 // visible from compose.foundation/material3 on the wasmJs compile classpath.
                 implementation(compose.ui)
+                implementation("io.ktor:ktor-client-js:3.5.2")
             }
         }
     }
@@ -141,7 +147,7 @@ dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2026.06.01")
     add("androidMainImplementation", composeBom)
     testImplementation("junit:junit:4.13.2")
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:5.3.2")
     testImplementation("io.mockk:mockk:1.13.12")
     testImplementation("org.json:json:20240303")
 }
