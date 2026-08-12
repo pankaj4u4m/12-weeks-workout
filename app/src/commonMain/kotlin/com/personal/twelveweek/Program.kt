@@ -8,11 +8,23 @@ data class Exercise(
     val name: String,
     val reps: Int?,
     val seconds: Int?,
-    /** Curated ExerciseDB id, embedded per-exercise by whoever authored the
+    /** Curated media ids, embedded per-exercise by whoever authored the
      *  program JSON (see `programs/` in the GitHub program-library repo) —
-     *  null means no good real-video match was found; always falls back to
-     *  the external search buttons, never a guessed match. */
-    val exerciseId: String? = null
+     *  null means no good match was found for that provider. [wgerId] is
+     *  tried first (wger.de, free/keyless, real photo/video for common
+     *  bodyweight moves but thin coverage overall); [exerciseDbId] is the
+     *  fallback (ExerciseDB via RapidAPI, near-total coverage but needs the
+     *  user's own free key). Both null always falls back to the external
+     *  search buttons — never a guessed match. */
+    val wgerId: String? = null,
+    val exerciseDbId: String? = null,
+    /** Curated [free-exercise-db](https://github.com/yuhonas/free-exercise-db)
+     *  exercise id (its `id`/folder slug, e.g. "Mountain_Climbers") — that
+     *  repo is public-domain and every entry ships exactly two step photos
+     *  (`0.jpg`/`1.jpg`), which the app loops as a lightweight flipbook.
+     *  Only ever this source for the loop — never mixed with wger's or
+     *  ExerciseDB's own images. */
+    val freeExerciseDbId: String? = null
 ) {
     val isTimed: Boolean get() = seconds != null
 
@@ -55,13 +67,18 @@ data class Section(
 
 data class Workout(
     /** Which library program this workout belongs to — namespaces progress
-     *  keys so two different programs' "Week 1 Workout 1" never collide. */
+     *  keys so two different programs' "Week 1 Day 1" never collide. */
     val programId: String,
     val week: Int,
     val index: Int,
-    val sections: List<Section>
+    val sections: List<Section>,
+    /** Precomputed at authoring time (2.5s/rep + an 8s transition per row),
+     *  not recomputed on-device — same "curate once in the JSON, don't
+     *  guess live" pattern as the media ids. 0 if the program JSON predates
+     *  this field. */
+    val estimatedMinutes: Int = 0
 ) {
-    val title: String get() = "Workout $index"
+    val title: String get() = "Day $index"
 
     val totalItems: Int get() = sections.sumOf { it.exercises.size }
 

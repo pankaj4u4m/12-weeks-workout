@@ -18,7 +18,12 @@ data class ProgramMeta(
     val level: ProgramLevel,
     val focusAreas: List<FocusArea>,
     val equipment: List<Equipment>,
-    val weekCount: Int
+    val weekCount: Int,
+    /** Typical per-day time (minutes), precomputed at authoring time from
+     *  every workout's own [com.personal.twelveweek.Workout.estimatedMinutes]
+     *  — the median across the program, not recomputed on-device. 0 if the
+     *  program JSON predates this field. */
+    val sessionMinutes: Int = 0
 )
 
 /** A fully-loaded program: metadata plus its 12 weeks of workouts. */
