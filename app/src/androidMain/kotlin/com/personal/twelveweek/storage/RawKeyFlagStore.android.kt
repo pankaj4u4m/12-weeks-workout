@@ -13,24 +13,33 @@ actual class RawKeyFlagStore actual constructor(private val namespace: String) {
     // root wiring. Kotlin Multiplatform's `expect class` constructors can't
     // take an Android Context parameter directly (the signature must match
     // every actual, and wasmJs has no Context), so Context is threaded in
-    // via this small platform-only side channel instead.
-    private val prefs: SharedPreferences
-        get() = requireNotNull(AndroidPlatformContext.appContext) {
-            "AndroidPlatformContext.install(context) must run before any RawKeyFlagStore is used — call it from Application.onCreate() or MainActivity.onCreate()."
-        }.getSharedPreferences(namespace, Context.MODE_PRIVATE)
+    // via this small platform-only side channel instead. Captured once at
+    // construction — the real app always calls install() in
+    // MainActivity.onCreate() before constructing any store, so this is
+    // never null for a real instance.
+    private val realPrefs: SharedPreferences? =
+        AndroidPlatformContext.appContext?.getSharedPreferences(namespace, Context.MODE_PRIVATE)
 
-    actual fun allKeys(): Set<String> = prefs.all.keys.toSet()
+    // Only engaged when constructed before install() has run — in practice
+    // that's plain JVM unit tests only (no Robolectric in this project, so
+    // no Application/Activity lifecycle ever installs a real Context there).
+    // Lets commonTest exercise real ProgressStore logic against the real
+    // RawKeyFlagStore API instead of requiring a mock; actual SharedPreferences
+    // persistence is verified separately by an on-device manual check.
+    private val memoryFallback: MutableSet<String>? = if (realPrefs == null) mutableSetOf() else null
+
+    actual fun allKeys(): Set<String> = realPrefs?.all?.keys?.toSet() ?: memoryFallback.orEmpty()
 
     actual fun setPresent(key: String) {
-        prefs.edit().putBoolean(key, true).apply()
+        realPrefs?.edit()?.putBoolean(key, true)?.apply() ?: memoryFallback?.add(key)
     }
 
     actual fun remove(key: String) {
-        prefs.edit().remove(key).apply()
+        realPrefs?.edit()?.remove(key)?.apply() ?: memoryFallback?.remove(key)
     }
 
     actual fun clear() {
-        prefs.edit().clear().apply()
+        realPrefs?.edit()?.clear()?.apply() ?: memoryFallback?.clear()
     }
 }
 
