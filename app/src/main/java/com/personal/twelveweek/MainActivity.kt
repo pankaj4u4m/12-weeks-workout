@@ -106,7 +106,7 @@ fun AppRoot() {
     val context = LocalContext.current
     val progress = remember { ProgressStore(RawKeyFlagStore("twelve_week_progress")) }
     val selectedProgramStore = remember { SelectedProgramStore(RawPreferenceStore("twelve_week_selected_program")) }
-    val library = remember { ProgramLibrary(context) }
+    val library = remember { ProgramLibrary() }
     val syncRepo = remember { ProgramSyncRepository.default(context, library) }
 
     var screen: Screen by remember { mutableStateOf(Screen.Today) }
