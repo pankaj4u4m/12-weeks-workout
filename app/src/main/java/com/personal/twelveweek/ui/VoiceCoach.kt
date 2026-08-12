@@ -13,15 +13,18 @@ import java.util.Locale
  * session cues ("Halfway there", "5 seconds remaining", "Up next: Squats").
  * Each [speak] flushes any cue still queued/playing (`QUEUE_FLUSH`) so a late
  * cue never stacks behind a stale one — the newest cue always wins.
+ *
+ * [isEnabled] is checked on every [speak] call (not just at construction) so
+ * flipping the Settings toggle mid-session takes effect immediately.
  */
-class VoiceCoach(context: Context) {
+class VoiceCoach(context: Context, private val isEnabled: () -> Boolean = { true }) {
     private var ready = false
     private val tts: TextToSpeech = TextToSpeech(context.applicationContext) { status ->
         ready = status == TextToSpeech.SUCCESS
     }
 
     fun speak(text: String) {
-        if (!ready) return
+        if (!ready || !isEnabled()) return
         runCatching {
             tts.language = Locale.getDefault()
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, text)
@@ -39,11 +42,12 @@ class VoiceCoach(context: Context) {
 /** Creates a [VoiceCoach] scoped to the current composition — shut down
  *  automatically when the caller leaves composition (e.g. exiting the
  *  guided session), so the TTS engine is never left running in the
- *  background. */
+ *  background. [isEnabled] is re-read on every [VoiceCoach.speak] call, not
+ *  just here, so it can be a live Settings-backed value. */
 @Composable
-fun rememberVoiceCoach(): VoiceCoach {
+fun rememberVoiceCoach(isEnabled: () -> Boolean = { true }): VoiceCoach {
     val context = LocalContext.current
-    val coach = remember { VoiceCoach(context) }
+    val coach = remember { VoiceCoach(context, isEnabled) }
     DisposableEffect(Unit) {
         onDispose { coach.shutdown() }
     }
