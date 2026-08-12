@@ -104,6 +104,16 @@ android {
         versionName = "1.0"
     }
 
+    testOptions {
+        unitTests {
+            // android.util.Log (and other android.* stubs) throw by default
+            // under plain JVM unit tests (no Robolectric in this project) —
+            // return no-op defaults instead so a diagnostic Log.w() call
+            // doesn't fail tests that legitimately exercise a fallback path.
+            isReturnDefaultValues = true
+        }
+    }
+
     signingConfigs {
         if (hasReleaseSigning) {
             create("release") {

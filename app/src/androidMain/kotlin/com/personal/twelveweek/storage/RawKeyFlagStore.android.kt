@@ -26,7 +26,16 @@ actual class RawKeyFlagStore actual constructor(private val namespace: String) {
     // Lets commonTest exercise real ProgressStore logic against the real
     // RawKeyFlagStore API instead of requiring a mock; actual SharedPreferences
     // persistence is verified separately by an on-device manual check.
-    private val memoryFallback: MutableSet<String>? = if (realPrefs == null) mutableSetOf() else null
+    private val memoryFallback: MutableSet<String>? = if (realPrefs == null) {
+        // Loud enough to catch a real regression (e.g. a new composition-root
+        // site that forgets to call install() first) without crashing JVM
+        // unit tests, which hit this path legitimately on every run.
+        android.util.Log.w(
+            "RawKeyFlagStore",
+            "No AndroidPlatformContext installed for namespace '$namespace' — using an in-memory, non-persistent fallback. Expected only under plain JVM unit tests; if this fires on a real device, something is constructing a store before MainActivity.onCreate() runs."
+        )
+        mutableSetOf()
+    } else null
 
     actual fun allKeys(): Set<String> = realPrefs?.all?.keys?.toSet() ?: memoryFallback.orEmpty()
 
