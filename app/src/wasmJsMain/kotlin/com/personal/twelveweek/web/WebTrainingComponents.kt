@@ -22,6 +22,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
@@ -164,5 +165,29 @@ fun Metric(value: String, label: String, modifier: Modifier = Modifier) {
         Text(value, style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.height(2.dp))
         Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+}
+
+/** Three crossing resistance-band strokes — used at completion / empty
+ *  states, same as the Android app's `ui.ResistanceBandMark`. */
+@Composable
+fun ResistanceBandMark(modifier: Modifier = Modifier, muted: Boolean = false) {
+    val alpha = if (muted) 0.35f else 1f
+    Canvas(modifier = modifier) {
+        val top = Path().apply {
+            moveTo(0f, size.height * 0.34f)
+            cubicTo(size.width * 0.24f, size.height * 0.02f, size.width * 0.62f, size.height * 0.66f, size.width, size.height * 0.24f)
+        }
+        val middle = Path().apply {
+            moveTo(0f, size.height * 0.58f)
+            cubicTo(size.width * 0.30f, size.height * 0.92f, size.width * 0.68f, size.height * 0.10f, size.width, size.height * 0.62f)
+        }
+        val lower = Path().apply {
+            moveTo(0f, size.height * 0.78f)
+            cubicTo(size.width * 0.35f, size.height * 0.48f, size.width * 0.70f, size.height, size.width, size.height * 0.70f)
+        }
+        drawPath(top, WebBandBlue.copy(alpha = alpha), style = Stroke(14.dp.toPx(), cap = StrokeCap.Round))
+        drawPath(middle, WebBandCoral.copy(alpha = alpha), style = Stroke(10.dp.toPx(), cap = StrokeCap.Round))
+        drawPath(lower, WebBandMint.copy(alpha = alpha), style = Stroke(7.dp.toPx(), cap = StrokeCap.Round))
     }
 }

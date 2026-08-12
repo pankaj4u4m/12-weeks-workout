@@ -34,6 +34,8 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -46,6 +48,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -53,6 +56,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -72,6 +76,7 @@ import com.personal.twelveweek.programs.ProgramLevel
 import com.personal.twelveweek.programs.ProgramLibrary
 import com.personal.twelveweek.storage.RawKeyFlagStore
 import com.personal.twelveweek.storage.RawPreferenceStore
+import kotlinx.coroutines.launch
 
 /**
  * Web entry screen — a from-scratch port of the Android app's Today / Plan /
@@ -83,23 +88,28 @@ import com.personal.twelveweek.storage.RawPreferenceStore
  * (rather than `com.personal.twelveweek`, where MainActivity.kt's
  * near-identical private screen/helper names already live) purely to avoid
  * classfile-name collisions on the Android target, which compiles
- * commonMain and androidMain together. Guided session (voice/timer/media)
- * and Settings stay Android-only for now — those need platform bridges
- * (TTS, vibration, encrypted key storage) that haven't been ported to
- * wasmJs yet; "Start workout" opens the same tap-to-check workout screen
- * instead of the timed guided runner.
+ * commonMain and androidMain together (the whole `web` package now lives in
+ * wasmJsMain instead, for the same collision-avoidance reason, plus the
+ * freedom to call Web Speech/Vibration/Audio APIs directly). Guided session
+ * and Settings ARE ported (WebGuidedSession.kt, WebSettingsScreen.kt) —
+ * voice cues via the Web Speech API, haptics via the Vibration API,
+ * completion tone via the Web Audio API. Not ported: exercise media and the
+ * ExerciseDB API-key flow (no wasmJs image/video/Web-Crypto bridge yet —
+ * see docs/webapp-android-parity.md).
  */
 @Composable
 fun WebApp() {
     val library = remember { ProgramLibrary() }
     val progress = remember { ProgressStore(RawKeyFlagStore("twelve_week_progress")) }
     val selectedProgramStore = remember { SelectedProgramStore(RawPreferenceStore("twelve_week_selected_program")) }
+    val settings = remember { WebSettings() }
 
     var index by remember { mutableStateOf<List<IndexEntry>?>(null) }
     var selectedProgramId by remember { mutableStateOf(selectedProgramStore.get()) }
     var activeProgram by remember { mutableStateOf<LibraryProgram?>(null) }
     var loadFailed by remember { mutableStateOf(false) }
     var screen: WebScreen by remember { mutableStateOf(WebScreen.Today) }
+    val appScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) { index = library.index() }
 
@@ -138,13 +148,16 @@ fun WebApp() {
                     libraryIndex = entries,
                     selectedProgramId = selectedProgramId,
                     progress = progress,
+                    settings = settings,
+                    library = library,
                     screen = screen,
                     onScreenChange = { screen = it },
                     onSelectProgram = { id ->
                         selectedProgramStore.set(id)
                         selectedProgramId = id
                         screen = WebScreen.Today
-                    }
+                    },
+                    onProgramImported = { appScope.launch { index = library.index() } }
                 )
             }
         }
@@ -155,8 +168,10 @@ private sealed interface WebScreen {
     data object Today : WebScreen
     data object Plan : WebScreen
     data object Programs : WebScreen
+    data object Settings : WebScreen
     data class WeekDetail(val week: Int) : WebScreen
     data class WorkoutDetail(val week: Int, val workout: Int) : WebScreen
+    data class GuidedSession(val week: Int, val workout: Int) : WebScreen
 }
 
 private data class WebDestination(val screen: WebScreen, val label: String, val icon: ImageVector)
@@ -182,9 +197,12 @@ private fun WebAppShell(
     libraryIndex: List<IndexEntry>,
     selectedProgramId: String,
     progress: ProgressStore,
+    settings: WebSettings,
+    library: ProgramLibrary,
     screen: WebScreen,
     onScreenChange: (WebScreen) -> Unit,
-    onSelectProgram: (String) -> Unit
+    onSelectProgram: (String) -> Unit,
+    onProgramImported: () -> Unit
 ) {
     val showMainNavigation = screen is WebScreen.Today || screen is WebScreen.Plan || screen is WebScreen.Programs
 
@@ -200,8 +218,10 @@ private fun WebAppShell(
                 weeks = program.weeks,
                 programTitle = program.meta.title,
                 progress = progress,
-                onOpenWorkout = { week, workout -> onScreenChange(WebScreen.WorkoutDetail(week, workout)) },
+                onPreviewWorkout = { week, workout -> onScreenChange(WebScreen.WorkoutDetail(week, workout)) },
+                onStartWorkout = { week, workout -> onScreenChange(WebScreen.GuidedSession(week, workout)) },
                 onOpenPlan = { onScreenChange(WebScreen.Plan) },
+                onOpenSettings = { onScreenChange(WebScreen.Settings) },
                 modifier = content
             )
 
@@ -217,6 +237,14 @@ private fun WebAppShell(
                 entries = libraryIndex,
                 selectedProgramId = selectedProgramId,
                 onSelect = onSelectProgram,
+                library = library,
+                onImported = onProgramImported,
+                modifier = content
+            )
+
+            WebScreen.Settings -> WebSettingsScreen(
+                settings = settings,
+                onBack = { onScreenChange(WebScreen.Today) },
                 modifier = content
             )
 
@@ -227,6 +255,7 @@ private fun WebAppShell(
                     progress = progress,
                     onBack = { onScreenChange(WebScreen.Plan) },
                     onOpenWorkout = { onScreenChange(WebScreen.WorkoutDetail(screen.week, it)) },
+                    onStartWorkout = { onScreenChange(WebScreen.GuidedSession(screen.week, it)) },
                     modifier = content
                 )
             }
@@ -238,8 +267,22 @@ private fun WebAppShell(
                     workout = workout,
                     progress = progress,
                     onBack = { onScreenChange(WebScreen.WeekDetail(screen.week)) },
+                    onStartGuided = { onScreenChange(WebScreen.GuidedSession(screen.week, screen.workout)) },
                     modifier = content
                 )
+            }
+
+            is WebScreen.GuidedSession -> {
+                val workout = program.weeks.first { it.number == screen.week }
+                    .workouts.first { it.index == screen.workout }
+                Box(modifier = content.fillMaxSize()) {
+                    WebGuidedSessionScreen(
+                        workout = workout,
+                        progress = progress,
+                        settings = settings,
+                        onExit = { onScreenChange(WebScreen.WorkoutDetail(screen.week, screen.workout)) }
+                    )
+                }
             }
         }
 
@@ -263,8 +306,10 @@ private fun TodayScreen(
     weeks: List<Week>,
     programTitle: String,
     progress: ProgressStore,
-    onOpenWorkout: (Int, Int) -> Unit,
+    onPreviewWorkout: (Int, Int) -> Unit,
+    onStartWorkout: (Int, Int) -> Unit,
     onOpenPlan: () -> Unit,
+    onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val next = nextWorkout(weeks, progress)
@@ -283,10 +328,15 @@ private fun TodayScreen(
         verticalArrangement = Arrangement.spacedBy(22.dp)
     ) {
         item {
-            Column {
-                Text("TwelveWeek", style = MaterialTheme.typography.headlineLarge)
-                Spacer(Modifier.height(3.dp))
-                Text(programTitle, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Top) {
+                Column {
+                    Text("TwelveWeek", style = MaterialTheme.typography.headlineLarge)
+                    Spacer(Modifier.height(3.dp))
+                    Text(programTitle, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                IconButton(onClick = onOpenSettings) {
+                    Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                }
             }
         }
 
@@ -307,7 +357,8 @@ private fun TodayScreen(
                 NextWorkoutPanel(
                     location = next,
                     progress = progress,
-                    onStart = { onOpenWorkout(next.week.number, next.workout.index) }
+                    onPreview = { onPreviewWorkout(next.week.number, next.workout.index) },
+                    onStart = { onStartWorkout(next.week.number, next.workout.index) }
                 )
             }
         }
@@ -333,7 +384,7 @@ private fun TodayScreen(
                 Spacer(Modifier.height(10.dp))
                 TrainingCard(modifier = Modifier.fillMaxWidth()) {
                     week.workouts.forEachIndexed { i, workout ->
-                        CompactWorkoutRow(workout = workout, progress = progress, onClick = { onOpenWorkout(week.number, workout.index) })
+                        CompactWorkoutRow(workout = workout, progress = progress, onClick = { onPreviewWorkout(week.number, workout.index) })
                         if (i != week.workouts.lastIndex) {
                             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = MaterialTheme.colorScheme.outlineVariant)
                         }
@@ -345,7 +396,7 @@ private fun TodayScreen(
 }
 
 @Composable
-private fun NextWorkoutPanel(location: WebWorkoutLocation, progress: ProgressStore, onStart: () -> Unit) {
+private fun NextWorkoutPanel(location: WebWorkoutLocation, progress: ProgressStore, onPreview: () -> Unit, onStart: () -> Unit) {
     val workout = location.workout
     val keys = workout.allKeys()
     val done = progress.countDone(keys)
@@ -394,6 +445,9 @@ private fun NextWorkoutPanel(location: WebWorkoutLocation, progress: ProgressSto
             Icon(Icons.Filled.PlayArrow, contentDescription = null)
             Spacer(Modifier.width(8.dp))
             Text(if (started) "Resume workout" else "Start workout")
+        }
+        TextButton(onClick = onPreview, modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            Text("Preview exercises")
         }
     }
 }
@@ -553,6 +607,7 @@ private fun WeekDetailScreen(
     progress: ProgressStore,
     onBack: () -> Unit,
     onOpenWorkout: (Int) -> Unit,
+    onStartWorkout: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val nextIncomplete = week.workouts.firstOrNull { workout -> progress.countDone(workout.allKeys()) < workout.totalItems }
@@ -583,7 +638,7 @@ private fun WeekDetailScreen(
                 nextIncomplete?.let { workout ->
                     Spacer(Modifier.height(18.dp))
                     Button(
-                        onClick = { onOpenWorkout(workout.index) },
+                        onClick = { onStartWorkout(workout.index) },
                         modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
                         shape = MaterialTheme.shapes.medium
                     ) {
@@ -641,6 +696,7 @@ private fun WorkoutDetailScreen(
     workout: Workout,
     progress: ProgressStore,
     onBack: () -> Unit,
+    onStartGuided: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
@@ -692,6 +748,16 @@ private fun WorkoutDetailScreen(
                 }
                 Spacer(Modifier.height(16.dp))
                 ProgressBand(fraction = fraction(done, keys.size), trackColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.16f))
+                Spacer(Modifier.height(20.dp))
+                Button(
+                    onClick = onStartGuided,
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Icon(Icons.Filled.PlayArrow, contentDescription = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text(if (done > 0) "Resume guided workout" else "Start guided workout")
+                }
             }
         }
 
@@ -752,20 +818,41 @@ private fun ProgramsScreen(
     entries: List<IndexEntry>,
     selectedProgramId: String,
     onSelect: (String) -> Unit,
+    library: ProgramLibrary,
+    onImported: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var levelFilter by remember { mutableStateOf<ProgramLevel?>(null) }
     var focusFilter by remember { mutableStateOf<FocusArea?>(null) }
     var equipmentFilter by remember { mutableStateOf<Equipment?>(null) }
+    var durationFilter by remember { mutableStateOf<Int?>(null) }
+    var importError by remember { mutableStateOf<String?>(null) }
+    val importScope = rememberCoroutineScope()
 
     val allFocusAreas = remember(entries) { entries.flatMap { it.meta.focusAreas }.distinct() }
     val allEquipment = remember(entries) { entries.flatMap { it.meta.equipment }.distinct() }
-    val hasFilters = levelFilter != null || focusFilter != null || equipmentFilter != null
+    val hasFilters = levelFilter != null || focusFilter != null || equipmentFilter != null || durationFilter != null
 
     val filtered = entries.filter { entry ->
         (levelFilter == null || entry.meta.level == levelFilter) &&
             (focusFilter == null || focusFilter in entry.meta.focusAreas) &&
-            (equipmentFilter == null || equipmentFilter in entry.meta.equipment)
+            (equipmentFilter == null || equipmentFilter in entry.meta.equipment) &&
+            (durationFilter == null || entry.meta.sessionMinutes == 0 || entry.meta.sessionMinutes <= durationFilter!!)
+    }
+
+    fun startImport() {
+        pickJsonFile { text ->
+            if (text.isBlank()) return@pickJsonFile
+            importScope.launch {
+                library.importProgram(text).fold(
+                    onSuccess = {
+                        importError = null
+                        onImported()
+                    },
+                    onFailure = { e -> importError = e.message ?: "That file isn't a valid program." }
+                )
+            }
+        }
     }
 
     LazyColumn(
@@ -781,6 +868,32 @@ private fun ProgramsScreen(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+            Spacer(Modifier.height(14.dp))
+            OutlinedButton(onClick = ::startImport, modifier = Modifier.fillMaxWidth()) {
+                Icon(Icons.Filled.UploadFile, contentDescription = null)
+                Spacer(Modifier.width(8.dp))
+                Text("Import a program (.json)")
+            }
+            importError?.let { message ->
+                Spacer(Modifier.height(10.dp))
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium,
+                    color = MaterialTheme.colorScheme.errorContainer
+                ) {
+                    Row(modifier = Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            message,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconButton(onClick = { importError = null }) {
+                            Icon(Icons.Filled.Close, contentDescription = "Dismiss", tint = MaterialTheme.colorScheme.onErrorContainer)
+                        }
+                    }
+                }
+            }
         }
 
         if (entries.isEmpty()) {
@@ -821,9 +934,18 @@ private fun ProgramsScreen(
                     )
                 }
             }
+            item {
+                ProgramFilterRow(
+                    label = "Time per day",
+                    options = listOf(10, 15, 20, 30, 45, 60),
+                    selected = durationFilter,
+                    text = { "≤ $it min" },
+                    onToggle = { durationFilter = if (durationFilter == it) null else it }
+                )
+            }
             if (hasFilters) {
                 item {
-                    TextButton(onClick = { levelFilter = null; focusFilter = null; equipmentFilter = null }) {
+                    TextButton(onClick = { levelFilter = null; focusFilter = null; equipmentFilter = null; durationFilter = null }) {
                         Icon(Icons.Filled.Close, contentDescription = null)
                         Spacer(Modifier.width(6.dp))
                         Text("Clear filters")
