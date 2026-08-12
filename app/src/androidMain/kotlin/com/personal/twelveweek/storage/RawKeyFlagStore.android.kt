@@ -20,24 +20,24 @@ actual class RawKeyFlagStore actual constructor(private val namespace: String) {
     private val realPrefs: SharedPreferences? =
         AndroidPlatformContext.appContext?.getSharedPreferences(namespace, Context.MODE_PRIVATE)
 
-    // Only engaged when constructed before install() has run — in practice
-    // that's plain JVM unit tests only (no Robolectric in this project, so
-    // no Application/Activity lifecycle ever installs a real Context there).
-    // Lets commonTest exercise real ProgressStore logic against the real
-    // RawKeyFlagStore API instead of requiring a mock; actual SharedPreferences
-    // persistence is verified separately by an on-device manual check.
-    private val memoryFallback: MutableSet<String>? = if (realPrefs == null) {
-        // Loud enough to catch a real regression (e.g. a new composition-root
-        // site that forgets to call install() first) without crashing JVM
-        // unit tests, which hit this path legitimately on every run.
-        android.util.Log.w(
-            "RawKeyFlagStore",
-            "No AndroidPlatformContext installed for namespace '$namespace' — using an in-memory, non-persistent fallback. Expected only under plain JVM unit tests; if this fires on a real device, something is constructing a store before MainActivity.onCreate() runs."
-        )
-        mutableSetOf()
-    } else null
+    // Only engaged when constructed before install() has run AND we're
+    // running under a plain JVM unit test (no Robolectric in this project,
+    // so the android.jar stub jar leaves Build.FINGERPRINT null — a real
+    // device, real emulator, or Robolectric always populates it). On a real
+    // device this same condition instead throws below, so a future entry
+    // point that forgets to call install() first fails loudly rather than
+    // silently losing writes.
+    private val underUnitTestJvm = android.os.Build.FINGERPRINT == null
 
-    actual fun allKeys(): Set<String> = realPrefs?.all?.keys?.toSet() ?: memoryFallback.orEmpty()
+    private val memoryFallback: MutableSet<String>? = when {
+        realPrefs != null -> null
+        underUnitTestJvm -> mutableSetOf()
+        else -> throw IllegalStateException(
+            "AndroidPlatformContext.install(context) must run before any RawKeyFlagStore is used — call it from Application.onCreate() or MainActivity.onCreate()."
+        )
+    }
+
+    actual fun allKeys(): Set<String> = realPrefs?.all?.keys?.toSet() ?: memoryFallback.orEmpty().toSet()
 
     actual fun setPresent(key: String) {
         realPrefs?.edit()?.putBoolean(key, true)?.apply() ?: memoryFallback?.add(key)
