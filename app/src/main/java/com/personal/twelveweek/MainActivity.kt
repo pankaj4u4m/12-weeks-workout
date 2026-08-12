@@ -34,6 +34,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -44,16 +45,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.personal.twelveweek.media.ExerciseDbDetail
+import com.personal.twelveweek.media.ExerciseMediaCarousel
 import com.personal.twelveweek.media.ExerciseMediaRepository
-import com.personal.twelveweek.media.ExerciseVideoPlayer
+import com.personal.twelveweek.media.MediaPage
+import com.personal.twelveweek.media.primaryInstructions
 import com.personal.twelveweek.programs.IndexEntry
 import com.personal.twelveweek.programs.LibraryProgram
 import com.personal.twelveweek.programs.ProgramLibrary
 import com.personal.twelveweek.programs.ProgramSyncRepository
 import com.personal.twelveweek.security.ApiKeyManager
 import com.personal.twelveweek.ui.*
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.net.URLEncoder
 
 class MainActivity : ComponentActivity() {
@@ -107,6 +112,34 @@ fun AppRoot() {
     var selectedProgramId by remember { mutableStateOf(selectedProgramStore.get()) }
     var activeProgram by remember { mutableStateOf<LibraryProgram?>(null) }
     var loadFailed by remember { mutableStateOf(false) }
+    var importError by remember { mutableStateOf<String?>(null) }
+    val importScope = rememberCoroutineScope()
+
+    // Manual "upload a program" flow: pick any .json (e.g. one an LLM chat
+    // wrote for you following this repo's schema), validate + save it
+    // on-device via ProgramLibrary.importProgram, then refresh the picker.
+    // Never touches the GitHub-synced cache — a completely separate source.
+    val importLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        importScope.launch {
+            val text = runCatching {
+                context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { it.readText() }
+            }.getOrNull()
+            if (text == null) {
+                importError = "Couldn't read that file."
+                return@launch
+            }
+            library.importProgram(text).fold(
+                onSuccess = {
+                    importError = null
+                    libraryIndex = library.index()
+                },
+                onFailure = { e -> importError = e.message ?: "That file isn't a valid program." }
+            )
+        }
+    }
 
     LaunchedEffect(Unit) {
         libraryIndex = library.index()
@@ -114,7 +147,13 @@ fun AppRoot() {
         libraryIndex = library.index()
     }
 
-    LaunchedEffect(selectedProgramId) {
+    // Re-keyed on libraryIndex too: without it, activeProgram loads once from
+    // whatever the cache/bundled asset had at that instant and never picks up
+    // the fresher copy the sync above just wrote — e.g. a data-schema change
+    // (like estimatedMinutes) landing after the first load would get stuck
+    // showing 0 until the user switched programs, even though the sync
+    // succeeded and the file on disk was already correct.
+    LaunchedEffect(selectedProgramId, libraryIndex) {
         loadFailed = false
         val loaded = library.load(selectedProgramId)
         when {
@@ -171,7 +210,10 @@ fun AppRoot() {
                     progress = progress,
                     screen = screen,
                     onScreenChange = { screen = it },
-                    onSelectProgram = ::selectProgram
+                    onSelectProgram = ::selectProgram,
+                    onImport = { importLauncher.launch("application/json") },
+                    importError = importError,
+                    onDismissImportError = { importError = null }
                 )
             }
         }
@@ -255,7 +297,8 @@ private fun WelcomeScreen(onContinue: () -> Unit) {
                 onClick = onContinue,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 56.dp)
+                    .heightIn(min = 56.dp),
+                shape = MaterialTheme.shapes.medium
             ) {
                 Text("Choose my plan")
                 Spacer(Modifier.width(8.dp))
@@ -326,7 +369,10 @@ private fun AppShell(
     progress: ProgressStore,
     screen: Screen,
     onScreenChange: (Screen) -> Unit,
-    onSelectProgram: (String) -> Unit
+    onSelectProgram: (String) -> Unit,
+    onImport: () -> Unit,
+    importError: String?,
+    onDismissImportError: () -> Unit
 ) {
     val showMainNavigation = screen is Screen.Today ||
         screen is Screen.Plan ||
@@ -353,6 +399,9 @@ private fun AppShell(
                         screen = screen,
                         onScreenChange = onScreenChange,
                         onSelectProgram = onSelectProgram,
+                        onImport = onImport,
+                        importError = importError,
+                        onDismissImportError = onDismissImportError,
                         modifier = Modifier.padding(inner)
                     )
                 }
@@ -377,6 +426,9 @@ private fun AppShell(
                     screen = screen,
                     onScreenChange = onScreenChange,
                     onSelectProgram = onSelectProgram,
+                    onImport = onImport,
+                    importError = importError,
+                    onDismissImportError = onDismissImportError,
                     modifier = Modifier.padding(inner)
                 )
             }
@@ -393,6 +445,9 @@ private fun AppScreenContent(
     screen: Screen,
     onScreenChange: (Screen) -> Unit,
     onSelectProgram: (String) -> Unit,
+    onImport: () -> Unit,
+    importError: String?,
+    onDismissImportError: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (screen) {
@@ -422,6 +477,9 @@ private fun AppScreenContent(
             entries = libraryIndex,
             selectedProgramId = selectedProgramId,
             onSelect = onSelectProgram,
+            onImport = onImport,
+            importError = importError,
+            onDismissImportError = onDismissImportError,
             modifier = modifier
         )
 
@@ -462,13 +520,15 @@ private fun AppScreenContent(
             val workout = program.weeks
                 .first { it.number == screen.week }
                 .workouts.first { it.index == screen.workout }
-            GuidedSessionScreen(
-                workout = workout,
-                progress = progress,
-                onExit = {
-                    onScreenChange(Screen.WorkoutDetail(screen.week, screen.workout))
-                }
-            )
+            Box(modifier = modifier.fillMaxSize()) {
+                GuidedSessionScreen(
+                    workout = workout,
+                    progress = progress,
+                    onExit = {
+                        onScreenChange(Screen.WorkoutDetail(screen.week, screen.workout))
+                    }
+                )
+            }
         }
     }
 }
@@ -560,7 +620,10 @@ private fun TodayScreen(
                         "Every workout in this plan is marked done. You can review any week or choose another program."
                     )
                     Spacer(Modifier.height(20.dp))
-                    Button(onClick = onOpenPlan) { Text("Review plan") }
+                    Button(
+                        onClick = onOpenPlan,
+                        shape = MaterialTheme.shapes.medium
+                    ) { Text("Review plan") }
                 }
             } else {
                 NextWorkoutPanel(
@@ -569,28 +632,6 @@ private fun TodayScreen(
                     onPreview = { onPreviewWorkout(next.week.number, next.workout.index) },
                     onStart = { onStartWorkout(next.week.number, next.workout.index) }
                 )
-            }
-        }
-
-        currentWeek?.let { week ->
-            item {
-                Text("This week", style = MaterialTheme.typography.headlineSmall)
-                Spacer(Modifier.height(10.dp))
-                TrainingCard(modifier = Modifier.fillMaxWidth()) {
-                    week.workouts.forEachIndexed { index, workout ->
-                        CompactWorkoutRow(
-                            workout = workout,
-                            progress = progress,
-                            onClick = { onPreviewWorkout(week.number, workout.index) }
-                        )
-                        if (index != week.workouts.lastIndex) {
-                            HorizontalDivider(
-                                modifier = Modifier.padding(vertical = 8.dp),
-                                color = MaterialTheme.colorScheme.outlineVariant
-                            )
-                        }
-                    }
-                }
             }
         }
 
@@ -621,6 +662,28 @@ private fun TodayScreen(
                 }
             }
         }
+
+        currentWeek?.let { week ->
+            item {
+                Text("This week", style = MaterialTheme.typography.headlineSmall)
+                Spacer(Modifier.height(10.dp))
+                TrainingCard(modifier = Modifier.fillMaxWidth()) {
+                    week.workouts.forEachIndexed { index, workout ->
+                        CompactWorkoutRow(
+                            workout = workout,
+                            progress = progress,
+                            onClick = { onPreviewWorkout(week.number, workout.index) }
+                        )
+                        if (index != week.workouts.lastIndex) {
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                color = MaterialTheme.colorScheme.outlineVariant
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -643,10 +706,21 @@ private fun NextWorkoutPanel(
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         contentPadding = 20.dp
     ) {
-        Text(
-            "Week ${location.week.number}, ${workout.title}",
-            style = MaterialTheme.typography.headlineMedium
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                "Week ${location.week.number}, ${workout.title}",
+                style = MaterialTheme.typography.headlineMedium
+            )
+            Text(
+                "~${workout.estimatedMinutes} min",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.76f)
+            )
+        }
         Spacer(Modifier.height(7.dp))
         Text(
             "$rounds rounds · ${workout.totalItems} movements",
@@ -671,7 +745,8 @@ private fun NextWorkoutPanel(
             onClick = onStart,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 56.dp)
+                .heightIn(min = 56.dp),
+            shape = MaterialTheme.shapes.medium
         ) {
             Icon(Icons.Filled.PlayArrow, contentDescription = null)
             Spacer(Modifier.width(8.dp))
@@ -727,7 +802,18 @@ private fun CompactWorkoutRow(
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(workout.title, style = MaterialTheme.typography.titleMedium)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Text(workout.title, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    "~${workout.estimatedMinutes} min",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
             Text(
                 "$done of ${keys.size} movements",
                 style = MaterialTheme.typography.bodySmall,
@@ -838,7 +924,8 @@ private fun PlanScreen(
                     onClick = {
                         progress.clearEverything()
                         confirmReset = false
-                    }
+                    },
+                    shape = MaterialTheme.shapes.medium
                 ) { Text("Reset progress") }
             },
             dismissButton = {
@@ -855,6 +942,7 @@ private fun WeekPlanCard(
     current: Boolean,
     onClick: () -> Unit
 ) {
+    val keys = week.workouts.flatMap { it.allKeys() }
     val completed = week.workouts.count {
         val workoutKeys = it.allKeys()
         workoutKeys.isNotEmpty() && progress.countDone(workoutKeys) == workoutKeys.size
@@ -890,7 +978,7 @@ private fun WeekPlanCard(
             }
         }
         Spacer(Modifier.height(12.dp))
-        ProgressBand(fraction(completed, week.workouts.size))
+        ProgressBand(fraction(progress.countDone(keys), keys.size))
         Spacer(Modifier.height(8.dp))
         Text(
             "$completed of ${week.workouts.size} workouts",
@@ -957,7 +1045,8 @@ private fun WeekDetailScreen(
                         onClick = { onStartWorkout(workout.index) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .heightIn(min = 52.dp)
+                            .heightIn(min = 52.dp),
+                        shape = MaterialTheme.shapes.medium
                     ) {
                         Icon(Icons.Filled.PlayArrow, contentDescription = null)
                         Spacer(Modifier.width(8.dp))
@@ -1009,7 +1098,17 @@ private fun WorkoutPlanRow(
             }
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
-                Text(workout.title, style = MaterialTheme.typography.titleLarge)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(workout.title, style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        "~${workout.estimatedMinutes} min",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 Spacer(Modifier.height(3.dp))
                 Text(
                     "$rounds rounds · $done/${keys.size} movements",
@@ -1119,7 +1218,8 @@ private fun WorkoutDetailScreen(
                     onClick = onStartGuided,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(min = 56.dp)
+                        .heightIn(min = 56.dp),
+                    shape = MaterialTheme.shapes.medium
                 ) {
                     Icon(Icons.Filled.PlayArrow, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
@@ -1185,10 +1285,10 @@ private fun ExerciseRow(
     onOpenDetail: () -> Unit,
     onStartTimer: () -> Unit
 ) {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onToggle)
             .padding(start = 8.dp, end = 4.dp, top = 5.dp, bottom = 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -1199,6 +1299,7 @@ private fun ExerciseRow(
         Column(
             modifier = Modifier
                 .weight(1f)
+                .clickable(onClick = onOpenDetail)
                 .padding(vertical = 7.dp)
         ) {
             Text(
@@ -1231,10 +1332,12 @@ private fun ExerciseRow(
             }
         }
         if (!exercise.isRest) {
-            IconButton(onClick = onOpenDetail) {
+            IconButton(
+                onClick = { openUrl(context, youTubeSearch(exercise.searchQuery)) }
+            ) {
                 Icon(
                     Icons.Filled.SmartDisplay,
-                    contentDescription = "Exercise details for ${exercise.name}"
+                    contentDescription = "Search videos for ${exercise.name}"
                 )
             }
         }
@@ -1251,9 +1354,14 @@ private fun ExerciseDetailDialog(
     val localImage = rememberAssetImage(exercise.slug)
     val keyManager = remember { ApiKeyManager(context) }
     val repository = remember { ExerciseMediaRepository.default(context, keyManager) }
-    var curated by remember(exercise) { mutableStateOf<ExerciseDbDetail?>(null) }
+    // null = still loading, emptyList() = confirmed no media. Name/reps text
+    // above never waits on this; only the media area shows a spinner.
+    var mediaBundle by remember(exercise) { mutableStateOf<List<MediaPage>?>(null) }
 
-    LaunchedEffect(exercise) { curated = repository.get(exercise) }
+    LaunchedEffect(exercise) {
+        mediaBundle = null
+        mediaBundle = repository.getBundle(exercise)
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -1285,17 +1393,26 @@ private fun ExerciseDetailDialog(
                                 .height(200.dp)
                         )
                     }
-                    curated != null -> {
+                    mediaBundle == null -> {
                         Spacer(Modifier.height(14.dp))
-                        ExerciseVideoPlayer(
-                            videoUrl = curated?.videoUrl,
-                            imageUrl = curated?.imageUrl,
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                            contentAlignment = Alignment.Center
+                        ) { CircularProgressIndicator() }
+                    }
+                    mediaBundle!!.isNotEmpty() -> {
+                        val bundle = mediaBundle!!
+                        Spacer(Modifier.height(14.dp))
+                        ExerciseMediaCarousel(
+                            pages = bundle,
                             contentDescription = exercise.name,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp)
                         )
-                        curated?.instructions?.takeIf { it.isNotEmpty() }?.let { instructions ->
+                        bundle.primaryInstructions().takeIf { it.isNotEmpty() }?.let { instructions ->
                             Spacer(Modifier.height(14.dp))
                             instructions.forEachIndexed { index, instruction ->
                                 Text(
@@ -1311,7 +1428,8 @@ private fun ExerciseDetailDialog(
                 Spacer(Modifier.height(16.dp))
                 FilledTonalButton(
                     onClick = { openUrl(context, youTubeSearch(exercise.searchQuery)) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium
                 ) {
                     Icon(Icons.Filled.SmartDisplay, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
@@ -1320,7 +1438,8 @@ private fun ExerciseDetailDialog(
                 Spacer(Modifier.height(8.dp))
                 OutlinedButton(
                     onClick = { openUrl(context, imageSearch(exercise.searchQuery)) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium
                 ) {
                     Icon(Icons.Filled.ImageSearch, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
@@ -1330,7 +1449,8 @@ private fun ExerciseDetailDialog(
                     Spacer(Modifier.height(8.dp))
                     OutlinedButton(
                         onClick = onStartTimer,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.medium
                     ) {
                         Icon(Icons.Filled.Timer, contentDescription = null)
                         Spacer(Modifier.width(8.dp))
@@ -1399,7 +1519,10 @@ private fun CountdownDialog(
                 ProgressBand(fraction(remaining, total))
                 Spacer(Modifier.height(18.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(onClick = { running = !running }) {
+                    Button(
+                        onClick = { running = !running },
+                        shape = MaterialTheme.shapes.medium
+                    ) {
                         Icon(
                             if (running) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                             contentDescription = null
@@ -1417,7 +1540,8 @@ private fun CountdownDialog(
                         onClick = {
                             remaining = total
                             running = false
-                        }
+                        },
+                        shape = MaterialTheme.shapes.medium
                     ) {
                         Text("Restart")
                     }
@@ -1444,6 +1568,18 @@ internal fun buzz(context: Context) {
     }
 }
 
+/** Short confirmation tone on exercise/timer completion — audible on top of
+ *  [buzz]'s vibration, not a replacement for it (some phones are on silent
+ *  vibrate-only, some are on vibrate-off ring modes; giving both cues covers
+ *  more real device states than either alone). Releases the ToneGenerator
+ *  shortly after the tone finishes so it's never left resident. */
+internal fun playCompletionSound() {
+    runCatching {
+        val tone = android.media.ToneGenerator(android.media.AudioManager.STREAM_MUSIC, android.media.ToneGenerator.MAX_VOLUME)
+        tone.startTone(android.media.ToneGenerator.TONE_PROP_BEEP2, 300)
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({ runCatching { tone.release() } }, 400)
+    }
+}
 private fun nextWorkout(
     weeks: List<Week>,
     progress: ProgressStore
