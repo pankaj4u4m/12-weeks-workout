@@ -1,8 +1,8 @@
 package com.personal.twelveweek.programs
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class ProgramJsonTest {
 
@@ -38,11 +38,11 @@ class ProgramJsonTest {
 
         val meta = parseIndex(json)[0].meta
         assertEquals(ProgramLevel.INTERMEDIATE, meta.level)
-        assertEquals(listOf(FocusArea.FULL_BODY), meta.focusAreas) // "CARDIO" isn't a known FocusArea, dropped not crashed
+        assertEquals(listOf(FocusArea.FULL_BODY), meta.focusAreas)
     }
 
     @Test
-    fun `parses a full program with reps, seconds and a curated exerciseId`() {
+    fun `parses a full program with reps, seconds and curated wger + exerciseDb ids`() {
         val json = """
             {"id":"program-1","title":"12 Week Full Body","level":"INTERMEDIATE",
              "focusAreas":["FULL_BODY"],"equipment":["HOME"],
@@ -50,8 +50,8 @@ class ProgramJsonTest {
                {"number":1,"workouts":[
                  {"index":1,"sections":[
                    {"title":"Round 1","exercises":[
-                     {"raw":"20 Squats","name":"Squats","reps":20,"seconds":null,"exerciseId":"exr_41n2hmGR8WuVfe1U"},
-                     {"raw":"30s Pause","name":"Pause","reps":null,"seconds":30,"exerciseId":null}
+                     {"raw":"20 Squats","name":"Squats","reps":20,"seconds":null,"wgerId":"615","exerciseDbId":"exr_41n2hmGR8WuVfe1U"},
+                     {"raw":"30s Pause","name":"Pause","reps":null,"seconds":30,"wgerId":null,"exerciseDbId":null}
                    ]}
                  ]}
                ]}
@@ -69,11 +69,13 @@ class ProgramJsonTest {
         val squats = workout.sections[0].exercises[0]
         assertEquals(20, squats.reps)
         assertNull(squats.seconds)
-        assertEquals("exr_41n2hmGR8WuVfe1U", squats.exerciseId)
+        assertEquals("615", squats.wgerId)
+        assertEquals("exr_41n2hmGR8WuVfe1U", squats.exerciseDbId)
 
         val pause = workout.sections[0].exercises[1]
         assertEquals(30, pause.seconds)
-        assertNull(pause.exerciseId)
+        assertNull(pause.wgerId)
+        assertNull(pause.exerciseDbId)
         assertEquals(true, pause.isRest)
     }
 }
