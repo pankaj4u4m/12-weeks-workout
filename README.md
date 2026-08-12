@@ -6,6 +6,38 @@ more from a public GitHub program library — pick one from a filterable
 picker, it's pinned to Home, and every exercise's real demo video/image comes
 from ExerciseDB.
 
+## Web app
+
+TwelveWeek also runs in the browser (Kotlin/Wasm, Compose Multiplatform) at
+**https://pankaj4u4m.github.io/12-weeks-workout/** — same programs, same
+progress tracking, same guided sessions, no install required.
+
+### Running it without the browser chrome
+
+The web app isn't in an app store, but you can still make it look and feel
+like a standalone app instead of a browser tab:
+
+**Add to Home Screen (recommended).** Chrome on Android: tap ⋮ (top right) →
+"Install app" or "Add to Home screen". Safari on iPhone: tap Share → "Add to
+Home Screen". Opening the icon this creates runs TwelveWeek full-screen, with
+no address bar or browser frame — the web app ships a `manifest.json` so this
+works as a real installable PWA.
+
+**Or: force any site into a borderless app (Hermit).** If your browser
+doesn't offer an "Install app" option, a Lite Apps browser like
+[Hermit](https://play.google.com/store/apps/details?id=com.craxiom.hermit)
+can force it:
+1. Install Hermit (Lite Apps Browser) from the Google Play Store.
+2. Open Hermit, paste the web app's address above.
+3. Tap **Create Lite App**.
+4. Grant permission to place the icon on your home screen.
+
+Opening the icon Hermit creates runs the site as a completely standalone
+app — no URL bar, top header, or browser frame.
+
+The web app itself shows this same tip once, right after you pick a plan for
+the first time.
+
 ## Build it
 
 1. Install [Android Studio](https://developer.android.com/studio) (any recent version).

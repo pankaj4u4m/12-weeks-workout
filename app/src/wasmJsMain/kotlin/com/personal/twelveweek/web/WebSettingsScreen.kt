@@ -16,33 +16,47 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.personal.twelveweek.media.ExerciseDbApi
+import io.ktor.client.HttpClient
 
 /**
  * Full-page Settings — web port of the Android app's `ui.SettingsScreen`.
  * Same guided-session controls (voice cues, time between exercises, rep
- * prep countdown); the "Exercise demos" / ExerciseDB API key section isn't
- * ported yet (no Web Crypto-backed key storage or media bridge on wasmJs
- * yet — see docs/webapp-android-parity.md).
+ * prep countdown) and the same "Exercise demos" API-key connect/disconnect
+ * flow, backed by [WebApiKeyManager] (Web Crypto) instead of Android
+ * Keystore.
  */
 @Composable
 fun WebSettingsScreen(settings: WebSettings, onBack: () -> Unit, modifier: Modifier = Modifier) {
     var voiceEnabled by remember { mutableStateOf(settings.voiceEnabled) }
     var transitionSeconds by remember { mutableStateOf(settings.transitionSeconds) }
     var repPrepSeconds by remember { mutableStateOf(settings.repPrepSeconds) }
+
+    val keyManager = remember { WebApiKeyManager() }
+    val exerciseDbApi = remember { ExerciseDbApi(HttpClient()) }
+    var keyVersion by remember { mutableIntStateOf(0) }
+    var hasKey by remember { mutableStateOf(false) }
+    var showConnect by remember { mutableStateOf(false) }
+    LaunchedEffect(keyVersion) { keyManager.get { hasKey = it != null } }
 
     Column(modifier = modifier.fillMaxSize()) {
         Row(
@@ -100,14 +114,48 @@ fun WebSettingsScreen(settings: WebSettings, onBack: () -> Unit, modifier: Modif
 
             item {
                 SettingsSection("Exercise demos") {
-                    Text(
-                        "Not available on the web app yet — exercise demos need an on-device media/key bridge that hasn't been built for the browser.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    if (hasKey) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                            Spacer(Modifier.width(8.dp))
+                            Text("ExerciseDB key connected")
+                        }
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            "The key never leaves this device except in calls to ExerciseDB.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(Modifier.height(12.dp))
+                        OutlinedButton(
+                            onClick = { keyManager.clear(); keyVersion += 1 },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.medium
+                        ) { Text("Disconnect") }
+                    } else {
+                        Text("Not connected — exercise demos fall back to search links.", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Spacer(Modifier.height(12.dp))
+                        Button(
+                            onClick = { showConnect = true },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.medium
+                        ) { Text("Connect") }
+                    }
                 }
             }
         }
+    }
+
+    if (showConnect) {
+        WebConnectMediaScreen(
+            keyManager = keyManager,
+            exerciseDbApi = exerciseDbApi,
+            onConnected = {
+                showConnect = false
+                keyVersion += 1
+            },
+            onDismiss = { showConnect = false }
+        )
     }
 }
 

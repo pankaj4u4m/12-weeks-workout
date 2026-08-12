@@ -56,6 +56,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.personal.twelveweek.ProgressStore
 import com.personal.twelveweek.Workout
+import com.personal.twelveweek.media.ExerciseDbApi
+import io.ktor.client.HttpClient
 import kotlin.math.roundToInt
 import kotlin.random.Random
 import kotlinx.coroutines.delay
@@ -176,9 +178,23 @@ fun WebGuidedSessionScreen(
         return
     }
 
+    val keyManager = remember { WebApiKeyManager() }
+    val mediaRepository = remember { WebExerciseMediaRepository.default(keyManager) }
+    val exerciseDbApi = remember { ExerciseDbApi(HttpClient()) }
+    var showConnect by remember { mutableStateOf(false) }
+    var keyVersion by remember { mutableIntStateOf(0) }
+    var hasKey by remember { mutableStateOf(false) }
+    LaunchedEffect(keyVersion) { keyManager.get { hasKey = it != null } }
+
     val step = steps[index]
     val totalSeconds = step.exercise.seconds
     val repsCount = step.exercise.reps
+
+    var mediaBundle by remember(step.key, keyVersion) { mutableStateOf<List<WebMediaPage>>(emptyList()) }
+    LaunchedEffect(step.key, keyVersion) {
+        mediaBundle = emptyList()
+        if (!step.exercise.isRest) mediaBundle = mediaRepository.getBundle(step.exercise)
+    }
 
     var remaining by remember(step.key) { mutableIntStateOf(totalSeconds ?: 0) }
     var timerRunning by remember(step.key) { mutableStateOf(totalSeconds != null) }
@@ -302,12 +318,18 @@ fun WebGuidedSessionScreen(
                     contentDescription = if (voiceEnabled) "Mute voice cues" else "Unmute voice cues"
                 )
             }
+            if (!hasKey && !step.exercise.isRest) {
+                TextButton(onClick = { showConnect = true }) {
+                    Text("Add demos")
+                }
+            }
         }
 
         ProgressBand(fraction = (index + 1).toFloat() / steps.size, modifier = Modifier.padding(vertical = 10.dp))
 
         WebMovementStage(
             step = step,
+            media = mediaBundle,
             remaining = remaining,
             totalSeconds = totalSeconds,
             timerActive = timerActive,
@@ -350,11 +372,24 @@ fun WebGuidedSessionScreen(
             }
         }
     }
+
+    if (showConnect) {
+        WebConnectMediaScreen(
+            keyManager = keyManager,
+            exerciseDbApi = exerciseDbApi,
+            onConnected = {
+                showConnect = false
+                keyVersion += 1
+            },
+            onDismiss = { showConnect = false }
+        )
+    }
 }
 
 @Composable
 private fun WebMovementStage(
     step: WebGuidedStep,
+    media: List<WebMediaPage>,
     remaining: Int,
     totalSeconds: Int?,
     timerActive: Boolean,
@@ -368,52 +403,72 @@ private fun WebMovementStage(
     val isRepStep = repTarget != null
     val inGrace = isRepStep && (repGrace ?: 0) > 0
     val hasTimer = totalSeconds != null || isRepStep
+    val hasMedia = media.isNotEmpty()
+    // A big ring sitting on top of moving video/image is hard to read, so
+    // once there's media behind it the ring shrinks to a corner badge.
+    val badgeSize = if (hasMedia) 112.dp else 280.dp
+    val badgeAlignment = if (hasMedia) Alignment.TopEnd else Alignment.Center
 
     Surface(modifier = modifier, shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceVariant) {
         Box(
             Modifier.fillMaxSize().let { if (hasTimer) it.clickable(onClick = onToggleTimerActive) else it }
         ) {
+            if (hasMedia) {
+                WebExerciseMediaCarousel(
+                    pages = media,
+                    contentDescription = step.exercise.name,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+
             when {
                 totalSeconds != null -> {
-                    Column(modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(modifier = Modifier.align(badgeAlignment).padding(if (hasMedia) 12.dp else 0.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                         WebTimerRing(
                             progressFraction = remaining.toFloat() / totalSeconds,
                             primaryText = formatClock(remaining),
                             paused = !timerActive,
-                            modifier = Modifier.size(280.dp)
+                            ringThickness = if (hasMedia) 6.dp else 12.dp,
+                            modifier = Modifier.size(badgeSize)
                         )
-                        Spacer(Modifier.height(6.dp))
-                        Text("SECONDS", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        if (!hasMedia) {
+                            Spacer(Modifier.height(6.dp))
+                            Text("SECONDS", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
                     }
                 }
                 isRepStep -> {
-                    Column(modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(modifier = Modifier.align(badgeAlignment).padding(if (hasMedia) 12.dp else 0.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                         if (inGrace) {
                             WebTimerRing(
                                 progressFraction = (repGrace ?: 0).toFloat() / repPrepTotal.coerceAtLeast(1).toFloat(),
                                 primaryText = "${repGrace}",
                                 paused = !timerActive,
-                                modifier = Modifier.size(280.dp)
+                                ringThickness = if (hasMedia) 6.dp else 12.dp,
+                                modifier = Modifier.size(badgeSize)
                             )
                         } else {
                             WebTimerRing(
                                 progressFraction = 1f - (repElapsed.toFloat() / repTarget.toFloat()),
                                 primaryText = "${repElapsed}s",
                                 paused = !timerActive,
-                                modifier = Modifier.size(280.dp)
+                                ringThickness = if (hasMedia) 6.dp else 12.dp,
+                                modifier = Modifier.size(badgeSize)
                             )
                         }
-                        if (inGrace) {
+                        if (inGrace && !hasMedia) {
                             Spacer(Modifier.height(6.dp))
                             Text("GET READY", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }
                 else -> {
-                    ResistanceBandMark(
-                        modifier = Modifier.fillMaxWidth().height(150.dp).align(Alignment.TopCenter).padding(horizontal = 28.dp, vertical = 20.dp),
-                        muted = true
-                    )
+                    if (!hasMedia) {
+                        ResistanceBandMark(
+                            modifier = Modifier.fillMaxWidth().height(150.dp).align(Alignment.TopCenter).padding(horizontal = 28.dp, vertical = 20.dp),
+                            muted = true
+                        )
+                    }
                     Column(modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("REST", style = MaterialTheme.typography.displayLarge, color = MaterialTheme.colorScheme.primary, textAlign = TextAlign.Center)
                         Text("RECOVER", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)

@@ -3,6 +3,7 @@ package com.personal.twelveweek.web
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -48,6 +49,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -103,15 +106,23 @@ fun WebApp() {
     val progress = remember { ProgressStore(RawKeyFlagStore("twelve_week_progress")) }
     val selectedProgramStore = remember { SelectedProgramStore(RawPreferenceStore("twelve_week_selected_program")) }
     val settings = remember { WebSettings() }
+    val installTipState = remember { WebInstallTipState() }
+    var showInstallTip by remember { mutableStateOf(false) }
 
     var index by remember { mutableStateOf<List<IndexEntry>?>(null) }
     var selectedProgramId by remember { mutableStateOf(selectedProgramStore.get()) }
     var activeProgram by remember { mutableStateOf<LibraryProgram?>(null) }
     var loadFailed by remember { mutableStateOf(false) }
     var screen: WebScreen by remember { mutableStateOf(WebScreen.Today) }
+    var onboarded by remember { mutableStateOf(selectedProgramStore.hasOnboarded()) }
+    var onboardingStep by remember { mutableStateOf(WebOnboardingStep.WELCOME) }
     val appScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) { index = library.index() }
+
+    LaunchedEffect(onboarded) {
+        if (onboarded && !installTipState.hasSeenTip()) showInstallTip = true
+    }
 
     LaunchedEffect(selectedProgramId) {
         loadFailed = false
@@ -132,6 +143,20 @@ fun WebApp() {
             val entries = index
             val program = activeProgram
             when {
+                !onboarded -> WebOnboardingFlow(
+                    step = onboardingStep,
+                    entries = entries.orEmpty(),
+                    selectedProgramId = selectedProgramId,
+                    onShowPlans = { onboardingStep = WebOnboardingStep.PICK_PLAN },
+                    onBack = { onboardingStep = WebOnboardingStep.WELCOME },
+                    onProgramChosen = { id ->
+                        selectedProgramStore.set(id)
+                        selectedProgramId = id
+                        selectedProgramStore.setOnboarded()
+                        onboarded = true
+                    }
+                )
+
                 loadFailed || (entries != null && program == null && entries.isEmpty()) -> Box(
                     Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -159,6 +184,13 @@ fun WebApp() {
                     },
                     onProgramImported = { appScope.launch { index = library.index() } }
                 )
+            }
+
+            if (showInstallTip) {
+                WebInstallTipDialog(onDismiss = {
+                    showInstallTip = false
+                    installTipState.markSeen()
+                })
             }
         }
     }
@@ -206,13 +238,90 @@ private fun WebAppShell(
 ) {
     val showMainNavigation = screen is WebScreen.Today || screen is WebScreen.Plan || screen is WebScreen.Programs
 
-    // Plain Column instead of Scaffold(bottomBar = ...): on the wasmJs
-    // target, Scaffold's bottomBar slot combined with default WindowInsets
-    // handling rendered a zero-height bar (see the web build's dev notes) —
-    // a weighted content Box + a directly-placed NavigationBar sidesteps
-    // that inset plumbing entirely and reliably pins the bar to the bottom.
-    Column(Modifier.fillMaxSize()) {
-        val content = Modifier.weight(1f)
+    // BoxWithConstraints branches the same way Android's AppShell does:
+    // a NavigationRail beside the content at tablet widths (>=720dp), a
+    // bottom NavigationBar below it otherwise. Plain Column/Row instead of
+    // Scaffold(bottomBar = ...): on the wasmJs target, Scaffold's bottomBar
+    // slot combined with default WindowInsets handling rendered a
+    // zero-height bar (see the web build's dev notes) — a weighted content
+    // area plus a directly-placed NavigationBar/NavigationRail sidesteps
+    // that inset plumbing entirely.
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val expanded = maxWidth >= 720.dp
+        if (expanded && showMainNavigation) {
+            Row(Modifier.fillMaxSize()) {
+                NavigationRail {
+                    webDestinations.forEach { destination ->
+                        NavigationRailItem(
+                            selected = screen == destination.screen,
+                            onClick = { onScreenChange(destination.screen) },
+                            icon = { Icon(destination.icon, contentDescription = destination.label) },
+                            label = { Text(destination.label) }
+                        )
+                    }
+                }
+                WebAppContent(
+                    program = program,
+                    libraryIndex = libraryIndex,
+                    selectedProgramId = selectedProgramId,
+                    progress = progress,
+                    settings = settings,
+                    library = library,
+                    screen = screen,
+                    onScreenChange = onScreenChange,
+                    onSelectProgram = onSelectProgram,
+                    onProgramImported = onProgramImported,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        } else {
+            Column(Modifier.fillMaxSize()) {
+                WebAppContent(
+                    program = program,
+                    libraryIndex = libraryIndex,
+                    selectedProgramId = selectedProgramId,
+                    progress = progress,
+                    settings = settings,
+                    library = library,
+                    screen = screen,
+                    onScreenChange = onScreenChange,
+                    onSelectProgram = onSelectProgram,
+                    onProgramImported = onProgramImported,
+                    modifier = Modifier.weight(1f)
+                )
+                if (showMainNavigation) {
+                    NavigationBar {
+                        webDestinations.forEach { destination ->
+                            NavigationBarItem(
+                                selected = screen == destination.screen,
+                                onClick = { onScreenChange(destination.screen) },
+                                icon = { Icon(destination.icon, contentDescription = destination.label) },
+                                label = { Text(destination.label) }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun WebAppContent(
+    program: LibraryProgram,
+    libraryIndex: List<IndexEntry>,
+    selectedProgramId: String,
+    progress: ProgressStore,
+    settings: WebSettings,
+    library: ProgramLibrary,
+    screen: WebScreen,
+    onScreenChange: (WebScreen) -> Unit,
+    onSelectProgram: (String) -> Unit,
+    onProgramImported: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val content = modifier
+    run {
         when (screen) {
             WebScreen.Today -> TodayScreen(
                 weeks = program.weeks,
@@ -281,19 +390,6 @@ private fun WebAppShell(
                         progress = progress,
                         settings = settings,
                         onExit = { onScreenChange(WebScreen.WorkoutDetail(screen.week, screen.workout)) }
-                    )
-                }
-            }
-        }
-
-        if (showMainNavigation) {
-            NavigationBar {
-                webDestinations.forEach { destination ->
-                    NavigationBarItem(
-                        selected = screen == destination.screen,
-                        onClick = { onScreenChange(destination.screen) },
-                        icon = { Icon(destination.icon, contentDescription = destination.label) },
-                        label = { Text(destination.label) }
                     )
                 }
             }
@@ -814,12 +910,14 @@ private fun WorkoutDetailScreen(
 }
 
 @Composable
-private fun ProgramsScreen(
+internal fun ProgramsScreen(
     entries: List<IndexEntry>,
     selectedProgramId: String,
     onSelect: (String) -> Unit,
-    library: ProgramLibrary,
+    library: ProgramLibrary?,
     onImported: () -> Unit,
+    onSkip: (() -> Unit)? = null,
+    onBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     var levelFilter by remember { mutableStateOf<ProgramLevel?>(null) }
@@ -841,10 +939,11 @@ private fun ProgramsScreen(
     }
 
     fun startImport() {
+        val lib = library ?: return
         pickJsonFile { text ->
             if (text.isBlank()) return@pickJsonFile
             importScope.launch {
-                library.importProgram(text).fold(
+                lib.importProgram(text).fold(
                     onSuccess = {
                         importError = null
                         onImported()
@@ -861,6 +960,17 @@ private fun ProgramsScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         item {
+            if (onBack != null || onSkip != null) {
+                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    onBack?.let {
+                        IconButton(onClick = it) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") }
+                    }
+                    Spacer(Modifier.weight(1f))
+                    onSkip?.let {
+                        TextButton(onClick = it) { Text("Use recommended plan") }
+                    }
+                }
+            }
             Text("Choose your plan", style = MaterialTheme.typography.headlineLarge)
             Spacer(Modifier.height(8.dp))
             Text(
@@ -868,11 +978,13 @@ private fun ProgramsScreen(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Spacer(Modifier.height(14.dp))
-            OutlinedButton(onClick = ::startImport, modifier = Modifier.fillMaxWidth()) {
-                Icon(Icons.Filled.UploadFile, contentDescription = null)
-                Spacer(Modifier.width(8.dp))
-                Text("Import a program (.json)")
+            if (library != null) {
+                Spacer(Modifier.height(14.dp))
+                OutlinedButton(onClick = ::startImport, modifier = Modifier.fillMaxWidth()) {
+                    Icon(Icons.Filled.UploadFile, contentDescription = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text("Import a program (.json)")
+                }
             }
             importError?.let { message ->
                 Spacer(Modifier.height(10.dp))
