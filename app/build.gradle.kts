@@ -38,14 +38,14 @@ kotlin {
                 implementation(compose.material3)
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
                 implementation("io.ktor:ktor-client-core:3.5.2")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
                 implementation("io.ktor:ktor-client-mock:3.5.2")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
             }
         }
         val androidMain by getting {
@@ -56,8 +56,8 @@ kotlin {
                 implementation("androidx.activity:activity-compose:1.9.0")
                 implementation("androidx.compose.ui:ui-tooling-preview")
                 implementation("androidx.compose.material:material-icons-extended")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-                implementation("com.squareup.okhttp3:okhttp:4.12.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
+                implementation("com.squareup.okhttp3:okhttp:5.3.2")
                 implementation("io.ktor:ktor-client-okhttp:3.5.2")
                 implementation("androidx.media3:media3-exoplayer:1.4.1")
                 implementation("androidx.media3:media3-ui:1.4.1")

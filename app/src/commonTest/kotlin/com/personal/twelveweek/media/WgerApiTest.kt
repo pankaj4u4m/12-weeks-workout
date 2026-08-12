@@ -3,12 +3,14 @@ package com.personal.twelveweek.media
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
+import io.ktor.client.request.HttpRequestData
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class WgerApiTest {
@@ -59,5 +61,26 @@ class WgerApiTest {
     fun `structurally missing translations returns null instead of a blank result`() = runTest {
         val api = WgerApi(clientReturning(HttpStatusCode.OK, """{"images":[],"videos":[]}"""))
         assertNull(api.fetchExercise("1"))
+    }
+
+    @Test
+    fun `request targets the exerciseinfo path with format=json for the requested id`() = runTest {
+        var capturedRequest: HttpRequestData? = null
+        val client = HttpClient(
+            MockEngine { request ->
+                capturedRequest = request
+                respond(
+                    content = wgerBody(hasVideo = false, hasImage = false),
+                    status = HttpStatusCode.OK,
+                    headers = headersOf(HttpHeaders.ContentType, "application/json")
+                )
+            }
+        )
+        val api = WgerApi(client)
+        api.fetchExercise("615")
+
+        val request = assertNotNull(capturedRequest)
+        assertEquals("/api/v2/exerciseinfo/615/", request.url.encodedPath)
+        assertEquals("json", request.url.parameters["format"])
     }
 }
