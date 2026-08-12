@@ -1,0 +1,71 @@
+{
+  "title": "Choose TwelveWeek’s new world",
+  "question": "The redesign makes Home an immediate next-workout surface and rebuilds every deeper interaction in one visual grammar. Choose the world that should govern both interface and behavior.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Control Course",
+      "kicker": "PROPOSED WORLD",
+      "lineage": "orienteering control maps, waterproof route cards, and enamel trail blazes",
+      "thesis": "The 12-week plan becomes a navigable course: one unmistakable checkpoint now, the route always visible.",
+      "palette": ["#E9F0EB", "#103D35", "#FF4D00", "#799289"],
+      "materials": ["waterproof map stock", "punched control marks", "enamel trail blazes"],
+      "viewport": "A cropped route fills Home; TODAY sits inside one blaze-orange checkpoint with a large Start action, while passed and future controls remain visible as context.",
+      "risk": "Contour and route detail must stay subordinate to workout labels or the metaphor becomes navigation noise."
+    },
+    {
+      "id": "challenger-transit",
+      "label": "Midnight Training Line",
+      "kicker": "ALTERNATE",
+      "lineage": "metropolitan rail maps fired as midnight-blue enamel murals",
+      "thesis": "Every week becomes a line of stations; the next workout is the lit interchange.",
+      "case": "Wins route clarity; loses training identification because its commuter grammar feels borrowed rather than native.",
+      "palette": ["#081230", "#FFFFFF", "#E21D2D", "#1E5BFF", "#FFC20E"],
+      "materials": ["midnight enamel", "porcelain station ticks", "colored line ink"],
+      "viewport": "The current week corridor occupies Home at full scale, with completed stations behind, the next workout enlarged, and one direct Begin journey action.",
+      "risk": "A dark transit skin could feel too close to the discarded dark UI unless the enamel mapping truly owns every screen.",
+      "hero": ".impeccable/references/transit-hero.webp",
+      "board": ".impeccable/references/transit-board.webp"
+    },
+    {
+      "id": "challenger-signal",
+      "label": "Signal Bench",
+      "kicker": "ALTERNATE",
+      "lineage": "CRT oscilloscopes, etched graticules, and detented laboratory controls",
+      "thesis": "The current interval locks into focus while progress traces across a rigorously measured field.",
+      "case": "Wins at-a-glance timer focus; loses product clarity because TwelveWeek has no live performance signal.",
+      "palette": ["#050605", "#39FF14", "#3A3F3A", "#FFB000"],
+      "materials": ["phosphor glass", "etched graticule", "powder-coated bezel"],
+      "viewport": "Home behaves like an armed instrument: the next session is the primary channel, completion becomes a stable trace, and Begin is the single trigger.",
+      "risk": "The lab language can overstate measurement and make simple checklists feel technical.",
+      "hero": ".impeccable/references/signal-hero.webp",
+      "board": ".impeccable/references/signal-board.webp"
+    },
+    {
+      "id": "challenger-tension",
+      "label": "Load / Release",
+      "kicker": "ALTERNATE",
+      "lineage": "tensegrity structures built from carbon struts and tension cord",
+      "thesis": "Training becomes a structure that visibly stabilizes as each part of the session is completed.",
+      "case": "Fuses poorly because a force network obscures the product’s fundamentally linear workout sequence.",
+      "palette": ["#E7E5E1", "#0D0D0F", "#D62828", "#9A9A9A"],
+      "materials": ["pale concrete", "carbon struts", "braided red cord"],
+      "viewport": "A vertical structure maps the program; the current node anchors a factual next-workout panel and completed sections pull the route into balance.",
+      "risk": "The structural metaphor may demand explanation at exactly the moment the user needs immediate action.",
+      "hero": ".impeccable/references/tension-hero.webp",
+      "board": ".impeccable/references/tension-board.webp"
+    }
+  ],
+  "reroll": true,
+  "canon": true,
+  "canonCard": {
+    "label": "Material fitness standard",
+    "lineage": "polished contemporary Android workout trackers",
+    "thesis": "A familiar dashboard, progress ring, week cards, and guided player executed at high Material 3 craft.",
+    "palette": ["#F7F7F5", "#1B1B1F", "#4E6357", "#E5EAE6"],
+    "materials": ["tonal surfaces", "rounded Material cards", "system iconography"],
+    "viewport": "A progress summary sits above the next workout card, with predictable tabs for Plan, Train, and Progress.",
+    "risk": "Immediately usable, but unlikely to feel ownable or meaningfully reimagined."
+  },
+  "steer": true
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Choose the feel of your home workout app",
+  "question": "Every option below is built around solo exercise at home. Each makes Today’s workout the first thing you see, then guides the session with large one-handed controls.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Resistance Band Flow",
+      "kicker": "PROPOSED WORLD",
+      "lineage": "resistance bands, woven straps, cork blocks, and printed exercise mats",
+      "thesis": "The whole program behaves like a set of elastic training bands: Today pulls forward, progress stays connected, and finished work relaxes behind you.",
+      "palette": ["#F4F5EF", "#17211D", "#315CFF", "#FF5B38", "#B9E6D0"],
+      "materials": ["soft-touch resistance band", "woven training strap", "cork exercise block"],
+      "viewport": "Home opens on one large Today panel with Week, Workout, duration, and Start; a colored band underneath shows where this session sits in the 12-week plan.",
+      "risk": "The band motif must remain functional progress and motion, never decorative squiggles."
+    },
+    {
+      "id": "challenger-home-coach",
+      "label": "Home Coach",
+      "kicker": "ALTERNATE",
+      "lineage": "a calm personal coach, a clear session card, and a thumb-reachable Android app",
+      "thesis": "One friendly card tells you exactly what to do now; everything else stays quiet until you ask for it.",
+      "case": "Fuses cleanly and maximizes product clarity, but feels less ownable than the gear-native Resistance Band Flow.",
+      "palette": ["#F2F6F2", "#FFFFFF", "#20231F", "#2258FF", "#DDE7DF"],
+      "materials": ["matte session card", "soft training journal paper", "single action-color ink"],
+      "viewport": "Today’s workout fills the upper half with one Begin button; recent progress and the 12-week plan sit below in a simple, reachable stack.",
+      "risk": "Without disciplined hierarchy it can become another generic card dashboard."
+    },
+    {
+      "id": "challenger-training-label",
+      "label": "Training Label",
+      "kicker": "ALTERNATE",
+      "lineage": "home training gear labels, bold movement instructions, and durable kit markings",
+      "thesis": "Exercises read like clear equipment labels: big movement names, exact counts, and no motivational clutter.",
+      "case": "Identifies strongly with training equipment, but its harder tone is less personal in a home setting.",
+      "palette": ["#F7F7F3", "#101211", "#FF5A00", "#D9DDD8"],
+      "materials": ["woven equipment label", "rubber mat marking", "safety-orange pull tab"],
+      "viewport": "A bold TODAY label anchors the next workout, with literal Week, Rounds, and Time fields and one orange Start tab within thumb reach.",
+      "risk": "Heavy typography can feel aggressive if it overwhelms recovery, setup, and completion states."
+    }
+  ],
+  "reroll": true,
+  "canon": true,
+  "canonCard": {
+    "label": "Simple Material home fitness",
+    "lineage": "familiar high-quality Android fitness apps",
+    "thesis": "A straightforward progress summary, next-workout card, week list, and guided exercise player.",
+    "palette": ["#FAFAF8", "#1C1D1A", "#336B50", "#E6ECE7"],
+    "materials": ["Material tonal surfaces", "system typography", "standard Android controls"],
+    "viewport": "Progress sits above the next workout card, with predictable Plan and Library navigation.",
+    "risk": "Easy to learn, but least likely to feel newly imagined."
+  },
+  "steer": true
+}

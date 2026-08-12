@@ -1,0 +1,40 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Smaller still, with generous margin inside the 66dp safe-zone circle
+         (center 54,54, radius 33) — max extent here is ~24.5dp from center. -->
+    <!-- head -->
+    <path
+        android:fillColor="#FF6B35"
+        android:pathData="M46.1,35.1 A4.7,4.7 0 1,0 55.5,35.1 A4.7,4.7 0 1,0 46.1,35.1 Z" />
+    <!-- torso -->
+    <path
+        android:strokeColor="#FF6B35"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M50.85,41.4 L50.85,55.58" />
+    <!-- arms (jumping-jack, up) -->
+    <path
+        android:strokeColor="#FF6B35"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M50.85,44.55 L36.68,36.68" />
+    <path
+        android:strokeColor="#FF6B35"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M50.85,44.55 L65.03,36.68" />
+    <!-- legs (jumping-jack, out) -->
+    <path
+        android:strokeColor="#FF6B35"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M50.85,55.58 L38.25,69.75" />
+    <path
+        android:strokeColor="#FF6B35"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M50.85,55.58 L63.45,69.75" />
+</vector>
