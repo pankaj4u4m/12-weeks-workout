@@ -54,6 +54,7 @@ import com.personal.twelveweek.programs.LibraryProgram
 import com.personal.twelveweek.programs.ProgramLibrary
 import com.personal.twelveweek.programs.ProgramSyncRepository
 import com.personal.twelveweek.security.ApiKeyManager
+import com.personal.twelveweek.storage.RawKeyFlagStore
 import com.personal.twelveweek.ui.*
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -101,7 +102,7 @@ private data class WorkoutLocation(
 @Composable
 fun AppRoot() {
     val context = LocalContext.current
-    val progress = remember { ProgressStore(context) }
+    val progress = remember { ProgressStore(RawKeyFlagStore("twelve_week_progress")) }
     val selectedProgramStore = remember { SelectedProgramStore(context) }
     val library = remember { ProgramLibrary(context) }
     val syncRepo = remember { ProgramSyncRepository.default(context, library) }
