@@ -13,7 +13,7 @@ actual class BundledAssetReader actual constructor() {
     // against the origin ROOT, not the current page's own path — unlike a
     // native browser fetch(), which resolves relative URLs against the
     // document's own location. GitHub Pages serves this app from a subpath
-    // (`/12-weeks-exercise-app/`), so without this the request 404s against
+    // (`/12-weeks-workout/`), so without this the request 404s against
     // the origin root instead of hitting the real asset next to index.html.
     private val baseHref: String get() = window.location.href.substringBeforeLast('/') + "/"
 

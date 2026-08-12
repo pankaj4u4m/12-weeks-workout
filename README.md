@@ -47,7 +47,7 @@ travel well in a zip) — Android Studio regenerates it on first sync, or run
 
 Programs are no longer hardcoded — they're JSON, bundled in the app for
 instant offline use and refreshed from the public
-[`pankaj4u4m/12-weeks-exercise-app`](https://github.com/pankaj4u4m/12-weeks-exercise-app)
+[`pankaj4u4m/12-weeks-workout`](https://github.com/pankaj4u4m/12-weeks-workout)
 repo on every launch (plain HTTPS, no account/token needed since the repo is
 public). Offline or a dead network just means the last-known copy keeps being
 used — never a blocked screen. See that repo's README for the JSON schema if
@@ -118,7 +118,7 @@ UI is intentional, not a placeholder.
 ## Importing your own program
 
 Drop a `programs/<id>.json` file (schema in the
-[program library repo's README](https://github.com/pankaj4u4m/12-weeks-exercise-app))
+[program library repo's README](https://github.com/pankaj4u4m/12-weeks-workout))
 into that repo and add it to `index.json` — it shows up in the in-app picker
 on the next sync, no rebuild needed. There's still no in-app "upload a
 spreadsheet and auto-generate JSON" flow — that's a deliberate scope cut, a

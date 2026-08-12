@@ -11,7 +11,7 @@ import java.io.IOException
 
 /**
  * Pulls the program library from the public GitHub repo
- * (`pankaj4u4m/12-weeks-exercise-app`) over plain HTTPS via
+ * (`pankaj4u4m/12-weeks-workout`) over plain HTTPS via
  * raw.githubusercontent.com — the repo is public, so no auth token is needed.
  * Runs once on every app launch (see AppRoot); best-effort and silent on
  * failure — offline or a dead network just means the last-synced (or
@@ -21,7 +21,7 @@ class ProgramSyncRepository(
     private val client: OkHttpClient,
     private val library: ProgramLibrary,
     private val baseRawUrl: String =
-        "https://raw.githubusercontent.com/pankaj4u4m/12-weeks-exercise-app/main"
+        "https://raw.githubusercontent.com/pankaj4u4m/12-weeks-workout/main"
 ) {
     suspend fun sync() = withContext(Dispatchers.IO) {
         val indexJson = fetch("$baseRawUrl/programs/index.json") ?: return@withContext
