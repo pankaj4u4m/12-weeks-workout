@@ -55,6 +55,7 @@ import com.personal.twelveweek.programs.ProgramLibrary
 import com.personal.twelveweek.programs.ProgramSyncRepository
 import com.personal.twelveweek.security.ApiKeyManager
 import com.personal.twelveweek.storage.RawKeyFlagStore
+import com.personal.twelveweek.storage.RawPreferenceStore
 import com.personal.twelveweek.ui.*
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -75,6 +76,7 @@ private sealed interface Screen {
     data object Today : Screen
     data object Plan : Screen
     data object Programs : Screen
+    data object Settings : Screen
     data class WeekDetail(val week: Int) : Screen
     data class WorkoutDetail(val week: Int, val workout: Int) : Screen
     data class GuidedSession(val week: Int, val workout: Int) : Screen
@@ -103,7 +105,7 @@ private data class WorkoutLocation(
 fun AppRoot() {
     val context = LocalContext.current
     val progress = remember { ProgressStore(RawKeyFlagStore("twelve_week_progress")) }
-    val selectedProgramStore = remember { SelectedProgramStore(context) }
+    val selectedProgramStore = remember { SelectedProgramStore(RawPreferenceStore("twelve_week_selected_program")) }
     val library = remember { ProgramLibrary(context) }
     val syncRepo = remember { ProgramSyncRepository.default(context, library) }
 
@@ -464,6 +466,7 @@ private fun AppScreenContent(
                 onScreenChange(Screen.GuidedSession(week, workout))
             },
             onOpenPlan = { onScreenChange(Screen.Plan) },
+            onOpenSettings = { onScreenChange(Screen.Settings) },
             modifier = modifier
         )
 
@@ -484,6 +487,14 @@ private fun AppScreenContent(
             onDismissImportError = onDismissImportError,
             modifier = modifier
         )
+
+        Screen.Settings -> {
+            BackHandler { onScreenChange(Screen.Today) }
+            SettingsScreen(
+                onBack = { onScreenChange(Screen.Today) },
+                modifier = modifier
+            )
+        }
 
         is Screen.WeekDetail -> {
             BackHandler { onScreenChange(Screen.Plan) }
@@ -582,6 +593,7 @@ private fun TodayScreen(
     onPreviewWorkout: (Int, Int) -> Unit,
     onStartWorkout: (Int, Int) -> Unit,
     onOpenPlan: () -> Unit,
+    onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val next = nextWorkout(weeks, progress)
@@ -600,13 +612,24 @@ private fun TodayScreen(
         verticalArrangement = Arrangement.spacedBy(22.dp)
     ) {
         item {
-            Text("TwelveWeek", style = MaterialTheme.typography.headlineLarge)
-            Spacer(Modifier.height(3.dp))
-            Text(
-                programTitle,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                Column {
+                    Text("TwelveWeek", style = MaterialTheme.typography.headlineLarge)
+                    Spacer(Modifier.height(3.dp))
+                    Text(
+                        programTitle,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                IconButton(onClick = onOpenSettings) {
+                    Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                }
+            }
         }
 
         item {
