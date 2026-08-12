@@ -64,6 +64,7 @@ import java.net.URLEncoder
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        com.personal.twelveweek.storage.AndroidPlatformContext.install(this)
         enableEdgeToEdge()
         setContent { AppRoot() }
     }

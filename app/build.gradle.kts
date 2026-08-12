@@ -75,6 +75,7 @@ kotlin {
                 // visible from compose.foundation/material3 on the wasmJs compile classpath.
                 implementation(compose.ui)
                 implementation("io.ktor:ktor-client-js:3.5.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-browser:0.5.0")
             }
         }
     }
