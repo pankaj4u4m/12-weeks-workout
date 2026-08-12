@@ -440,11 +440,12 @@
 - Delete: `app/src/main/java/com/personal/twelveweek/media/WgerApi.kt`
 - Create: `app/src/commonMain/kotlin/com/personal/twelveweek/media/WgerApi.kt`
 - Create: `app/src/commonTest/kotlin/com/personal/twelveweek/media/WgerApiTest.kt` (new — no test existed for this file before)
-- Modify: `app/src/main/java/com/personal/twelveweek/media/ExerciseMediaRepository.kt` (ONLY the `default()` factory's last line — nothing else)
+
+**`ExerciseMediaRepository.kt` is explicitly OUT of scope for this task** — see the correction note after Task 3's fix round: Task 3's commit was re-scoped mid-plan to the true pre-Part-2 baseline (2-arg constructor, `get()` method — NOT the 3-arg/`WgerApi`/`getBundle()` shape that exists only in this repo's other unrelated uncommitted work). Wiring `WgerApi` into `ExerciseMediaRepository` as a committed dependency (constructor + `getBundle()`) is real, valuable work, but it's a *different*, self-contained unit from "migrate WgerApi.kt to commonMain" — it deserves its own task with its own brief and test-porting plan (there's already a matching uncommitted `ExerciseMediaRepositoryTest.kt` rewrite in the working tree covering multi-provider `getBundle()` behavior — a future task should port that properly, the same way this plan has ported every other test). Do not touch `ExerciseMediaRepository.kt` in this task.
 
 **Interfaces:**
 - Consumes: `ExerciseDbDetail` (Task 2).
-- Produces: `class WgerApi(client: HttpClient, baseUrl: String = ...)` with `suspend fun fetchExercise(wgerId: String): ExerciseDbDetail?` and `fun parseWgerDetail(jsonText: String, wgerId: String): ExerciseDbDetail` — same method names, but the constructor's client parameter type changes from `OkHttpClient` to `HttpClient`, and `parseWgerDetail` gains a second parameter (`wgerId`) it didn't have before — see Step 3's rationale. Nothing else in this plan consumes `parseWgerDetail` directly (only `ExerciseMediaRepository.kt`, out of scope, calls `fetchExercise`), so this is a safe, self-contained signature change.
+- Produces: `class WgerApi(client: HttpClient, baseUrl: String = ...)` with `suspend fun fetchExercise(wgerId: String): ExerciseDbDetail?` and `fun parseWgerDetail(jsonText: String, wgerId: String): ExerciseDbDetail` — same method names, but the constructor's client parameter type changes from `OkHttpClient` to `HttpClient`, and `parseWgerDetail` gains a second parameter (`wgerId`) it didn't have before — see Step 3's rationale. Nothing in this plan consumes `WgerApi` yet (wiring it into `ExerciseMediaRepository` is deferred, see above), so this is a safe, self-contained, dependency-free move — no downstream commit in this plan references the new constructor shape.
 
 - [ ] **Step 1: Write the failing test (new — none existed for this file before)**
 
@@ -654,32 +655,24 @@
   Run: `./gradlew :app:allTests --console=plain`
   Expected: PASS, all 4 new `WgerApiTest` cases green, plus everything from Tasks 2-3 still green.
 
-- [ ] **Step 6: Finish `ExerciseMediaRepository.kt`'s `default()` factory**
-
-  Change the last line from `WgerApi(okHttpClient)` to `WgerApi(ktorClient)`:
-
-  ```kotlin
-  return ExerciseMediaRepository(keyManager, ExerciseDbApi(ktorClient), WgerApi(ktorClient))
-  ```
-
-  Both API clients now share the same disk-cached Ktor client, matching the original single-shared-`OkHttpClient` design exactly.
-
-- [ ] **Step 7: Full regression — Android build, tests, release signing**
+- [ ] **Step 6: Full regression — Android build, tests, release signing**
 
   Run: `./gradlew testDebugUnitTest :app:allTests :app:assembleDebug --console=plain` — expected PASS, all tests green (Parts 1+2 combined).
   Run: `./gradlew bundleRelease assembleRelease --console=plain` then `"$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --print-certs app/build/outputs/apk/release/app-release.apk` — expected same `CN=TwelveWeek`.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 7: Commit**
 
   ```bash
-  git add app/src/commonMain/kotlin/com/personal/twelveweek/media/WgerApi.kt app/src/commonTest/kotlin/com/personal/twelveweek/media/WgerApiTest.kt app/src/main/java/com/personal/twelveweek/media/WgerApi.kt app/src/main/java/com/personal/twelveweek/media/ExerciseMediaRepository.kt
+  git add app/src/commonMain/kotlin/com/personal/twelveweek/media/WgerApi.kt app/src/commonTest/kotlin/com/personal/twelveweek/media/WgerApiTest.kt app/src/main/java/com/personal/twelveweek/media/WgerApi.kt
   git commit -m "Move WgerApi.kt into commonMain, OkHttp -> Ktor"
   ```
+
+  Note: `ExerciseMediaRepository.kt` is deliberately NOT in this commit — verify `git status --porcelain` still shows it as modified-not-staged (its current working-tree content, untouched by this task) before committing, exactly as `ConnectMediaScreen.kt` and `ExerciseMediaRepositoryTest.kt` already sit uncommitted.
 
 ---
 
 ## What's deliberately not in this part
 
-- `ProgramSyncRepository.kt` and `ExerciseMediaRepository.kt` (beyond the narrow `default()` edits above) stay in `androidMain` — both depend on Android-only storage (`ProgramLibrary`, `ApiKeyManager`) and move together with the storage `expect`/`actual` layer in Part 3.
+- `ProgramSyncRepository.kt` and `ExerciseMediaRepository.kt` stay in `androidMain`, untouched beyond Task 3's narrow `default()`-for-`ExerciseDbApi` edit — both still depend on Android-only storage (`ProgramLibrary`, `ApiKeyManager`), and `ExerciseMediaRepository`'s `WgerApi` wiring (constructor + `getBundle()`, porting the matching uncommitted `ExerciseMediaRepositoryTest.kt` rewrite) is now explicitly its own future task, not folded into Part 2 or Part 3 by default — scope it deliberately when picked up, the same rigor as every task in this plan.
 - `ProgramLibrary.kt`, `ApiKeyManager.kt`, `ProgressStore` (`Progress.kt`) — untouched, Part 3's subject.
-- No Compose screens move in this part — that's Part 4 (spec step 5), after storage exists for screens to actually use.
+- No Compose screens move in this part — that's a later part (spec step 5), after storage exists for screens to actually use.
