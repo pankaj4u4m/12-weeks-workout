@@ -24,5 +24,5 @@ fun webCompletionBeep() {
 private external fun jsVibrate()
 
 @OptIn(ExperimentalWasmJsInterop::class)
-@JsFun("() => { try { var Ctx = window.AudioContext || window.webkitAudioContext; var ctx = new Ctx(); var osc = ctx.createOscillator(); var gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.frequency.value = 880; gain.gain.setValueAtTime(0.15, ctx.currentTime); osc.start(); osc.stop(ctx.currentTime + 0.3); setTimeout(function() { ctx.close(); }, 500); } catch (e) {} }")
+@JsFun("() => { try { var Ctx = window.AudioContext || window.webkitAudioContext; var ctx = new Ctx(); var play = function () { var osc = ctx.createOscillator(); var gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.frequency.value = 880; gain.gain.setValueAtTime(0.15, ctx.currentTime); osc.start(); osc.stop(ctx.currentTime + 0.3); setTimeout(function() { ctx.close(); }, 500); }; if (ctx.state === 'suspended') { ctx.resume().then(play, play); } else { play(); } } catch (e) {} }")
 private external fun jsBeep()

@@ -33,8 +33,7 @@ import com.personal.twelveweek.media.ApiResult
 import com.personal.twelveweek.media.ExerciseDbApi
 import kotlinx.coroutines.launch
 
-private const val SIGNUP_URL =
-    "https://rapidapi.com/auth/login?referral=%2Fascendapi%2Fapi%2Fedb-with-videos-and-images-by-ascendapi%2Fpricing"
+private const val SIGNUP_URL = "https://rapidapi.com/console/"
 private const val VALIDATION_EXERCISE_ID = "exr_41n2hxnFMotsXTj3"
 
 /**

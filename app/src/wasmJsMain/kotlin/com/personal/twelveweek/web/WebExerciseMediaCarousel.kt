@@ -42,7 +42,7 @@ fun WebExerciseMediaCarousel(pages: List<WebMediaPage>, contentDescription: Stri
                     url = p.url,
                     contentDescription = contentDescription,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Fit
                 )
                 is WebMediaPage.ImageLoop -> WebImageLoopPlayer(
                     urls = p.urls,
@@ -87,7 +87,7 @@ private fun WebImageLoopPlayer(urls: List<String>, contentDescription: String, m
         url = urls[index.coerceIn(urls.indices)],
         contentDescription = contentDescription,
         modifier = modifier,
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Fit
     )
 }
 

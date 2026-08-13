@@ -23,6 +23,14 @@ private var webVideoViewCounter = 0
  * element lets taps (e.g. the guided session's tap-to-pause-timer gesture)
  * pass straight through to the canvas underneath, exactly like the
  * static-image/photo-loop media pages already do.
+ *
+ * [LayoutCoordinates] reports positions/sizes in Compose's internal px
+ * space, which on wasmJs is scaled by `window.devicePixelRatio` (the
+ * canvas backing store is rendered at physical-pixel resolution) — not CSS
+ * pixels. [jsPositionVideo] divides by that ratio before writing CSS
+ * `left/top/width/height`, otherwise this element renders roughly
+ * `devicePixelRatio`× too big and offset on any screen where that ratio
+ * isn't 1 (i.e. every phone; invisible on a typical DPR-1 desktop).
  */
 @Composable
 fun WebVideoView(url: String, modifier: Modifier = Modifier) {
@@ -50,7 +58,7 @@ private external fun jsCreateVideo(id: String, url: String)
 
 @OptIn(ExperimentalWasmJsInterop::class)
 @JsFun(
-    "(id, x, y, w, h) => { try { var v = document.getElementById(id); if (!v) return; v.style.left = x + 'px'; v.style.top = y + 'px'; v.style.width = w + 'px'; v.style.height = h + 'px'; } catch (e) {} }"
+    "(id, x, y, w, h) => { try { var v = document.getElementById(id); if (!v) return; var dpr = window.devicePixelRatio || 1; v.style.left = (x / dpr) + 'px'; v.style.top = (y / dpr) + 'px'; v.style.width = (w / dpr) + 'px'; v.style.height = (h / dpr) + 'px'; } catch (e) {} }"
 )
 private external fun jsPositionVideo(id: String, x: Float, y: Float, w: Float, h: Float)
 

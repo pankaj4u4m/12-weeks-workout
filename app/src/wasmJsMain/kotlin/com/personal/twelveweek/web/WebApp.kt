@@ -152,6 +152,9 @@ fun WebApp() {
                     onProgramChosen = { id ->
                         selectedProgramStore.set(id)
                         selectedProgramId = id
+                        onboardingStep = WebOnboardingStep.CONNECT_MEDIA
+                    },
+                    onFinish = {
                         selectedProgramStore.setOnboarded()
                         onboarded = true
                     }

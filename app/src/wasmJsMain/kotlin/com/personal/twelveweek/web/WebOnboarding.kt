@@ -25,19 +25,27 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.personal.twelveweek.media.ExerciseDbApi
 import com.personal.twelveweek.programs.IndexEntry
+import io.ktor.client.HttpClient
 
 /**
  * Web port of the Android app's first-run onboarding (`MainActivity.kt`'s
- * `OnboardingFlow`/`WelcomeScreen`) — same two steps (welcome, then pick a
- * plan reusing [ProgramsScreen] itself), same copy, gated the same way on
+ * `OnboardingFlow`/`WelcomeScreen`) — welcome, then pick a plan (reusing
+ * [ProgramsScreen] itself), then an optional "connect exercise demos" step
+ * ([WebConnectMediaScreen]) so a first-time web user can add their
+ * ExerciseDB key up front instead of having to discover the same prompt
+ * buried in Settings or mid-workout later. Skippable like every media
+ * feature in this app — "Not now" finishes onboarding exactly like
+ * connecting does. Gated the same way as before on
  * [com.personal.twelveweek.SelectedProgramStore.hasOnboarded]/`setOnboarded`.
  */
-enum class WebOnboardingStep { WELCOME, PICK_PLAN }
+enum class WebOnboardingStep { WELCOME, PICK_PLAN, CONNECT_MEDIA }
 
 @Composable
 fun WebOnboardingFlow(
@@ -46,7 +54,8 @@ fun WebOnboardingFlow(
     selectedProgramId: String,
     onShowPlans: () -> Unit,
     onBack: () -> Unit,
-    onProgramChosen: (String) -> Unit
+    onProgramChosen: (String) -> Unit,
+    onFinish: () -> Unit
 ) {
     when (step) {
         WebOnboardingStep.WELCOME -> WebWelcomeScreen(onContinue = onShowPlans)
@@ -60,6 +69,16 @@ fun WebOnboardingFlow(
             onBack = onBack,
             modifier = Modifier.fillMaxSize()
         )
+        WebOnboardingStep.CONNECT_MEDIA -> {
+            val keyManager = remember { WebApiKeyManager() }
+            val exerciseDbApi = remember { ExerciseDbApi(HttpClient()) }
+            WebConnectMediaScreen(
+                keyManager = keyManager,
+                exerciseDbApi = exerciseDbApi,
+                onConnected = onFinish,
+                onDismiss = onFinish
+            )
+        }
     }
 }
 
