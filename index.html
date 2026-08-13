@@ -1,10 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+
+<title>TwelveWeek — Free 12-Week Workout Plans &amp; Guided Home Workouts</title>
+<meta name="description" content="Free 12-week workout plans with guided sessions, real exercise demo videos, and offline support. No account, no ads — works right in your browser.">
+<meta name="keywords" content="12 week workout plan, free workout tracker, guided workout app, home workout program, offline fitness app, no sign up workout app">
+<meta name="author" content="pankaj4u4m">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pankaj4u4m.github.io/12-weeks-workout/">
+
+<!-- Open Graph / Facebook, LinkedIn, Slack, iMessage, etc. -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pankaj4u4m.github.io/12-weeks-workout/">
+<meta property="og:site_name" content="TwelveWeek">
+<meta property="og:title" content="TwelveWeek — Free 12-Week Workout Plans &amp; Guided Home Workouts">
+<meta property="og:description" content="Free 12-week workout plans with guided sessions, real exercise demo videos, and offline support. No account, no ads — works right in your browser.">
+<meta property="og:image" content="https://pankaj4u4m.github.io/12-weeks-workout/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="TwelveWeek — free 12-week workout plans, offline-first, no account">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TwelveWeek — Free 12-Week Workout Plans &amp; Guided Home Workouts">
+<meta name="twitter:description" content="Free 12-week workout plans with guided sessions, real exercise demo videos, and offline support. No account, no ads — works right in your browser.">
+<meta name="twitter:image" content="https://pankaj4u4m.github.io/12-weeks-workout/og-image.png">
+<meta name="twitter:image:alt" content="TwelveWeek — free 12-week workout plans, offline-first, no account">
+
+<!-- PWA / theme -->
 <meta name="theme-color" content="#111714">
-<title>TwelveWeek</title>
+<meta name="theme-color" content="#F4F5EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111714" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -13,10 +42,152 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TwelveWeek">
-<style>html, body, #ComposeTarget { margin: 0; height: 100%; width: 100%; }</style>
+
+<!-- Structured data (schema.org) -- read by search engines and AI answer
+     engines (Google AI Overviews, Bing Copilot, Perplexity, etc.) even
+     though this app itself renders to a canvas and has no crawlable DOM. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "TwelveWeek",
+  "url": "https://pankaj4u4m.github.io/12-weeks-workout/",
+  "description": "A free, offline-first 12-week workout tracker with guided timed and rep-based sessions, real exercise demo videos and images, and 36+ structured programs by level, focus, and equipment. No account, no ads.",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Any modern browser (WebAssembly); Android app also available",
+  "browserRequirements": "Requires WebAssembly support",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "image": "https://pankaj4u4m.github.io/12-weeks-workout/og-image.png",
+  "screenshot": "https://pankaj4u4m.github.io/12-weeks-workout/screenshot-today.png",
+  "featureList": [
+    "36+ structured 12-week programs by level, focus, and equipment",
+    "Guided timed and rep-based sessions with voice cues",
+    "Real exercise demonstration videos and images",
+    "Offline-first: programs, timers, and progress work without a connection",
+    "Installable as a full-screen app (PWA), no app store required",
+    "No account, no ads, no tracking"
+  ],
+  "sameAs": [
+    "https://github.com/pankaj4u4m/12-weeks-workout"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is TwelveWeek free to use?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. TwelveWeek is completely free, with no ads and no account required." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does TwelveWeek work offline?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Programs, timers, and progress tracking all work without an internet connection. A connection is only needed to load exercise demo videos and images." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to install anything?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. TwelveWeek runs in any modern browser. You can also add it to your home screen for a full-screen, app-like experience." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there an Android app?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. TwelveWeek is also available as a free Android app with the same programs and progress tracking." }
+    }
+  ]
+}
+</script>
+
+<style>
+  html, body, #ComposeTarget { margin: 0; height: 100%; width: 100%; }
+  #app-shell-fallback {
+    position: fixed; inset: 0; z-index: 9999; overflow-y: auto;
+    background: #111714; color: #E5EDE7;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: 32px 20px 60px; box-sizing: border-box;
+  }
+  #app-shell-fallback main { max-width: 640px; margin: 0 auto; }
+  #app-shell-fallback h1 { font-size: 28px; line-height: 1.25; margin: 8px 0 12px; }
+  #app-shell-fallback h2 { font-size: 20px; margin: 28px 0 10px; color: #B6C4FF; }
+  #app-shell-fallback h3 { font-size: 16px; margin: 18px 0 4px; }
+  #app-shell-fallback p, #app-shell-fallback li { color: #C1CBC4; line-height: 1.55; font-size: 15px; }
+  #app-shell-fallback ul { padding-left: 20px; margin: 8px 0; }
+  #app-shell-fallback a { color: #B6C4FF; }
+</style>
 </head>
 <body>
-    <div id="ComposeTarget"></div>
+<div id="ComposeTarget"></div>
+
+<!-- Real, crawlable HTML describing the app -- shown as a loading shell for
+     real users (hidden the instant Compose mounts into #ComposeTarget, see
+     script below) and left in place for crawlers/bots that never execute
+     WebAssembly (this covers most current AI-answer-engine crawlers, which
+     is the whole point: a canvas-only app is otherwise invisible to them). -->
+<div id="app-shell-fallback">
+  <main>
+    <h1>TwelveWeek — Free 12-Week Workout Plans</h1>
+    <p>
+      TwelveWeek is a free, offline-first workout tracker built around 12-week
+      programs. Pick a plan by level (Beginner, Intermediate, Advanced), focus
+      (Full Body, Abs, Core, Legs, Strength, Upper Body), and equipment (home
+      or gym), then follow guided sessions with a timer, voice cues, and real
+      exercise demo videos and images. No account, no ads, no sign-up.
+    </p>
+    <h2>Why TwelveWeek</h2>
+    <ul>
+      <li>36+ structured 12-week programs, filterable by level, focus, equipment, and time per day</li>
+      <li>Guided sessions: timed and rep-based movements, rest periods, voice cues</li>
+      <li>Real exercise demonstrations (video and images) via ExerciseDB and wger</li>
+      <li>Offline-first — programs, timers, and progress work without a connection</li>
+      <li>Installable as a full-screen app (PWA), no app store required</li>
+      <li>Free, no account, no ads, no tracking</li>
+      <li>Also available as a free Android app</li>
+    </ul>
+    <h2>Frequently asked questions</h2>
+    <h3>Is TwelveWeek free to use?</h3>
+    <p>Yes. TwelveWeek is completely free, with no ads and no account required.</p>
+    <h3>Does TwelveWeek work offline?</h3>
+    <p>Yes. Programs, timers, and progress tracking all work without an internet connection. A connection is only needed to load exercise demo videos and images.</p>
+    <h3>Do I need to install anything?</h3>
+    <p>No. TwelveWeek runs in any modern browser. You can also add it to your home screen for a full-screen, app-like experience.</p>
+    <h3>Is there an Android app?</h3>
+    <p>Yes. TwelveWeek is also available as a free Android app with the same programs and progress tracking.</p>
+    <p><a href="https://github.com/pankaj4u4m/12-weeks-workout">View the source on GitHub</a></p>
+  </main>
+</div>
+<noscript>
+  <div style="padding:24px;font-family:system-ui,sans-serif;background:#111714;color:#E5EDE7;">
+    <h1>TwelveWeek</h1>
+    <p>Free 12-week workout plans with guided sessions, real exercise demo videos, and offline support. This app needs JavaScript and WebAssembly enabled to run.</p>
+    <p><a href="https://github.com/pankaj4u4m/12-weeks-workout" style="color:#B6C4FF;">Learn more on GitHub</a></p>
+  </div>
+</noscript>
+
+<script>
+  (function () {
+    var target = document.getElementById('ComposeTarget');
+    var fallback = document.getElementById('app-shell-fallback');
+    if (!target || !fallback) return;
+    var observer = new MutationObserver(function (mutations) {
+      for (var i = 0; i < mutations.length; i++) {
+        if (mutations[i].addedNodes.length > 0) {
+          fallback.style.display = 'none';
+          observer.disconnect();
+          return;
+        }
+      }
+    });
+    observer.observe(target, { childList: true });
+  })();
+</script>
 <script src="app.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
