@@ -1,5 +1,14 @@
 # 12 Week Program — Android app
 
+**[Try the web app →](https://pankaj4u4m.github.io/12-weeks-workout/)** — no install required, runs in any browser.
+
+<p align="center">
+  <img src="store-assets/screenshots/01-today.png" width="200" alt="Today screen" />
+  <img src="store-assets/screenshots/02-choose-plan.png" width="200" alt="Choose a plan" />
+  <img src="store-assets/screenshots/03-12-week-plan.png" width="200" alt="12-week plan" />
+  <img src="store-assets/screenshots/04-guided-session.png" width="200" alt="Guided session" />
+</p>
+
 A personal, offline-first workout tracker. Ships with three 12-week programs
 (Beginner / Intermediate / Advanced, Full Body, home equipment) and syncs
 more from a public GitHub program library — pick one from a filterable
@@ -25,7 +34,7 @@ works as a real installable PWA.
 
 **Or: force any site into a borderless app (Hermit).** If your browser
 doesn't offer an "Install app" option, a Lite Apps browser like
-[Hermit](https://play.google.com/store/apps/details?id=com.craxiom.hermit)
+[Hermit](https://play.google.com/store/apps/details?id=com.chimbori.hermitcrab)
 can force it:
 1. Install Hermit (Lite Apps Browser) from the Google Play Store.
 2. Open Hermit, paste the web app's address above.
