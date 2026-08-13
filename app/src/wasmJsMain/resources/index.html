@@ -121,6 +121,12 @@
   #app-shell-fallback p, #app-shell-fallback li { color: #C1CBC4; line-height: 1.55; font-size: 15px; }
   #app-shell-fallback ul { padding-left: 20px; margin: 8px 0; }
   #app-shell-fallback a { color: #B6C4FF; }
+  #app-shell-fallback .go-button {
+    display: inline-block; margin: 6px 0 4px; padding: 13px 24px; border: none;
+    border-radius: 12px; background: #315CFF; color: #fff; font-size: 15px;
+    font-weight: 600; font-family: inherit; cursor: pointer;
+  }
+  #app-shell-fallback .go-button:active { opacity: 0.85; }
 </style>
 </head>
 <body>
@@ -141,6 +147,7 @@
       or gym), then follow guided sessions with a timer, voice cues, and real
       exercise demo videos and images. No account, no ads, no sign-up.
     </p>
+    <button id="app-shell-go-button" class="go-button" type="button">Go to the app →</button>
     <h2>Why TwelveWeek</h2>
     <ul>
       <li>36+ structured 12-week programs, filterable by level, focus, equipment, and time per day</li>
@@ -172,20 +179,57 @@
 </noscript>
 
 <script>
+  // Keeps the intro visible for at least MIN_VISIBLE_MS even if the app
+  // finishes loading sooner (was flashing by almost instantly on fast/
+  // cached loads), lets an impatient visitor skip ahead with the "Go to
+  // the app" button, and -- once seen once -- never shows it again on
+  // later visits (same twelve_week_ui:<key> localStorage convention the
+  // rest of the app uses, e.g. WebInstallTipState's seen_install_tip).
   (function () {
-    var target = document.getElementById('ComposeTarget');
+    var SEEN_KEY = 'twelve_week_ui:seen_intro_shell';
+    var MIN_VISIBLE_MS = 3000;
     var fallback = document.getElementById('app-shell-fallback');
-    if (!target || !fallback) return;
+    var target = document.getElementById('ComposeTarget');
+    if (!fallback || !target) return;
+
+    if (localStorage.getItem(SEEN_KEY) === '1') {
+      fallback.style.display = 'none';
+      return;
+    }
+
+    var shownAt = Date.now();
+    var appReady = false;
+    var dismissed = false;
+
+    function dismiss() {
+      if (dismissed) return;
+      dismissed = true;
+      fallback.style.display = 'none';
+      localStorage.setItem(SEEN_KEY, '1');
+    }
+
+    var goButton = document.getElementById('app-shell-go-button');
+    if (goButton) goButton.addEventListener('click', dismiss);
+
     var observer = new MutationObserver(function (mutations) {
       for (var i = 0; i < mutations.length; i++) {
         if (mutations[i].addedNodes.length > 0) {
-          fallback.style.display = 'none';
+          appReady = true;
           observer.disconnect();
-          return;
+          break;
         }
       }
     });
     observer.observe(target, { childList: true });
+
+    (function tick() {
+      if (dismissed) return;
+      if (appReady && Date.now() - shownAt >= MIN_VISIBLE_MS) {
+        dismiss();
+      } else {
+        setTimeout(tick, 100);
+      }
+    })();
   })();
 </script>
 <script src="app.js"></script>
