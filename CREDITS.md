@@ -23,6 +23,9 @@ individually-checked free match exists elsewhere. These are linked directly
 | Exercise | Source | Author | License |
 |---|---|---|---|
 | Jumping Jack | [Jumpingjacks.gif](https://commons.wikimedia.org/wiki/File:Jumpingjacks.gif), Wikimedia Commons | [Wensceslao](https://commons.wikimedia.org/wiki/User:Wensceslao) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Diamond Push-up | [Diamondpushups1.jpg](https://commons.wikimedia.org/wiki/File:Diamondpushups1.jpg), Wikimedia Commons | [Erick76470](https://commons.wikimedia.org/wiki/User:Erick76470) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Downward Facing Dog | [Downward-Facing-Dog.JPG](https://commons.wikimedia.org/wiki/File:Downward-Facing-Dog.JPG), Wikimedia Commons | [Iveto](https://commons.wikimedia.org/w/index.php?title=User:Iveto) | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
+| Crunch Floor | [Sit-ups or Crunch.gif](https://commons.wikimedia.org/wiki/File:Sit-ups_or_Crunch.gif), Wikimedia Commons | [Zimmermanns](https://commons.wikimedia.org/wiki/User:Zimmermanns) | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
 
 CC BY-SA requires attribution and share-alike for derivatives; this table
 is that attribution. No modifications were made to the linked file.
