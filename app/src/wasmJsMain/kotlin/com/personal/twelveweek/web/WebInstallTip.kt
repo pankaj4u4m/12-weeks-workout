@@ -3,16 +3,19 @@ package com.personal.twelveweek.web
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.personal.twelveweek.HERMIT_PLAY_STORE_URL
 import com.personal.twelveweek.storage.RawPreferenceStore
 
 /**
@@ -32,7 +35,12 @@ class WebInstallTipState(private val store: RawPreferenceStore = RawPreferenceSt
     }
 }
 
-private data class InstallStep(val heading: String, val body: String)
+private data class InstallStep(
+    val heading: String,
+    val body: String,
+    val linkLabel: String? = null,
+    val linkUrl: String? = null
+)
 
 private val INSTALL_STEPS = listOf(
     InstallStep(
@@ -44,11 +52,13 @@ private val INSTALL_STEPS = listOf(
     InstallStep(
         "Or: force any site into a borderless app (Hermit)",
         "If your browser doesn't offer an \"Install app\" option, a Lite Apps browser like Hermit can force it:\n" +
-            "1. Install Hermit (Lite Apps Browser) from the Google Play Store.\n" +
+            "1. Tap the button below to install Hermit (Lite Apps Browser).\n" +
             "2. Open Hermit, paste this page's web address.\n" +
             "3. Tap Create Lite App.\n" +
             "4. Grant permission to place the icon on your home screen.\n" +
-            "Opening the icon Hermit creates runs the site as a completely standalone app — no URL bar, top header, or browser frame."
+            "Opening the icon Hermit creates runs the site as a completely standalone app — no URL bar, top header, or browser frame.",
+        linkLabel = "Get Hermit on Google Play",
+        linkUrl = HERMIT_PLAY_STORE_URL
     )
 )
 
@@ -64,6 +74,12 @@ fun WebInstallTipDialog(onDismiss: () -> Unit) {
                         Text(step.heading, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
                         Spacer(Modifier.height(4.dp))
                         Text(step.body, style = MaterialTheme.typography.bodyMedium)
+                        if (step.linkUrl != null) {
+                            Spacer(Modifier.height(10.dp))
+                            OutlinedButton(onClick = { webOpenUrl(step.linkUrl) }, modifier = Modifier.fillMaxWidth()) {
+                                Text(step.linkLabel ?: step.linkUrl)
+                            }
+                        }
                     }
                     Spacer(Modifier.height(18.dp))
                 }
