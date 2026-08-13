@@ -24,7 +24,14 @@ data class Exercise(
      *  (`0.jpg`/`1.jpg`), which the app loops as a lightweight flipbook.
      *  Only ever this source for the loop — never mixed with wger's or
      *  ExerciseDB's own images. */
-    val freeExerciseDbId: String? = null
+    val freeExerciseDbId: String? = null,
+    /** One-off free/no-key media hotlink for an exercise that doesn't fit
+     *  any of the id-based providers above — e.g. a Wikimedia Commons file,
+     *  verified individually (correct movement, redistributable license)
+     *  rather than matched by name. Attribution for every URL used here is
+     *  tracked centrally in `CREDITS.md`, not per-field, since as of writing
+     *  there's exactly one of these (see "Jumping Jack" in program-1.json). */
+    val externalMediaUrl: String? = null
 ) {
     val isTimed: Boolean get() = seconds != null
 

@@ -1,0 +1,28 @@
+# Third-party media credits
+
+Most exercise demo media comes from two sources baked into the app's own
+media pipeline and already covered by their own licenses/terms:
+
+- [free-exercise-db](https://github.com/yuhonas/free-exercise-db) — public
+  domain (Unlicense). Referenced by id (`freeExerciseDbId` in `programs/*.json`);
+  images are fetched directly from that repo, never copied into this one.
+- [wger](https://wger.de) — free, keyless public exercise database.
+  Referenced by id (`wgerId`); fetched live from wger's own API.
+- [ExerciseDB](https://exercisedb.dev) (via RapidAPI / Ascend API) —
+  commercial, requires your own free API key (Settings → Add exercise
+  demos). Never bundled into this repo — it's their product, not ours to
+  redistribute.
+
+## One-off hotlinks (`externalMediaUrl`)
+
+A handful of exercises have no entry in any of the above but a verified,
+individually-checked free match exists elsewhere. These are linked directly
+(never downloaded into this repo) via the `externalMediaUrl` field on
+`Exercise`, and credited here:
+
+| Exercise | Source | Author | License |
+|---|---|---|---|
+| Jumping Jack | [Jumpingjacks.gif](https://commons.wikimedia.org/wiki/File:Jumpingjacks.gif), Wikimedia Commons | [Wensceslao](https://commons.wikimedia.org/wiki/User:Wensceslao) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+
+CC BY-SA requires attribution and share-alike for derivatives; this table
+is that attribution. No modifications were made to the linked file.

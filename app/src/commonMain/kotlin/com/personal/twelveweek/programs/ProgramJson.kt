@@ -28,7 +28,8 @@ private data class ExerciseDto(
     val seconds: Int? = null,
     val wgerId: String? = null,
     val exerciseDbId: String? = null,
-    val freeExerciseDbId: String? = null
+    val freeExerciseDbId: String? = null,
+    val externalMediaUrl: String? = null
 )
 
 @Serializable
@@ -84,7 +85,8 @@ private fun ExerciseDto.toDomain() = Exercise(
     seconds = seconds,
     wgerId = wgerId,
     exerciseDbId = exerciseDbId,
-    freeExerciseDbId = freeExerciseDbId
+    freeExerciseDbId = freeExerciseDbId,
+    externalMediaUrl = externalMediaUrl
 )
 
 private fun SectionDto.toDomain() = Section(title = title, exercises = exercises.map { it.toDomain() })

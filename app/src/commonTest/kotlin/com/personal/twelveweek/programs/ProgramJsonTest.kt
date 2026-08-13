@@ -126,4 +126,24 @@ class ProgramJsonTest {
         val json = """{"id":"x","title":"X"}"""
         assertFailsWith<kotlinx.serialization.SerializationException> { parseProgram(json) }
     }
+
+    @Test
+    fun `parses externalMediaUrl when present, defaults to null when absent`() {
+        val json = """
+            {"id":"x","title":"X","weeks":[
+              {"number":1,"workouts":[
+                {"index":1,"sections":[
+                  {"title":"Warm up","exercises":[
+                    {"raw":"15 Jumping Jack","name":"Jumping Jack","reps":15,"seconds":null,"externalMediaUrl":"https://upload.wikimedia.org/wikipedia/commons/a/ac/Jumpingjacks.gif"},
+                    {"raw":"20 Squats","name":"Squats","reps":20,"seconds":null,"wgerId":"615"}
+                  ]}
+                ]}
+              ]}
+            ]}
+        """.trimIndent()
+
+        val exercises = parseProgram(json).weeks[0].workouts[0].sections[0].exercises
+        assertEquals("https://upload.wikimedia.org/wikipedia/commons/a/ac/Jumpingjacks.gif", exercises[0].externalMediaUrl)
+        assertNull(exercises[1].externalMediaUrl)
+    }
 }
