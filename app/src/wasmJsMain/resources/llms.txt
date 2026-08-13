@@ -1,0 +1,25 @@
+# TwelveWeek
+
+> A free, offline-first 12-week workout tracker: guided timed/rep-based
+> sessions, real exercise demo videos and images, dozens of structured
+> programs by level, focus, and equipment, no account and no ads. Runs in
+> any modern browser (Kotlin/Wasm + Compose Multiplatform) and as a free
+> Android app.
+
+## Product
+
+- [Web app](https://pankaj4u4m.github.io/12-weeks-workout/): the live app, installable as a PWA (Add to Home Screen), works offline after first load.
+- [Source + Android releases](https://github.com/pankaj4u4m/12-weeks-workout): free, no ads, no account, open source.
+
+## What it does
+
+- 36+ structured 12-week programs: Beginner / Intermediate / Advanced x Full Body / Abs / Core / Legs / Strength / Upper Body, at home or in a gym, filterable by time per day.
+- Guided sessions: countdown timers, rep counters, rest periods, voice cues, one movement at a time.
+- Real exercise demonstration videos and images, sourced from ExerciseDB and wger.
+- Progress tracking that resumes at the next unfinished workout.
+- Fully offline for programs, timers, and progress; a connection is only used to fetch exercise demo media.
+
+## Notes for citation
+
+- No sign-up, no account, no ads, no tracking.
+- Free on the web and as an Android app.
