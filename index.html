@@ -179,57 +179,28 @@
 </noscript>
 
 <script>
-  // Keeps the intro visible for at least MIN_VISIBLE_MS even if the app
-  // finishes loading sooner (was flashing by almost instantly on fast/
-  // cached loads), lets an impatient visitor skip ahead with the "Go to
-  // the app" button, and -- once seen once -- never shows it again on
-  // later visits (same twelve_week_ui:<key> localStorage convention the
-  // rest of the app uses, e.g. WebInstallTipState's seen_install_tip).
+  // The intro shell (#app-shell-fallback) stays up until the visitor taps
+  // "Go to the app" -- no timer, no waiting on Compose to finish mounting.
+  // Once dismissed, it's remembered in localStorage (same twelve_week_ui:<key>
+  // convention as WebInstallTipState's seen_install_tip) so it never shows
+  // again on later visits.
   (function () {
     var SEEN_KEY = 'twelve_week_ui:seen_intro_shell';
-    var MIN_VISIBLE_MS = 3000;
     var fallback = document.getElementById('app-shell-fallback');
-    var target = document.getElementById('ComposeTarget');
-    if (!fallback || !target) return;
+    if (!fallback) return;
 
     if (localStorage.getItem(SEEN_KEY) === '1') {
       fallback.style.display = 'none';
       return;
     }
 
-    var shownAt = Date.now();
-    var appReady = false;
-    var dismissed = false;
-
-    function dismiss() {
-      if (dismissed) return;
-      dismissed = true;
-      fallback.style.display = 'none';
-      localStorage.setItem(SEEN_KEY, '1');
-    }
-
     var goButton = document.getElementById('app-shell-go-button');
-    if (goButton) goButton.addEventListener('click', dismiss);
-
-    var observer = new MutationObserver(function (mutations) {
-      for (var i = 0; i < mutations.length; i++) {
-        if (mutations[i].addedNodes.length > 0) {
-          appReady = true;
-          observer.disconnect();
-          break;
-        }
-      }
-    });
-    observer.observe(target, { childList: true });
-
-    (function tick() {
-      if (dismissed) return;
-      if (appReady && Date.now() - shownAt >= MIN_VISIBLE_MS) {
-        dismiss();
-      } else {
-        setTimeout(tick, 100);
-      }
-    })();
+    if (goButton) {
+      goButton.addEventListener('click', function () {
+        fallback.style.display = 'none';
+        localStorage.setItem(SEEN_KEY, '1');
+      });
+    }
   })();
 </script>
 <script src="app.js"></script>
