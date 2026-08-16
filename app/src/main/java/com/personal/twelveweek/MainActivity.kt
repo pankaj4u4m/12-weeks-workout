@@ -197,6 +197,7 @@ fun AppRoot() {
                     step = onboardingStep,
                     entries = libraryIndex,
                     selectedProgramId = selectedProgramId,
+                    library = library,
                     onShowPlans = { onboardingStep = OnboardingStep.PICK_PLAN },
                     onBack = { onboardingStep = OnboardingStep.WELCOME },
                     onProgramChosen = { id ->
@@ -210,6 +211,7 @@ fun AppRoot() {
                 activeProgram == null && loadFailed -> ProgramPickerScreen(
                     entries = libraryIndex,
                     selectedProgramId = selectedProgramId,
+                    library = library,
                     onSelect = ::selectProgram,
                     modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing)
                 )
@@ -221,6 +223,7 @@ fun AppRoot() {
                         program = program,
                         libraryIndex = libraryIndex,
                         selectedProgramId = selectedProgramId,
+                        library = library,
                         progress = progress,
                         screen = screen,
                         onScreenChange = { screen = it },
@@ -240,6 +243,7 @@ private fun OnboardingFlow(
     step: OnboardingStep,
     entries: List<IndexEntry>,
     selectedProgramId: String,
+    library: ProgramLibrary,
     onShowPlans: () -> Unit,
     onBack: () -> Unit,
     onProgramChosen: (String) -> Unit
@@ -251,6 +255,7 @@ private fun OnboardingFlow(
             ProgramPickerScreen(
                 entries = entries,
                 selectedProgramId = selectedProgramId,
+                library = library,
                 onSelect = onProgramChosen,
                 onSkip = { onProgramChosen(selectedProgramId) },
                 onBack = onBack,
@@ -381,6 +386,7 @@ private fun AppShell(
     program: LibraryProgram,
     libraryIndex: List<IndexEntry>,
     selectedProgramId: String,
+    library: ProgramLibrary,
     progress: ProgressStore,
     screen: Screen,
     onScreenChange: (Screen) -> Unit,
@@ -410,6 +416,7 @@ private fun AppShell(
                         program = program,
                         libraryIndex = libraryIndex,
                         selectedProgramId = selectedProgramId,
+                        library = library,
                         progress = progress,
                         screen = screen,
                         onScreenChange = onScreenChange,
@@ -437,6 +444,7 @@ private fun AppShell(
                     program = program,
                     libraryIndex = libraryIndex,
                     selectedProgramId = selectedProgramId,
+                    library = library,
                     progress = progress,
                     screen = screen,
                     onScreenChange = onScreenChange,
@@ -456,6 +464,7 @@ private fun AppScreenContent(
     program: LibraryProgram,
     libraryIndex: List<IndexEntry>,
     selectedProgramId: String,
+    library: ProgramLibrary,
     progress: ProgressStore,
     screen: Screen,
     onScreenChange: (Screen) -> Unit,
@@ -492,6 +501,7 @@ private fun AppScreenContent(
         Screen.Programs -> ProgramPickerScreen(
             entries = libraryIndex,
             selectedProgramId = selectedProgramId,
+            library = library,
             onSelect = onSelectProgram,
             onImport = onImport,
             importError = importError,
