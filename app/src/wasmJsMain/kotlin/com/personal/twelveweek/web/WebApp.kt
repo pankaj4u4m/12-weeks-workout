@@ -110,6 +110,8 @@ fun WebApp() {
     val settings = remember { WebSettings() }
     val installTipState = remember { WebInstallTipState() }
     var showInstallTip by remember { mutableStateOf(false) }
+    val prefetchKeyManager = remember { WebApiKeyManager() }
+    val prefetchRepository = remember { WebExerciseMediaRepository.default(prefetchKeyManager) }
 
     var index by remember { mutableStateOf<List<IndexEntry>?>(null) }
     var selectedProgramId by remember { mutableStateOf(selectedProgramStore.get()) }
@@ -124,6 +126,10 @@ fun WebApp() {
 
     LaunchedEffect(onboarded) {
         if (onboarded && !installTipState.hasSeenTip()) showInstallTip = true
+    }
+
+    LaunchedEffect(activeProgram?.meta?.id) {
+        activeProgram?.let { prefetchProgramMedia(it, prefetchRepository) }
     }
 
     LaunchedEffect(selectedProgramId) {
