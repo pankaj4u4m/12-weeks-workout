@@ -1,0 +1,3906 @@
+{
+  "exercises": [
+    {
+      "name": "4-Count Burpees",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "132",
+      "exerciseDbId": "exr_41n2hqYdxG87hXz1",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "6-Count Burpees",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "132",
+      "exerciseDbId": "exr_41n2hqYdxG87hXz1",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Ab Crunch Machine",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "172",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Ab_Crunch_Machine",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Ab Rollout",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "41",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Ab_Roller",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Ab Wheel Rollout",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "1573",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Ab_Roller",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Arm Circle Backward",
+      "kind": "SECONDS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "995",
+      "exerciseDbId": "exr_41n2hUBVSgXaKhau",
+      "freeExerciseDbId": "Arm_Circles",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Arm Circle Forward",
+      "kind": "SECONDS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "994",
+      "exerciseDbId": "exr_41n2hUBVSgXaKhau",
+      "freeExerciseDbId": "Arm_Circles",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Arm Swing",
+      "kind": "SECONDS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hynD9srC1kY7",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Back Extension",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "301",
+      "exerciseDbId": "exr_41n2hfYD2sH4TRCH",
+      "freeExerciseDbId": "Hyperextensions_Back_Extensions",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Back Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": "615",
+      "exerciseDbId": "exr_41n2hmGR8WuVfe1U",
+      "freeExerciseDbId": "Barbell_Squat",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Bench Press",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "73",
+      "exerciseDbId": "exr_41n2hxnFMotsXTj3",
+      "freeExerciseDbId": "Barbell_Bench_Press_-_Medium_Grip",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Bicep Curl",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "91",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Barbell_Curl",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Deadlift",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": "184",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Barbell_Deadlift",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Front Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "257",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Front_Barbell_Squat",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Glute Bridge",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "265",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Barbell_Glute_Bridge",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Hip Thrust",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "294",
+      "exerciseDbId": "exr_41n2hxxePSdr5oN1",
+      "freeExerciseDbId": "Barbell_Hip_Thrust",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Romanian Deadlift",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "1700",
+      "exerciseDbId": "exr_41n2hn8rpbYihzEW",
+      "freeExerciseDbId": "Romanian_Deadlift",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Row",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "83",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Bent_Over_Barbell_Row",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Shoulder Press",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "566",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Barbell_Shoulder_Press",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Barbell Walking Lunge",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "802",
+      "exerciseDbId": "exr_41n2hQHmRSoUkk9F",
+      "freeExerciseDbId": "Barbell_Walking_Lunge",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Bicycle Crunch",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "1412",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Bird Dog",
+      "kind": "REPS",
+      "roles": [
+        "ROUND",
+        "WARMUP"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE",
+        "STRENGTH"
+      ],
+      "wgerId": "1572",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Broad Jump",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Bulgarian Split Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": "988",
+      "exerciseDbId": "exr_41n2hpLLs1uU5atr",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Butt Kicker Jump Squats",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "614",
+      "exerciseDbId": "exr_41n2hZqwsLkCVnzr",
+      "freeExerciseDbId": "Double_Leg_Butt_Kick",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Butterfly Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN",
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1843",
+      "exerciseDbId": "exr_41n2hnougzKKhhqu",
+      "freeExerciseDbId": "Butterfly",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cable Crunch",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "173",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Cable_Crunch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cable Fly",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "1922",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Cable_Crossover",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cable Pallof Press",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS",
+        "CORE"
+      ],
+      "wgerId": "1194",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Pallof_Press",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cable Russian Twist",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Cable_Russian_Twists",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cable Woodchopper",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "145",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Standing_Cable_Wood_Chop",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cable Woodchopper High to Low",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "145",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Standing_Cable_Wood_Chop",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cable Woodchopper Low to High",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "145",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Standing_Cable_Wood_Chop",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Calf Raises",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "LEGS"
+      ],
+      "wgerId": "622",
+      "exerciseDbId": "exr_41n2hSGs9Q3NVGhs",
+      "freeExerciseDbId": "Standing_Calf_Raises",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Calf Stretch L",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1239",
+      "exerciseDbId": "exr_41n2hHCXQpZYhxhc",
+      "freeExerciseDbId": "Calf_Stretch_Hands_Against_Wall",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Calf Stretch R",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1239",
+      "exerciseDbId": "exr_41n2hHCXQpZYhxhc",
+      "freeExerciseDbId": "Calf_Stretch_Hands_Against_Wall",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cat Cow",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN",
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1938",
+      "exerciseDbId": "exr_41n2hNCTCWtWAqzH",
+      "freeExerciseDbId": "Cat_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cat Cow Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hNCTCWtWAqzH",
+      "freeExerciseDbId": "Cat_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Chair Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Chair_Squat",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Chest And Front Of Shoulder Stretch",
+      "kind": "REPS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Chest_And_Front_Of_Shoulder_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Child Pose",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1002",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Child's Pose",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1002",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Childs_Pose",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Clamshell",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "1823",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Clap Push Up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "UPPER_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hkmMrSwcHkZ8",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Clap Push-up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "STRENGTH"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hkmMrSwcHkZ8",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Close-Grip Bench Press",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "76",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Close-Grip_Barbell_Bench_Press",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Commander Push-Ups",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hNXJadYcfjnd",
+      "freeExerciseDbId": "Pushups",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Commander Push-ups",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "UPPER_BODY"
+      ],
+      "wgerId": "1551",
+      "exerciseDbId": "exr_41n2hNXJadYcfjnd",
+      "freeExerciseDbId": "Pushups",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cross Body Shoulder Stretch L",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Shoulder_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Cross Body Shoulder Stretch R",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Shoulder_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Crunch Floor",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hskeb9dXgBoC",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": "https://upload.wikimedia.org/wikipedia/commons/2/29/Sit-ups_or_Crunch.gif"
+    },
+    {
+      "name": "Crunches",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "167",
+      "exerciseDbId": "exr_41n2hskeb9dXgBoC",
+      "freeExerciseDbId": "Crunches",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Curtsy Lunge",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Dead Bug",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS",
+        "CORE",
+        "STRENGTH"
+      ],
+      "wgerId": "2505",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Dead_Bug",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Decline Bench Leg Raise",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "1889",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Decline Bench Sit-Up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "591",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Sit-Up",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Decline Crunch",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "171",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Decline Push-Up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hGUso7JFmuYR",
+      "freeExerciseDbId": "Decline_Push-Up",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Decline Sit-up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Decline_Crunch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Diamond Push-up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hRZ6fgsLyd77",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": "https://upload.wikimedia.org/wikipedia/commons/2/22/Diamondpushups1.jpg"
+    },
+    {
+      "name": "Donkey Kicks",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "1616",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Glute_Kickback",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Doorway Chest Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Chest_And_Front_Of_Shoulder_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Downward Facing Dog",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hW9gDXAJJMmH",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": "https://upload.wikimedia.org/wikipedia/commons/5/57/Downward-Facing-Dog.JPG"
+    },
+    {
+      "name": "Dumbbell Bench Press",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "75",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Dumbbell_Bench_Press",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Dumbbell Bicep Curl",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "92",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Dumbbell_Bicep_Curl",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Dumbbell Chest Fly",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "238",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Dumbbell_Flyes",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Dumbbell Goblet Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH"
+      ],
+      "wgerId": "203",
+      "exerciseDbId": "exr_41n2hQDiSwTZXM4F",
+      "freeExerciseDbId": "Goblet_Squat",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Dumbbell Lunges",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH"
+      ],
+      "wgerId": "984",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Dumbbell_Lunges",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Dumbbell Row",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "81",
+      "exerciseDbId": "exr_41n2hY9EdwkdGz9a",
+      "freeExerciseDbId": "Bent_Over_Two-Dumbbell_Row",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Dumbbell Shoulder Press",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "567",
+      "exerciseDbId": "exr_41n2hs6camM22yBG",
+      "freeExerciseDbId": "Dumbbell_Shoulder_Press",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Dumbbell Walking Lunge",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "206",
+      "exerciseDbId": "exr_41n2hQHmRSoUkk9F",
+      "freeExerciseDbId": "Dumbbell_Lunges",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Dynamic Chest Stretch",
+      "kind": "REPS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Dynamic_Chest_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Elbow Flexor Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hqw5LsDpeE2i",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Elbow Up and Down Dynamic Plank",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hy8pKXtzuBh8",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Face Pull",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "222",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Face_Pull",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Farmer's Carry",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Farmers_Walk",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Fire Hydrants",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "1956",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Flat Out Burpee Tuck Jumps",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "132",
+      "exerciseDbId": "exr_41n2hqYdxG87hXz1",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Flat Out Burpees",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "132",
+      "exerciseDbId": "exr_41n2hqYdxG87hXz1",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Flutter Kicks",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "235",
+      "exerciseDbId": "exr_41n2hPRWorCfCPov",
+      "freeExerciseDbId": "Flutter_Kicks",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Forward Lunges",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "984",
+      "exerciseDbId": "exr_41n2hYXWwoxiUk57",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Front Plank",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE",
+        "FULL_BODY",
+        "STRENGTH"
+      ],
+      "wgerId": "1307",
+      "exerciseDbId": "exr_41n2hXQw5yAbbXL8",
+      "freeExerciseDbId": "Plank",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Front Plank Toe Tap",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2htzPyjcc3Mt2",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Front Plank with Leg Lift",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "STRENGTH"
+      ],
+      "wgerId": "1410",
+      "exerciseDbId": "exr_41n2hKoQnnSRPZrE",
+      "freeExerciseDbId": "Plank",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Front Raise",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "256",
+      "exerciseDbId": "exr_41n2howQHvcrcrW6",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Glute Bridge",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": "265",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Butt_Lift_Bridge",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Glute Bridge March",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "265",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Butt_Lift_Bridge",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Goblet Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "203",
+      "exerciseDbId": "exr_41n2hQDiSwTZXM4F",
+      "freeExerciseDbId": "Goblet_Squat",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hammer Curl",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "272",
+      "exerciseDbId": "exr_41n2hGioS8HumEF7",
+      "freeExerciseDbId": "Hammer_Curls",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hamstring Stretch L",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1393",
+      "exerciseDbId": "exr_41n2hPvwqp7Pwvks",
+      "freeExerciseDbId": "Hamstring_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hamstring Stretch R",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1393",
+      "exerciseDbId": "exr_41n2hPvwqp7Pwvks",
+      "freeExerciseDbId": "Hamstring_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Handstand Push-Up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hushK9NGVfyK",
+      "freeExerciseDbId": "Handstand_Push-Ups",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hanging Knee Raise",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "978",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hanging Leg Raise",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS",
+        "CORE"
+      ],
+      "wgerId": "979",
+      "exerciseDbId": "exr_41n2hMZCmZBvQApL",
+      "freeExerciseDbId": "Hanging_Leg_Raise",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hanging Straight Leg Raise",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "STRENGTH"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hMZCmZBvQApL",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Heel Touches",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "1411",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Alternate_Heel_Touchers",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "High Knees",
+      "kind": "REPS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [],
+      "wgerId": "983",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "High Plank",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "UPPER_BODY"
+      ],
+      "wgerId": "1001",
+      "exerciseDbId": "exr_41n2hXQw5yAbbXL8",
+      "freeExerciseDbId": "Plank",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "High Plank Knee Crosses",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2htzPyjcc3Mt2",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "High Plank Knee to Elbow",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2htzPyjcc3Mt2",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "High Plank Knee-to-Elbow",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2htzPyjcc3Mt2",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "High Plank Leg Lifts",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "1410",
+      "exerciseDbId": "exr_41n2hKoQnnSRPZrE",
+      "freeExerciseDbId": "Plank",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "High Plank Limb Raises",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "1410",
+      "exerciseDbId": "exr_41n2hKoQnnSRPZrE",
+      "freeExerciseDbId": "Plank",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hip Flexor Stretch L",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1867",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Kneeling_Hip_Flexor",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hip Flexor Stretch R",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1867",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Kneeling_Hip_Flexor",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hip Thrust",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "294",
+      "exerciseDbId": "exr_41n2hxxePSdr5oN1",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hip Thrusts",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hxxePSdr5oN1",
+      "freeExerciseDbId": "Barbell_Hip_Thrust",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hollow Body Hold",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "297",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hollow Hold",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "297",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Hug Knees To Chest",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Hug_Knees_To_Chest",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Inchworm",
+      "kind": "REPS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Inchworm",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Incline Barbell Bench Press",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "538",
+      "exerciseDbId": "exr_41n2hsVHu7B1MTdr",
+      "freeExerciseDbId": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Incline Dumbbell Press",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "537",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Incline_Dumbbell_Press",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Incline Push-up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "1111",
+      "exerciseDbId": "exr_41n2hXXpvbykPY3q",
+      "freeExerciseDbId": "Incline_Push-Up",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Jump Lunges",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "LEGS"
+      ],
+      "wgerId": "984",
+      "exerciseDbId": "exr_41n2hUVNhvcS73Dt",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Jump Split",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hUVNhvcS73Dt",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Jump Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hbdZww1thMKz",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Jump Squats",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "614",
+      "exerciseDbId": "exr_41n2hbdZww1thMKz",
+      "freeExerciseDbId": "Freehand_Jump_Squat",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Jumping Jack",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hupxPcdnktBC",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Jumpingjacks.gif"
+    },
+    {
+      "name": "Jumping Jacks",
+      "kind": "REPS",
+      "roles": [
+        "ROUND",
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "320",
+      "exerciseDbId": "exr_41n2hupxPcdnktBC",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Jumping Pistol Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "STRENGTH"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hGRSg9WCoTYT",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Knee Push-ups",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "UPPER_BODY"
+      ],
+      "wgerId": "1218",
+      "exerciseDbId": "exr_41n2hNXJadYcfjnd",
+      "freeExerciseDbId": "Pushups",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Knee to Chest Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "One_Knee_To_Chest",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Lat Pulldown",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "158",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Wide-Grip_Lat_Pulldown",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Lateral Lunge",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "1604",
+      "exerciseDbId": "exr_41n2haAabPyN5t8y",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Lateral Raise",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "348",
+      "exerciseDbId": "exr_41n2hjuGpcex14w7",
+      "freeExerciseDbId": "Side_Lateral_Raise",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Leg Extension",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "369",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Leg_Extensions",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Leg Press",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": "371",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Leg_Press",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Leg Raises",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "STRENGTH"
+      ],
+      "wgerId": "377",
+      "exerciseDbId": "exr_41n2hqfZb8UHBvB9",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Low Plank",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "1001",
+      "exerciseDbId": "exr_41n2hXQw5yAbbXL8",
+      "freeExerciseDbId": "Plank",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Low Plank Arm Reaches",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "1766",
+      "exerciseDbId": "exr_41n2hnAGfMhp95LQ",
+      "freeExerciseDbId": "Plank",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Low Plank Knee-to-Elbow",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2htzPyjcc3Mt2",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Lying Leg Curl",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "365",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Lying_Leg_Curls",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Lying Leg Raise",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "377",
+      "exerciseDbId": "exr_41n2hq3Wm6ANkgUz",
+      "freeExerciseDbId": "Flat_Bench_Lying_Leg_Raise",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Medicine Ball Russian Twist",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "1193",
+      "exerciseDbId": "exr_41n2hWVVEwU54UtF",
+      "freeExerciseDbId": "Russian_Twist",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Medicine Ball Slam",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "One-Arm_Medicine_Ball_Slam",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Mountain Climbers",
+      "kind": "REPS",
+      "roles": [
+        "ROUND",
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [
+        "CORE",
+        "FULL_BODY",
+        "UPPER_BODY"
+      ],
+      "wgerId": "996",
+      "exerciseDbId": "exr_41n2ha5iPFpN3hEJ",
+      "freeExerciseDbId": "Mountain_Climbers",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Overhead Tricep Extension",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "1519",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Standing_Dumbbell_Triceps_Extension",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Overhead Tricep Stretch L",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1230",
+      "exerciseDbId": "exr_41n2hZqkvM55qJve",
+      "freeExerciseDbId": "Overhead_Triceps",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Overhead Tricep Stretch R",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1231",
+      "exerciseDbId": "exr_41n2hZqkvM55qJve",
+      "freeExerciseDbId": "Overhead_Triceps",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Pallof Press",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "1194",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Pallof_Press",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Pigeon Pose",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1872",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Pike Push-ups",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "454",
+      "exerciseDbId": "exr_41n2hmvGdVRvvnNY",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Pistol Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": "456",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Plank",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "458",
+      "exerciseDbId": "exr_41n2hXQw5yAbbXL8",
+      "freeExerciseDbId": "Plank",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Plank Reach",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "1766",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Plank Shoulder Taps",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "1091",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Plate Twist",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Plate_Twist",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Plyo Push-up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Plyo_Push-up",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Preacher Curl",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "465",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Preacher_Curl",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Pull-Up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH"
+      ],
+      "wgerId": "475",
+      "exerciseDbId": "exr_41n2hsBtDXapcADg",
+      "freeExerciseDbId": "Pullups",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Punches",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "UPPER_BODY"
+      ],
+      "wgerId": "1462",
+      "exerciseDbId": "exr_41n2hezAZ6CdkAcM",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Push-ups",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "1551",
+      "exerciseDbId": "exr_41n2hNXJadYcfjnd",
+      "freeExerciseDbId": "Pushups",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Quad Wall Stretch L",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1873",
+      "exerciseDbId": "exr_41n2haAabPyN5t8y",
+      "freeExerciseDbId": "Quad_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Quad Wall Stretch R",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1873",
+      "exerciseDbId": "exr_41n2haAabPyN5t8y",
+      "freeExerciseDbId": "Quad_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Quick Feet",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hSMjcavNjk3c",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Rear Delt Fly",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "487",
+      "exerciseDbId": "exr_41n2hyNf5GebszTf",
+      "freeExerciseDbId": "Reverse_Flyes",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Reverse Crunch",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "1772",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Reverse_Crunch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Reverse Lunge",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": "999",
+      "exerciseDbId": "exr_41n2hGNrmUnF58Yy",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Romanian Deadlift",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH"
+      ],
+      "wgerId": "507",
+      "exerciseDbId": "exr_41n2hn8rpbYihzEW",
+      "freeExerciseDbId": "Romanian_Deadlift",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Russian Twist",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS",
+        "CORE",
+        "FULL_BODY",
+        "STRENGTH"
+      ],
+      "wgerId": "1193",
+      "exerciseDbId": "exr_41n2hWVVEwU54UtF",
+      "freeExerciseDbId": "Russian_Twist",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Russian Twist Advanced",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "1193",
+      "exerciseDbId": "exr_41n2hWVVEwU54UtF",
+      "freeExerciseDbId": "Russian_Twist",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "SLOW Push-ups",
+      "kind": "REPS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hNXJadYcfjnd",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Scissor Kicks",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS",
+        "FULL_BODY"
+      ],
+      "wgerId": "545",
+      "exerciseDbId": "exr_41n2hkB3FeGM3DEL",
+      "freeExerciseDbId": "Scissor_Kick",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Seated Cable Crunch",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Cable_Seated_Crunch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Seated Cable Row",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "1117",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Seated_Cable_Rows",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Seated Leg Curl",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "366",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Seated_Leg_Curl",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Shoulder Circles",
+      "kind": "REPS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hWQVZanCB1d7",
+      "freeExerciseDbId": "Shoulder_Circles",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Shoulder Roll",
+      "kind": "SECONDS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Shoulder_Circles",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Shoulder Tap Push-up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "UPPER_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hnAGfMhp95LQ",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Side Lunge",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN",
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2haAabPyN5t8y",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Side Lunge Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hRaLxY7YfNbg",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Side Plank",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS",
+        "STRENGTH"
+      ],
+      "wgerId": "580",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Side_Bridge",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Side Plank L",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "580",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Side_Bridge",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Side Plank R",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "580",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Side_Bridge",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Side Plank with Rotation L",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Side Plank with Rotation R",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Side Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [],
+      "wgerId": "1861",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Side-Lying Floor Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Side-Lying_Floor_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Single Leg Calf Raise",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "702",
+      "exerciseDbId": "exr_41n2hhumxqyAFuTb",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Single Leg Glute Bridge",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": "1740",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Single_Leg_Glute_Bridge",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Single Leg Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hd78zujKUEWK",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Single Leg Squat with Support",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "STRENGTH"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hsSnmS946i2k",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Single-Arm Plank L",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Single-Arm Plank R",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Sissy Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "STRENGTH"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hw8nSYiaCXW1",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Sit-up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "591",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Sit-Up",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Sit-ups",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "591",
+      "exerciseDbId": "exr_41n2hskeb9dXgBoC",
+      "freeExerciseDbId": "Sit-Up",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Skater Jumps",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Skier Abs",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "996",
+      "exerciseDbId": "exr_41n2ha5iPFpN3hEJ",
+      "freeExerciseDbId": "Mountain_Climbers",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Skull Crusher",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "245",
+      "exerciseDbId": "exr_41n2hdHtZrMPkcqY",
+      "freeExerciseDbId": "EZ-Bar_Skullcrusher",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Smith Machine Squat",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "1747",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Smith_Machine_Squat",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Spinal Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Spinal_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Split Squats",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hHRszDHarrxK",
+      "freeExerciseDbId": "Split_Squats",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Squat Jumps",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "614",
+      "exerciseDbId": "exr_41n2hbdZww1thMKz",
+      "freeExerciseDbId": "Freehand_Jump_Squat",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Squat Thrust",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hRicz5MdZEns",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Squats",
+      "kind": "REPS",
+      "roles": [
+        "ROUND",
+        "WARMUP"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": "615",
+      "exerciseDbId": "exr_41n2hmGR8WuVfe1U",
+      "freeExerciseDbId": "Bodyweight_Squat",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Standing Barbell Calf Raise",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "622",
+      "exerciseDbId": "exr_41n2hwoc6PkW1UJJ",
+      "freeExerciseDbId": "Standing_Barbell_Calf_Raise",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Standing Calf Raise",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "622",
+      "exerciseDbId": "exr_41n2hdWu3oaCGdWT",
+      "freeExerciseDbId": "Standing_Calf_Raises",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Standing Hip Circles",
+      "kind": "SECONDS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Standing_Hip_Circles",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Standing Oblique Crunch",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Oblique_Crunches",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Standing Rope Crunch",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Standing_Rope_Crunch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Standing Toe Touches",
+      "kind": "SECONDS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hkknYAEEE3tc",
+      "freeExerciseDbId": "Standing_Toe_Touches",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Star Jacks",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "320",
+      "exerciseDbId": "exr_41n2hupxPcdnktBC",
+      "freeExerciseDbId": "Star_Jump",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Static Lunge",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2hYXWwoxiUk57",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Step-ups",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "LEGS",
+        "STRENGTH"
+      ],
+      "wgerId": "981",
+      "exerciseDbId": "exr_41n2hXvPyEyMBgNR",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Suitcase Carry",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "CORE"
+      ],
+      "wgerId": "1776",
+      "exerciseDbId": null,
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Sumo Squats",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "LEGS"
+      ],
+      "wgerId": "632",
+      "exerciseDbId": "exr_41n2hYAP9oGEZk2P",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Superman",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "CORE",
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "636",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Superman",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Toe Touches",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Toe_Touchers",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Torso Rotation Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Torso_Rotation",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Torso Twist",
+      "kind": "SECONDS",
+      "roles": [
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1377",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Torso_Rotation",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Touchdown Lunges",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "984",
+      "exerciseDbId": "exr_41n2hGNrmUnF58Yy",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Tricep Pushdown",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "805",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Triceps_Pushdown",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Tricep Stretch L",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1230",
+      "exerciseDbId": "exr_41n2hqw5LsDpeE2i",
+      "freeExerciseDbId": "Triceps_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Tricep Stretch R",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1231",
+      "exerciseDbId": "exr_41n2hqw5LsDpeE2i",
+      "freeExerciseDbId": "Triceps_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Triceps Dip",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "STRENGTH",
+        "UPPER_BODY"
+      ],
+      "wgerId": "194",
+      "exerciseDbId": "exr_41n2hadQgEEX8wDN",
+      "freeExerciseDbId": "Dips",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Up Downs",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY"
+      ],
+      "wgerId": "616",
+      "exerciseDbId": "exr_41n2hRicz5MdZEns",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Upper Back Stretch",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Upper_Back_Stretch",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Upright Row",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "694",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Standing_Dumbbell_Upright_Row",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "V-Up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": "exr_41n2huc12BsuDNYQ",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Walking Lunges",
+      "kind": "REPS",
+      "roles": [
+        "ROUND",
+        "WARMUP"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "LEGS"
+      ],
+      "wgerId": "984",
+      "exerciseDbId": "exr_41n2hQHmRSoUkk9F",
+      "freeExerciseDbId": "Bodyweight_Walking_Lunge",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Wall Pectoral Stretch L",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN",
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1713",
+      "exerciseDbId": "exr_41n2hQeNyCnt3uFh",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Wall Pectoral Stretch R",
+      "kind": "SECONDS",
+      "roles": [
+        "COOLDOWN",
+        "WARMUP"
+      ],
+      "equipment": [
+        "GYM",
+        "HOME"
+      ],
+      "focus": [],
+      "wgerId": "1713",
+      "exerciseDbId": "exr_41n2hQeNyCnt3uFh",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Wall Sit",
+      "kind": "SECONDS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "FULL_BODY",
+        "LEGS"
+      ],
+      "wgerId": "1408",
+      "exerciseDbId": "exr_41n2hvjrFJ2KjzGm",
+      "freeExerciseDbId": null,
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Weighted Crunch",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "1648",
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Weighted_Crunches",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Weighted Russian Twist",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": "1193",
+      "exerciseDbId": "exr_41n2hWVVEwU54UtF",
+      "freeExerciseDbId": "Russian_Twist",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Weighted Sit-up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "GYM"
+      ],
+      "focus": [
+        "ABS"
+      ],
+      "wgerId": null,
+      "exerciseDbId": null,
+      "freeExerciseDbId": "Weighted_Sit-Ups_-_With_Bands",
+      "externalMediaUrl": null
+    },
+    {
+      "name": "Wide Push-up",
+      "kind": "REPS",
+      "roles": [
+        "ROUND"
+      ],
+      "equipment": [
+        "HOME"
+      ],
+      "focus": [
+        "UPPER_BODY"
+      ],
+      "wgerId": "1964",
+      "exerciseDbId": "exr_41n2hWgAAtQeA3Lh",
+      "freeExerciseDbId": "Push-Up_Wide",
+      "externalMediaUrl": null
+    }
+  ]
+}
