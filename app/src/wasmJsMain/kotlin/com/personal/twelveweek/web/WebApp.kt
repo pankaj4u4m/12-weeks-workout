@@ -65,8 +65,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.animation.Crossfade
 import com.personal.twelveweek.ProgressStore
@@ -1210,15 +1215,93 @@ private fun ProgramCard(
                 Spacer(Modifier.height(12.dp))
                 LinearProgressIndicator(Modifier.fillMaxWidth())
             } else {
-                Column(Modifier.padding(top = 12.dp)) {
-                    preview.weeks.forEach { week ->
-                        Text("Week ${week.number}", style = MaterialTheme.typography.labelLarge)
-                        week.workouts.forEach { workout ->
-                            val names = workout.sections.flatMap { it.exercises }.filterNot { it.isRest }.joinToString(", ") { it.name }
-                            Text("${workout.title}: $names", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                        Spacer(Modifier.height(8.dp))
-                    }
+                WeekPreviewList(preview.weeks)
+            }
+        }
+    }
+}
+
+/** How many exercise names to show per section before collapsing the rest
+ *  into "+N more" — keeps a 12-week preview scannable instead of a wall
+ *  of text, while still proving the content actually varies week to week.
+ *  Mirrors the Android picker's WeekPreviewList (ui/ProgramPickerScreen.kt). */
+private const val PREVIEW_NAMES_PER_SECTION = 4
+
+@Composable
+private fun WeekPreviewList(weeks: List<Week>) {
+    Column(
+        modifier = Modifier.padding(top = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        weeks.forEach { week ->
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    "WEEK ${week.number}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    letterSpacing = 1.2.sp
+                )
+                week.workouts.forEach { workout ->
+                    WorkoutPreviewCard(workout)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun WorkoutPreviewCard(workout: Workout) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.55f)
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    workout.title,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(Modifier.weight(1f))
+                Text(
+                    buildString {
+                        append("${workout.totalItems} moves")
+                        if (workout.estimatedMinutes > 0) append(" · ~${workout.estimatedMinutes} min")
+                    },
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            workout.sections.forEach { section ->
+                val names = section.exercises.filterNot { it.isRest }.map { it.name }
+                if (names.isNotEmpty()) {
+                    val shownCount = minOf(PREVIEW_NAMES_PER_SECTION, names.size)
+                    val extra = names.size - shownCount
+                    Text(
+                        buildAnnotatedString {
+                            withStyle(
+                                SpanStyle(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            ) {
+                                append(section.title)
+                                append("  ")
+                            }
+                            append(names.take(shownCount).joinToString(", "))
+                            if (extra > 0) {
+                                withStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f))) {
+                                    append("  +$extra more")
+                                }
+                            }
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         }
