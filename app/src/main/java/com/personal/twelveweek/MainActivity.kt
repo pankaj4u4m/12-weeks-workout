@@ -16,6 +16,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -162,6 +163,15 @@ fun AppRoot() {
         val loaded = library.load(selectedProgramId)
         when {
             loaded != null -> activeProgram = loaded
+            activeProgram != null -> {
+                // A switch away from a working program failed. activeProgram
+                // is no longer nulled on switch (Step 1), so silently revert
+                // rather than leaving the user on stale/undefined state —
+                // matches this app's existing "best-effort and silent on
+                // failure" convention (see ProgramSyncRepository.sync()).
+                selectedProgramStore.set(activeProgram!!.meta.id)
+                selectedProgramId = activeProgram!!.meta.id
+            }
             selectedProgramId != SelectedProgramStore.DEFAULT_PROGRAM_ID -> {
                 selectedProgramStore.set(SelectedProgramStore.DEFAULT_PROGRAM_ID)
                 selectedProgramId = SelectedProgramStore.DEFAULT_PROGRAM_ID
@@ -173,7 +183,6 @@ fun AppRoot() {
     fun selectProgram(id: String) {
         selectedProgramStore.set(id)
         loadFailed = false
-        activeProgram = null
         selectedProgramId = id
         screen = Screen.Today
     }
@@ -207,18 +216,20 @@ fun AppRoot() {
 
                 activeProgram == null -> LoadingScreen()
 
-                else -> AppShell(
-                    program = activeProgram!!,
-                    libraryIndex = libraryIndex,
-                    selectedProgramId = selectedProgramId,
-                    progress = progress,
-                    screen = screen,
-                    onScreenChange = { screen = it },
-                    onSelectProgram = ::selectProgram,
-                    onImport = { importLauncher.launch("application/json") },
-                    importError = importError,
-                    onDismissImportError = { importError = null }
-                )
+                else -> Crossfade(targetState = activeProgram!!, label = "activeProgram") { program ->
+                    AppShell(
+                        program = program,
+                        libraryIndex = libraryIndex,
+                        selectedProgramId = selectedProgramId,
+                        progress = progress,
+                        screen = screen,
+                        onScreenChange = { screen = it },
+                        onSelectProgram = ::selectProgram,
+                        onImport = { importLauncher.launch("application/json") },
+                        importError = importError,
+                        onDismissImportError = { importError = null }
+                    )
+                }
             }
         }
     }
