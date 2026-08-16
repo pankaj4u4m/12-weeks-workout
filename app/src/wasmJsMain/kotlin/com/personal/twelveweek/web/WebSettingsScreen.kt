@@ -198,7 +198,7 @@ private fun OptionPickerRow(
         Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(8.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(options) { value ->
+            items(options, key = { it }) { value ->
                 FilterChip(selected = value == selected, onClick = { onSelect(value) }, label = { Text(label(value)) })
             }
         }

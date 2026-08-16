@@ -260,7 +260,7 @@ fun ProgramPickerScreen(
 }
 
 @Composable
-private fun <T> FilterRow(
+private fun <T : Any> FilterRow(
     label: String,
     options: List<T>,
     selected: T?,
@@ -275,7 +275,7 @@ private fun <T> FilterRow(
         )
         Spacer(Modifier.height(8.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(options) { option ->
+            items(options, key = { it }) { option ->
                 FilterChip(
                     selected = option == selected,
                     onClick = { onToggle(option) },

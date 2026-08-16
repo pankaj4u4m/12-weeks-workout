@@ -1120,7 +1120,7 @@ internal fun ProgramsScreen(
 }
 
 @Composable
-private fun <T> ProgramFilterRow(
+private fun <T : Any> ProgramFilterRow(
     label: String,
     options: List<T>,
     selected: T?,
@@ -1131,7 +1131,7 @@ private fun <T> ProgramFilterRow(
         Text(label, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurface)
         Spacer(Modifier.height(8.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(options) { option ->
+            items(options, key = { it }) { option ->
                 FilterChip(
                     selected = option == selected,
                     onClick = { onToggle(option) },
