@@ -67,6 +67,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.animation.Crossfade
 import com.personal.twelveweek.ProgressStore
 import com.personal.twelveweek.SelectedProgramStore
 import com.personal.twelveweek.Week
@@ -126,10 +127,15 @@ fun WebApp() {
 
     LaunchedEffect(selectedProgramId) {
         loadFailed = false
-        activeProgram = null
         val loaded = library.load(selectedProgramId)
+        val current = activeProgram
         if (loaded != null) {
             activeProgram = loaded
+        } else if (current != null) {
+            // Switch failed but a working program is still showing — revert
+            // silently rather than leaving stale/undefined state.
+            selectedProgramStore.set(current.meta.id)
+            selectedProgramId = current.meta.id
         } else if (selectedProgramId != SelectedProgramStore.DEFAULT_PROGRAM_ID) {
             selectedProgramStore.set(SelectedProgramStore.DEFAULT_PROGRAM_ID)
             selectedProgramId = SelectedProgramStore.DEFAULT_PROGRAM_ID
@@ -171,22 +177,24 @@ fun WebApp() {
                     CircularProgressIndicator()
                 }
 
-                else -> WebAppShell(
-                    program = program,
-                    libraryIndex = entries,
-                    selectedProgramId = selectedProgramId,
-                    progress = progress,
-                    settings = settings,
-                    library = library,
-                    screen = screen,
-                    onScreenChange = { screen = it },
-                    onSelectProgram = { id ->
-                        selectedProgramStore.set(id)
-                        selectedProgramId = id
-                        screen = WebScreen.Today
-                    },
-                    onProgramImported = { appScope.launch { index = library.index() } }
-                )
+                else -> Crossfade(targetState = program, label = "activeProgram") { current ->
+                    WebAppShell(
+                        program = current,
+                        libraryIndex = entries,
+                        selectedProgramId = selectedProgramId,
+                        progress = progress,
+                        settings = settings,
+                        library = library,
+                        screen = screen,
+                        onScreenChange = { screen = it },
+                        onSelectProgram = { id ->
+                            selectedProgramStore.set(id)
+                            selectedProgramId = id
+                            screen = WebScreen.Today
+                        },
+                        onProgramImported = { appScope.launch { index = library.index() } }
+                    )
+                }
             }
 
             if (showInstallTip) {
