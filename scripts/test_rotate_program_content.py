@@ -44,6 +44,20 @@ class RotationLogicTest(unittest.TestCase):
         self.assertEqual(raw_for("Squats", 10, None), "10 Squats")
         self.assertEqual(raw_for("Wall Sit", None, 45), "45s Wall Sit")
 
+
+    def test_eligible_candidates_single_viable_candidate(self):
+        """Test the precondition for rotate_program's len(candidates)<2 skip branch."""
+        result = eligible_candidates(CATALOG, "SECONDS", "ROUND", ["HOME"], ["LEGS"])
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["name"], "Wall Sit")
+
+    def test_pick_candidate_fallback_when_excluding_empties_pool(self):
+        """Test pick_candidate's fallback when exclude_names contains all candidates."""
+        candidates = eligible_candidates(CATALOG, "SECONDS", "ROUND", ["HOME"], ["LEGS"])
+        # Exclude the only candidate; pick_candidate should fall back to returning it anyway
+        picked = pick_candidate(candidates, "p1", 1, 0, 0, {"Wall Sit"})
+        self.assertEqual(picked["name"], "Wall Sit")
+
 class RotateProgramTest(unittest.TestCase):
     def _program(self):
         return {
@@ -77,6 +91,27 @@ class RotateProgramTest(unittest.TestCase):
         rotated = rotate_program(self._program(), CATALOG)
         row = rotated["weeks"][0]["workouts"][0]["sections"][0]["exercises"][0]
         self.assertIn(row["name"], {"Squats", "Lunges"})
+
+    def test_single_candidate_exercise_is_left_alone(self):
+        """Test that rotate_program skips rotation when len(candidates)<2."""
+        # Wall Sit is the only SECONDS/ROUND/HOME/LEGS candidate
+        program = {
+            "id": "p1", "equipment": ["HOME"], "focusAreas": ["LEGS"],
+            "weeks": [
+                {"number": 1, "workouts": [{"index": 1, "sections": [
+                    {"title": "Round 1", "exercises": [
+                        {"raw": "45s Wall Sit", "name": "Wall Sit", "reps": None, "seconds": 45,
+                         "wgerId": "1", "exerciseDbId": None, "freeExerciseDbId": None,
+                         "externalMediaUrl": None},
+                    ]},
+                ]}]},
+            ],
+        }
+        rotated = rotate_program(program, CATALOG)
+        row = rotated["weeks"][0]["workouts"][0]["sections"][0]["exercises"][0]
+        # Since there's only 1 eligible SECONDS candidate, name should stay "Wall Sit"
+        self.assertEqual(row["name"], "Wall Sit")
+
 
 if __name__ == "__main__":
     unittest.main()
