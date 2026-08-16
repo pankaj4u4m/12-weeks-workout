@@ -159,6 +159,7 @@ fun WebApp() {
                 !onboarded -> WebOnboardingFlow(
                     step = onboardingStep,
                     entries = entries.orEmpty(),
+                    library = library,
                     selectedProgramId = selectedProgramId,
                     onShowPlans = { onboardingStep = WebOnboardingStep.PICK_PLAN },
                     onBack = { onboardingStep = WebOnboardingStep.WELCOME },
@@ -932,8 +933,11 @@ internal fun ProgramsScreen(
     entries: List<IndexEntry>,
     selectedProgramId: String,
     onSelect: (String) -> Unit,
-    library: ProgramLibrary?,
-    onImported: () -> Unit,
+    library: ProgramLibrary,
+    /** Called after a successful import — null hides the import entry point
+     *  entirely (first-run onboarding, matching Android's
+     *  [com.personal.twelveweek.ui.ProgramPickerScreen] `onImport`). */
+    onImported: (() -> Unit)?,
     onSkip: (() -> Unit)? = null,
     onBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier
@@ -949,10 +953,9 @@ internal fun ProgramsScreen(
 
     fun toggleExpand(id: String) {
         expandedId = if (expandedId == id) null else id
-        val lib = library ?: return
         if (id !in previewCache) {
             importScope.launch {
-                lib.load(id)?.let { loaded -> previewCache = previewCache + (id to loaded) }
+                library.load(id)?.let { loaded -> previewCache = previewCache + (id to loaded) }
             }
         }
     }
@@ -969,14 +972,14 @@ internal fun ProgramsScreen(
     }
 
     fun startImport() {
-        val lib = library ?: return
+        val onDone = onImported ?: return
         pickJsonFile { text ->
             if (text.isBlank()) return@pickJsonFile
             importScope.launch {
-                lib.importProgram(text).fold(
+                library.importProgram(text).fold(
                     onSuccess = {
                         importError = null
-                        onImported()
+                        onDone()
                     },
                     onFailure = { e -> importError = e.message ?: "That file isn't a valid program." }
                 )
@@ -1008,7 +1011,7 @@ internal fun ProgramsScreen(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            if (library != null) {
+            if (onImported != null) {
                 Spacer(Modifier.height(14.dp))
                 OutlinedButton(onClick = ::startImport, modifier = Modifier.fillMaxWidth()) {
                     Icon(Icons.Filled.UploadFile, contentDescription = null)
