@@ -45,6 +45,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -937,6 +938,18 @@ internal fun ProgramsScreen(
     var durationFilter by remember { mutableStateOf<Int?>(null) }
     var importError by remember { mutableStateOf<String?>(null) }
     val importScope = rememberCoroutineScope()
+    var previewCache by remember { mutableStateOf<Map<String, LibraryProgram>>(emptyMap()) }
+    var expandedId by remember { mutableStateOf<String?>(null) }
+
+    fun toggleExpand(id: String) {
+        expandedId = if (expandedId == id) null else id
+        val lib = library ?: return
+        if (id !in previewCache) {
+            importScope.launch {
+                lib.load(id)?.let { loaded -> previewCache = previewCache + (id to loaded) }
+            }
+        }
+    }
 
     val allFocusAreas = remember(entries) { entries.flatMap { it.meta.focusAreas }.distinct() }
     val allEquipment = remember(entries) { entries.flatMap { it.meta.equipment }.distinct() }
@@ -1086,7 +1099,14 @@ internal fun ProgramsScreen(
                 }
             } else {
                 items(filtered, key = { it.meta.id }) { entry ->
-                    ProgramCard(entry = entry, selected = entry.meta.id == selectedProgramId, onClick = { onSelect(entry.meta.id) })
+                    ProgramCard(
+                        entry = entry,
+                        selected = entry.meta.id == selectedProgramId,
+                        expanded = entry.meta.id == expandedId,
+                        preview = previewCache[entry.meta.id],
+                        onToggleExpand = { toggleExpand(entry.meta.id) },
+                        onUsePlan = { onSelect(entry.meta.id) }
+                    )
                 }
             }
         }
@@ -1122,10 +1142,19 @@ private fun <T> ProgramFilterRow(
 }
 
 @Composable
-private fun ProgramCard(entry: IndexEntry, selected: Boolean, onClick: () -> Unit) {
+private fun ProgramCard(
+    entry: IndexEntry,
+    selected: Boolean,
+    expanded: Boolean,
+    preview: LibraryProgram?,
+    onToggleExpand: () -> Unit,
+    onUsePlan: () -> Unit
+) {
     val meta = entry.meta
-    TrainingCard(modifier = Modifier.fillMaxWidth(), onClick = onClick, selected = selected, contentPadding = 18.dp,
-        containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface) {
+    TrainingCard(
+        modifier = Modifier.fillMaxWidth(), onClick = onToggleExpand, selected = selected, contentPadding = 18.dp,
+        containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
+    ) {
         Row(verticalAlignment = Alignment.Top) {
             Column(Modifier.weight(1f)) {
                 Text(meta.title, style = MaterialTheme.typography.titleLarge)
@@ -1158,6 +1187,32 @@ private fun ProgramCard(entry: IndexEntry, selected: Boolean, onClick: () -> Uni
             )
         }
         Spacer(Modifier.height(14.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TextButton(onClick = onToggleExpand) { Text(if (expanded) "Hide workouts" else "See workouts") }
+            Spacer(Modifier.weight(1f))
+            if (!selected) {
+                Button(onClick = onUsePlan) { Text("Use this plan") }
+            } else {
+                Text("Current plan", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+        }
+        if (expanded) {
+            if (preview == null) {
+                Spacer(Modifier.height(12.dp))
+                LinearProgressIndicator(Modifier.fillMaxWidth())
+            } else {
+                Column(Modifier.padding(top = 12.dp)) {
+                    preview.weeks.forEach { week ->
+                        Text("Week ${week.number}", style = MaterialTheme.typography.labelLarge)
+                        week.workouts.forEach { workout ->
+                            val names = workout.sections.flatMap { it.exercises }.filterNot { it.isRest }.joinToString(", ") { it.name }
+                            Text("${workout.title}: $names", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        Spacer(Modifier.height(8.dp))
+                    }
+                }
+            }
+        }
         Text(
             if (selected) "Current plan" else "Use this plan",
             style = MaterialTheme.typography.labelLarge,
