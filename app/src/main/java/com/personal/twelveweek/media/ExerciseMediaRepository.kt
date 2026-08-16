@@ -70,15 +70,31 @@ class ExerciseMediaRepository(
     }
 
     companion object {
-        /** Composition-root factory: wires a disk-cached OkHttpClient (shared
-         *  by both providers) so repeat views are instant/offline. */
+        /**
+         * The one [OkHttpClient] — and therefore the one [Cache] — for the whole
+         * process. OkHttp requires a cache directory to have exactly one live
+         * owner, and several call sites (AppRoot's prefetcher, the exercise
+         * detail sheet, the guided session) each build their own repository,
+         * concurrently: giving each its own Cache over the same directory risks
+         * corrupting it.
+         */
+        @Volatile
+        private var sharedHttpClient: OkHttpClient? = null
+
+        private fun sharedClient(context: Context): OkHttpClient =
+            sharedHttpClient ?: synchronized(this) {
+                sharedHttpClient ?: OkHttpClient.Builder()
+                    .cache(Cache(File(context.applicationContext.cacheDir, "exercise_media_http"), 100L * 1024 * 1024))
+                    .build()
+                    .also { sharedHttpClient = it }
+            }
+
+        /** Composition-root factory: wires the process-wide disk-cached
+         *  OkHttpClient (shared by both providers) so repeat views are
+         *  instant/offline. */
         fun default(context: Context, keyManager: ApiKeyManager): ExerciseMediaRepository {
-            val cacheDir = File(context.cacheDir, "exercise_media_http")
-            val okHttpClient = OkHttpClient.Builder()
-                .cache(Cache(cacheDir, 100L * 1024 * 1024))
-                .build()
             val ktorClient = HttpClient(OkHttp) {
-                engine { preconfigured = okHttpClient }
+                engine { preconfigured = sharedClient(context) }
             }
             return ExerciseMediaRepository(keyManager, ExerciseDbApi(ktorClient), WgerApi(ktorClient))
         }
