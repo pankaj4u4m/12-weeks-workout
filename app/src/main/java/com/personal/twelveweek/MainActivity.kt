@@ -17,6 +17,13 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -103,10 +110,54 @@ private data class WorkoutLocation(
     val workout: Workout
 )
 
+/** Small flame+count badge shown once a streak exists — the one
+ *  continuously-animating element added by this feature (a slow pulse);
+ *  everything else here is one-shot. */
+@Composable
+private fun StreakChip(streakDays: Int, modifier: Modifier = Modifier) {
+    val infiniteTransition = rememberInfiniteTransition(label = "streakPulse")
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.08f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 900, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "streakPulseScale"
+    )
+    Surface(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.tertiaryContainer
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.Filled.LocalFireDepartment,
+                contentDescription = "$streakDays day streak",
+                tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                modifier = Modifier
+                    .size(18.dp)
+                    .graphicsLayer(scaleX = scale, scaleY = scale)
+            )
+            Spacer(Modifier.width(4.dp))
+            Text(
+                "$streakDays",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+        }
+    }
+}
+
 @Composable
 fun AppRoot() {
     val context = LocalContext.current
-    val progress = remember { ProgressStore(RawKeyFlagStore("twelve_week_progress")) }
+    val streaks = remember { StreakTracker(RawKeyFlagStore("twelve_week_streak_days")) }
+    val progress = remember { ProgressStore(RawKeyFlagStore("twelve_week_progress"), streaks) }
+    val milestones = remember { MilestoneTracker(RawPreferenceStore("twelve_week_milestones")) }
     val selectedProgramStore = remember { SelectedProgramStore(RawPreferenceStore("twelve_week_selected_program")) }
     val library = remember { ProgramLibrary() }
     val syncRepo = remember { ProgramSyncRepository.default(context, library) }
@@ -232,6 +283,7 @@ fun AppRoot() {
                         selectedProgramId = selectedProgramId,
                         library = library,
                         progress = progress,
+                        milestones = milestones,
                         screen = screen,
                         onScreenChange = { screen = it },
                         onSelectProgram = ::selectProgram,
@@ -395,6 +447,7 @@ private fun AppShell(
     selectedProgramId: String,
     library: ProgramLibrary,
     progress: ProgressStore,
+    milestones: MilestoneTracker,
     screen: Screen,
     onScreenChange: (Screen) -> Unit,
     onSelectProgram: (String) -> Unit,
@@ -425,6 +478,7 @@ private fun AppShell(
                         selectedProgramId = selectedProgramId,
                         library = library,
                         progress = progress,
+                        milestones = milestones,
                         screen = screen,
                         onScreenChange = onScreenChange,
                         onSelectProgram = onSelectProgram,
@@ -453,6 +507,7 @@ private fun AppShell(
                     selectedProgramId = selectedProgramId,
                     library = library,
                     progress = progress,
+                    milestones = milestones,
                     screen = screen,
                     onScreenChange = onScreenChange,
                     onSelectProgram = onSelectProgram,
@@ -473,6 +528,7 @@ private fun AppScreenContent(
     selectedProgramId: String,
     library: ProgramLibrary,
     progress: ProgressStore,
+    milestones: MilestoneTracker,
     screen: Screen,
     onScreenChange: (Screen) -> Unit,
     onSelectProgram: (String) -> Unit,
@@ -501,6 +557,7 @@ private fun AppScreenContent(
             weeks = program.weeks,
             programTitle = program.meta.title,
             progress = progress,
+            milestones = milestones,
             onOpenWeek = { onScreenChange(Screen.WeekDetail(it)) },
             modifier = modifier
         )
@@ -564,7 +621,9 @@ private fun AppScreenContent(
             Box(modifier = modifier.fillMaxSize()) {
                 GuidedSessionScreen(
                     workout = workout,
+                    weeks = program.weeks,
                     progress = progress,
+                    milestones = milestones,
                     onExit = {
                         onScreenChange(Screen.WorkoutDetail(screen.week, screen.workout))
                     }
@@ -654,8 +713,15 @@ private fun TodayScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                IconButton(onClick = onOpenSettings) {
-                    Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    val streakDays = progress.currentStreak()
+                    if (streakDays >= 1) {
+                        StreakChip(streakDays = streakDays)
+                        Spacer(Modifier.width(8.dp))
+                    }
+                    IconButton(onClick = onOpenSettings) {
+                        Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                    }
                 }
             }
         }
@@ -886,6 +952,7 @@ private fun PlanScreen(
     weeks: List<Week>,
     programTitle: String,
     progress: ProgressStore,
+    milestones: MilestoneTracker,
     onOpenWeek: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -976,6 +1043,7 @@ private fun PlanScreen(
                 Button(
                     onClick = {
                         progress.clearEverything()
+                        milestones.resetAll()
                         confirmReset = false
                     },
                     shape = MaterialTheme.shapes.medium
@@ -1617,6 +1685,17 @@ internal fun buzz(context: Context) {
     runCatching {
         context.getSystemService(Vibrator::class.java)?.vibrate(
             VibrationEffect.createWaveform(longArrayOf(0, 250, 150, 250), -1)
+        )
+    }
+}
+
+/** Slightly longer/bouncier celebratory pattern for milestone unlocks —
+ *  distinct from [buzz]'s per-step completion pulse so a milestone reads
+ *  as a bigger moment. */
+internal fun festiveBuzz(context: Context) {
+    runCatching {
+        context.getSystemService(Vibrator::class.java)?.vibrate(
+            VibrationEffect.createWaveform(longArrayOf(0, 120, 90, 120, 90, 220), -1)
         )
     }
 }

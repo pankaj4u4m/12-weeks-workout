@@ -35,9 +35,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import com.personal.twelveweek.Milestone
+import com.personal.twelveweek.MilestoneKind
+import com.personal.twelveweek.MilestoneTracker
 import com.personal.twelveweek.ProgressStore
+import com.personal.twelveweek.Week
 import com.personal.twelveweek.Workout
 import com.personal.twelveweek.buzz
+import com.personal.twelveweek.festiveBuzz
 import com.personal.twelveweek.formatClock
 import com.personal.twelveweek.media.ExerciseMediaCarousel
 import com.personal.twelveweek.media.ExerciseMediaRepository
@@ -64,7 +69,9 @@ private const val MOTIVATION_CHANCE = 0.5f
 @Composable
 fun GuidedSessionScreen(
     workout: Workout,
+    weeks: List<Week>,
     progress: ProgressStore,
+    milestones: MilestoneTracker,
     onExit: () -> Unit
 ) {
     val context = LocalContext.current
@@ -168,10 +175,21 @@ fun GuidedSessionScreen(
         if (finished) voice.speak(finisherLine)
     }
 
+    val newMilestones = remember(finished) {
+        if (!finished) return@remember emptyList<Milestone>()
+        val workoutsCompleted = weeks.flatMap { it.workouts }.count { w ->
+            val k = w.allKeys()
+            k.isNotEmpty() && progress.countDone(k) == k.size
+        }
+        milestones.checkAndConsume(progress.currentStreak(), workoutsCompleted)
+    }
+
     if (finished) {
         SessionCompleteScreen(
             headline = finisherLine,
             movementCount = steps.size,
+            streakDays = progress.currentStreak(),
+            newMilestones = newMilestones,
             onExit = onExit
         )
         return
@@ -769,45 +787,76 @@ private fun TransitionScreen(
 @Composable
 private fun SessionCompleteScreen(
     movementCount: Int,
+    streakDays: Int,
+    newMilestones: List<Milestone>,
     onExit: () -> Unit,
     headline: String = "Workout complete"
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        ResistanceBandMark(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(180.dp)
-        )
-        Spacer(Modifier.height(24.dp))
-        Text(
-            headline.ifEmpty { "Workout complete" },
-            style = MaterialTheme.typography.displayMedium,
-            textAlign = TextAlign.Center
-        )
-        Spacer(Modifier.height(10.dp))
-        Text(
-            "$movementCount movements recorded. Your plan is ready for the next session.",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
-        Spacer(Modifier.height(28.dp))
-        Button(
-            onClick = onExit,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 56.dp),
-            shape = MaterialTheme.shapes.medium
-        ) {
-            Text("Return to workout")
-        }
+    val context = LocalContext.current
+    LaunchedEffect(newMilestones) {
+        if (newMilestones.isNotEmpty()) festiveBuzz(context)
     }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            ResistanceBandMark(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+            )
+            Spacer(Modifier.height(24.dp))
+            Text(
+                headline.ifEmpty { "Workout complete" },
+                style = MaterialTheme.typography.displayMedium,
+                textAlign = TextAlign.Center
+            )
+            if (streakDays >= 2) {
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    "🔥 $streakDays day streak",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+            Spacer(Modifier.height(10.dp))
+            Text(
+                "$movementCount movements recorded. Your plan is ready for the next session.",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+            newMilestones.forEach { milestone ->
+                Spacer(Modifier.height(10.dp))
+                Text(
+                    "🎉 New milestone: ${milestoneLabel(milestone)}",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.tertiary,
+                    textAlign = TextAlign.Center
+                )
+            }
+            Spacer(Modifier.height(28.dp))
+            Button(
+                onClick = onExit,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 56.dp),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Text("Return to workout")
+            }
+        }
+        ConfettiBurst(modifier = Modifier.fillMaxSize())
+    }
+}
+
+private fun milestoneLabel(milestone: Milestone): String = when (milestone.kind) {
+    MilestoneKind.STREAK -> "${milestone.threshold}-day streak!"
+    MilestoneKind.WORKOUTS -> "${milestone.threshold} workouts done!"
 }
 
 private tailrec fun Context.findActivity(): Activity? = when (this) {

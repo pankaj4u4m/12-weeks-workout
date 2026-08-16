@@ -1,6 +1,9 @@
 package com.personal.twelveweek.ui
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -8,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,7 +20,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -24,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.progressBarRangeInfo
@@ -33,6 +40,9 @@ import androidx.compose.ui.unit.dp
 import com.personal.twelveweek.BandBlue
 import com.personal.twelveweek.BandCoral
 import com.personal.twelveweek.BandMint
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.random.Random
 
 @Composable
 fun TrainingCard(
@@ -242,3 +252,59 @@ fun ResistanceBandMark(
         drawPath(lower, BandMint.copy(alpha = alpha), style = Stroke(7.dp.toPx(), cap = StrokeCap.Round))
     }
 }
+
+/** Short, non-blocking confetti burst for workout-completion celebrations —
+ *  purely decorative, plays once over ~1.2s and stops; never gates the
+ *  screen's exit action. Colors pulled from the app's own Band palette so
+ *  it matches the existing visual language instead of generic confetti. */
+@Composable
+fun ConfettiBurst(modifier: Modifier = Modifier, particleCount: Int = 28) {
+    val burstColors = listOf(
+        BandBlue, BandCoral, MaterialTheme.colorScheme.tertiary, MaterialTheme.colorScheme.secondary
+    )
+    val particles = remember {
+        List(particleCount) { i ->
+            ConfettiParticle(
+                angle = Random.nextFloat() * (kotlin.math.PI.toFloat() * 2f),
+                speed = 0.25f + Random.nextFloat() * 0.35f,
+                rotationSpeed = (Random.nextFloat() - 0.5f) * 540f,
+                size = (6 + Random.nextInt(6)).dp,
+                color = burstColors[i % burstColors.size]
+            )
+        }
+    }
+    val progress = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        progress.animateTo(1f, animationSpec = tween(durationMillis = 1200, easing = LinearEasing))
+    }
+    if (progress.value >= 1f) return
+    Canvas(modifier = modifier.fillMaxSize()) {
+        val t = progress.value
+        val fade = (1f - t).coerceIn(0f, 1f)
+        val reach = minOf(size.width, size.height)
+        val originX = size.width / 2f
+        val originY = size.height * 0.18f
+        particles.forEach { p ->
+            val outward = reach * p.speed * t
+            val x = originX + cos(p.angle) * outward
+            val fall = size.height * 0.55f * t * t
+            val y = originY + sin(p.angle) * outward * 0.4f + fall
+            val half = p.size.toPx() / 2f
+            rotate(p.rotationSpeed * t, pivot = Offset(x, y)) {
+                drawRect(
+                    color = p.color.copy(alpha = fade),
+                    topLeft = Offset(x - half, y - half * 0.6f),
+                    size = Size(p.size.toPx(), p.size.toPx() * 0.6f)
+                )
+            }
+        }
+    }
+}
+
+private data class ConfettiParticle(
+    val angle: Float,
+    val speed: Float,
+    val rotationSpeed: Float,
+    val size: Dp,
+    val color: Color
+)
