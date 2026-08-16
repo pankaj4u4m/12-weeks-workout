@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.personal.twelveweek.media.ExerciseDbApi
 import com.personal.twelveweek.programs.IndexEntry
+import com.personal.twelveweek.programs.ProgramLibrary
 import io.ktor.client.HttpClient
 
 /**
@@ -51,6 +52,7 @@ enum class WebOnboardingStep { WELCOME, PICK_PLAN, CONNECT_MEDIA }
 fun WebOnboardingFlow(
     step: WebOnboardingStep,
     entries: List<IndexEntry>,
+    library: ProgramLibrary,
     selectedProgramId: String,
     onShowPlans: () -> Unit,
     onBack: () -> Unit,
@@ -63,8 +65,9 @@ fun WebOnboardingFlow(
             entries = entries,
             selectedProgramId = selectedProgramId,
             onSelect = onProgramChosen,
-            library = null,
-            onImported = {},
+            library = library,
+            // Import stays hidden during first-run onboarding, same as Android.
+            onImported = null,
             onSkip = { onProgramChosen(selectedProgramId) },
             onBack = onBack,
             modifier = Modifier.fillMaxSize()

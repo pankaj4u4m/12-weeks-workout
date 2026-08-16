@@ -16,10 +16,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.rememberCoroutineScope
+import com.personal.twelveweek.Week
 import com.personal.twelveweek.programs.Equipment
 import com.personal.twelveweek.programs.FocusArea
 import com.personal.twelveweek.programs.IndexEntry
+import com.personal.twelveweek.programs.LibraryProgram
 import com.personal.twelveweek.programs.ProgramLevel
+import com.personal.twelveweek.programs.ProgramLibrary
+import kotlinx.coroutines.launch
 
 private fun ProgramLevel.label() = when (this) {
     ProgramLevel.BEGINNER -> "Beginner"
@@ -45,6 +50,7 @@ private fun Equipment.label() = when (this) {
 fun ProgramPickerScreen(
     entries: List<IndexEntry>,
     selectedProgramId: String,
+    library: ProgramLibrary,
     onSelect: (String) -> Unit,
     onSkip: (() -> Unit)? = null,
     onBack: (() -> Unit)? = null,
@@ -65,6 +71,18 @@ fun ProgramPickerScreen(
     // per-time program set to author — sessionMinutes is precomputed once in
     // the GitHub repo per program, this just filters on it).
     var durationFilter by remember { mutableStateOf<Int?>(null) }
+    var previewCache by remember { mutableStateOf<Map<String, LibraryProgram>>(emptyMap()) }
+    var expandedId by remember { mutableStateOf<String?>(null) }
+    val previewScope = rememberCoroutineScope()
+
+    fun toggleExpand(id: String) {
+        expandedId = if (expandedId == id) null else id
+        if (id !in previewCache) {
+            previewScope.launch {
+                library.load(id)?.let { loaded -> previewCache = previewCache + (id to loaded) }
+            }
+        }
+    }
 
     val allFocusAreas = remember(entries) { entries.flatMap { it.meta.focusAreas }.distinct() }
     val allEquipment = remember(entries) { entries.flatMap { it.meta.equipment }.distinct() }
@@ -230,7 +248,10 @@ fun ProgramPickerScreen(
                     ProgramCard(
                         entry = entry,
                         selected = entry.meta.id == selectedProgramId,
-                        onClick = { onSelect(entry.meta.id) }
+                        expanded = entry.meta.id == expandedId,
+                        preview = previewCache[entry.meta.id],
+                        onToggleExpand = { toggleExpand(entry.meta.id) },
+                        onUsePlan = { onSelect(entry.meta.id) }
                     )
                 }
             }
@@ -239,7 +260,7 @@ fun ProgramPickerScreen(
 }
 
 @Composable
-private fun <T> FilterRow(
+private fun <T : Any> FilterRow(
     label: String,
     options: List<T>,
     selected: T?,
@@ -254,7 +275,7 @@ private fun <T> FilterRow(
         )
         Spacer(Modifier.height(8.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(options) { option ->
+            items(options, key = { it }) { option ->
                 FilterChip(
                     selected = option == selected,
                     onClick = { onToggle(option) },
@@ -280,11 +301,14 @@ private fun <T> FilterRow(
 private fun ProgramCard(
     entry: IndexEntry,
     selected: Boolean,
-    onClick: () -> Unit
+    expanded: Boolean,
+    preview: LibraryProgram?,
+    onToggleExpand: () -> Unit,
+    onUsePlan: () -> Unit
 ) {
     val meta = entry.meta
     Surface(
-        onClick = onClick,
+        onClick = onToggleExpand,
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         color = if (selected) {
@@ -316,10 +340,7 @@ private fun ProgramCard(
                     )
                 }
                 if (selected) {
-                    Surface(
-                        shape = CircleShape,
-                        color = MaterialTheme.colorScheme.primary
-                    ) {
+                    Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primary) {
                         Icon(
                             Icons.Filled.Check,
                             contentDescription = "Current plan",
@@ -342,15 +363,50 @@ private fun ProgramCard(
                 )
             }
             Spacer(Modifier.height(14.dp))
-            Text(
-                if (selected) "Current plan" else "Use this plan",
-                style = MaterialTheme.typography.labelLarge,
-                color = if (selected) {
-                    MaterialTheme.colorScheme.onPrimaryContainer
-                } else {
-                    MaterialTheme.colorScheme.primary
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                TextButton(onClick = onToggleExpand) {
+                    Text(if (expanded) "Hide workouts" else "See workouts")
                 }
-            )
+                Spacer(Modifier.weight(1f))
+                if (!selected) {
+                    Button(onClick = onUsePlan) { Text("Use this plan") }
+                } else {
+                    Text(
+                        "Current plan",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+            }
+            if (expanded) {
+                if (preview == null) {
+                    Spacer(Modifier.height(12.dp))
+                    LinearProgressIndicator(Modifier.fillMaxWidth())
+                } else {
+                    WeekPreviewList(preview.weeks)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun WeekPreviewList(weeks: List<Week>) {
+    Column(Modifier.padding(top = 12.dp)) {
+        weeks.forEach { week ->
+            Text("Week ${week.number}", style = MaterialTheme.typography.labelLarge)
+            week.workouts.forEach { workout ->
+                val names = workout.sections
+                    .flatMap { it.exercises }
+                    .filterNot { it.isRest }
+                    .joinToString(", ") { it.name }
+                Text(
+                    "${workout.title}: $names",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Spacer(Modifier.height(8.dp))
         }
     }
 }

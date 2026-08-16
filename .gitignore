@@ -15,3 +15,5 @@ keystore.properties
 *.jks
 /kotlin-js-store
 /json
+__pycache__/
+.lemoncrow/

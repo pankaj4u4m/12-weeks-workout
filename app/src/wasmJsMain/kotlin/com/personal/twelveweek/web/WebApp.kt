@@ -45,6 +45,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -67,6 +68,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.animation.Crossfade
 import com.personal.twelveweek.ProgressStore
 import com.personal.twelveweek.SelectedProgramStore
 import com.personal.twelveweek.Week
@@ -108,6 +110,8 @@ fun WebApp() {
     val settings = remember { WebSettings() }
     val installTipState = remember { WebInstallTipState() }
     var showInstallTip by remember { mutableStateOf(false) }
+    val prefetchKeyManager = remember { WebApiKeyManager() }
+    val prefetchRepository = remember { WebExerciseMediaRepository.default(prefetchKeyManager) }
 
     var index by remember { mutableStateOf<List<IndexEntry>?>(null) }
     var selectedProgramId by remember { mutableStateOf(selectedProgramStore.get()) }
@@ -124,12 +128,21 @@ fun WebApp() {
         if (onboarded && !installTipState.hasSeenTip()) showInstallTip = true
     }
 
+    LaunchedEffect(activeProgram?.meta?.id) {
+        activeProgram?.let { prefetchProgramMedia(it, prefetchRepository) }
+    }
+
     LaunchedEffect(selectedProgramId) {
         loadFailed = false
-        activeProgram = null
         val loaded = library.load(selectedProgramId)
+        val current = activeProgram
         if (loaded != null) {
             activeProgram = loaded
+        } else if (current != null) {
+            // Switch failed but a working program is still showing — revert
+            // silently rather than leaving stale/undefined state.
+            selectedProgramStore.set(current.meta.id)
+            selectedProgramId = current.meta.id
         } else if (selectedProgramId != SelectedProgramStore.DEFAULT_PROGRAM_ID) {
             selectedProgramStore.set(SelectedProgramStore.DEFAULT_PROGRAM_ID)
             selectedProgramId = SelectedProgramStore.DEFAULT_PROGRAM_ID
@@ -146,6 +159,7 @@ fun WebApp() {
                 !onboarded -> WebOnboardingFlow(
                     step = onboardingStep,
                     entries = entries.orEmpty(),
+                    library = library,
                     selectedProgramId = selectedProgramId,
                     onShowPlans = { onboardingStep = WebOnboardingStep.PICK_PLAN },
                     onBack = { onboardingStep = WebOnboardingStep.WELCOME },
@@ -171,22 +185,24 @@ fun WebApp() {
                     CircularProgressIndicator()
                 }
 
-                else -> WebAppShell(
-                    program = program,
-                    libraryIndex = entries,
-                    selectedProgramId = selectedProgramId,
-                    progress = progress,
-                    settings = settings,
-                    library = library,
-                    screen = screen,
-                    onScreenChange = { screen = it },
-                    onSelectProgram = { id ->
-                        selectedProgramStore.set(id)
-                        selectedProgramId = id
-                        screen = WebScreen.Today
-                    },
-                    onProgramImported = { appScope.launch { index = library.index() } }
-                )
+                else -> Crossfade(targetState = program, label = "activeProgram") { current ->
+                    WebAppShell(
+                        program = current,
+                        libraryIndex = entries,
+                        selectedProgramId = selectedProgramId,
+                        progress = progress,
+                        settings = settings,
+                        library = library,
+                        screen = screen,
+                        onScreenChange = { screen = it },
+                        onSelectProgram = { id ->
+                            selectedProgramStore.set(id)
+                            selectedProgramId = id
+                            screen = WebScreen.Today
+                        },
+                        onProgramImported = { appScope.launch { index = library.index() } }
+                    )
+                }
             }
 
             if (showInstallTip) {
@@ -917,8 +933,11 @@ internal fun ProgramsScreen(
     entries: List<IndexEntry>,
     selectedProgramId: String,
     onSelect: (String) -> Unit,
-    library: ProgramLibrary?,
-    onImported: () -> Unit,
+    library: ProgramLibrary,
+    /** Called after a successful import — null hides the import entry point
+     *  entirely (first-run onboarding, matching Android's
+     *  [com.personal.twelveweek.ui.ProgramPickerScreen] `onImport`). */
+    onImported: (() -> Unit)?,
     onSkip: (() -> Unit)? = null,
     onBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier
@@ -929,6 +948,17 @@ internal fun ProgramsScreen(
     var durationFilter by remember { mutableStateOf<Int?>(null) }
     var importError by remember { mutableStateOf<String?>(null) }
     val importScope = rememberCoroutineScope()
+    var previewCache by remember { mutableStateOf<Map<String, LibraryProgram>>(emptyMap()) }
+    var expandedId by remember { mutableStateOf<String?>(null) }
+
+    fun toggleExpand(id: String) {
+        expandedId = if (expandedId == id) null else id
+        if (id !in previewCache) {
+            importScope.launch {
+                library.load(id)?.let { loaded -> previewCache = previewCache + (id to loaded) }
+            }
+        }
+    }
 
     val allFocusAreas = remember(entries) { entries.flatMap { it.meta.focusAreas }.distinct() }
     val allEquipment = remember(entries) { entries.flatMap { it.meta.equipment }.distinct() }
@@ -942,14 +972,14 @@ internal fun ProgramsScreen(
     }
 
     fun startImport() {
-        val lib = library ?: return
+        val onDone = onImported ?: return
         pickJsonFile { text ->
             if (text.isBlank()) return@pickJsonFile
             importScope.launch {
-                lib.importProgram(text).fold(
+                library.importProgram(text).fold(
                     onSuccess = {
                         importError = null
-                        onImported()
+                        onDone()
                     },
                     onFailure = { e -> importError = e.message ?: "That file isn't a valid program." }
                 )
@@ -981,7 +1011,7 @@ internal fun ProgramsScreen(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            if (library != null) {
+            if (onImported != null) {
                 Spacer(Modifier.height(14.dp))
                 OutlinedButton(onClick = ::startImport, modifier = Modifier.fillMaxWidth()) {
                     Icon(Icons.Filled.UploadFile, contentDescription = null)
@@ -1078,7 +1108,14 @@ internal fun ProgramsScreen(
                 }
             } else {
                 items(filtered, key = { it.meta.id }) { entry ->
-                    ProgramCard(entry = entry, selected = entry.meta.id == selectedProgramId, onClick = { onSelect(entry.meta.id) })
+                    ProgramCard(
+                        entry = entry,
+                        selected = entry.meta.id == selectedProgramId,
+                        expanded = entry.meta.id == expandedId,
+                        preview = previewCache[entry.meta.id],
+                        onToggleExpand = { toggleExpand(entry.meta.id) },
+                        onUsePlan = { onSelect(entry.meta.id) }
+                    )
                 }
             }
         }
@@ -1086,7 +1123,7 @@ internal fun ProgramsScreen(
 }
 
 @Composable
-private fun <T> ProgramFilterRow(
+private fun <T : Any> ProgramFilterRow(
     label: String,
     options: List<T>,
     selected: T?,
@@ -1097,7 +1134,7 @@ private fun <T> ProgramFilterRow(
         Text(label, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurface)
         Spacer(Modifier.height(8.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(options) { option ->
+            items(options, key = { it }) { option ->
                 FilterChip(
                     selected = option == selected,
                     onClick = { onToggle(option) },
@@ -1114,10 +1151,19 @@ private fun <T> ProgramFilterRow(
 }
 
 @Composable
-private fun ProgramCard(entry: IndexEntry, selected: Boolean, onClick: () -> Unit) {
+private fun ProgramCard(
+    entry: IndexEntry,
+    selected: Boolean,
+    expanded: Boolean,
+    preview: LibraryProgram?,
+    onToggleExpand: () -> Unit,
+    onUsePlan: () -> Unit
+) {
     val meta = entry.meta
-    TrainingCard(modifier = Modifier.fillMaxWidth(), onClick = onClick, selected = selected, contentPadding = 18.dp,
-        containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface) {
+    TrainingCard(
+        modifier = Modifier.fillMaxWidth(), onClick = onToggleExpand, selected = selected, contentPadding = 18.dp,
+        containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
+    ) {
         Row(verticalAlignment = Alignment.Top) {
             Column(Modifier.weight(1f)) {
                 Text(meta.title, style = MaterialTheme.typography.titleLarge)
@@ -1150,11 +1196,32 @@ private fun ProgramCard(entry: IndexEntry, selected: Boolean, onClick: () -> Uni
             )
         }
         Spacer(Modifier.height(14.dp))
-        Text(
-            if (selected) "Current plan" else "Use this plan",
-            style = MaterialTheme.typography.labelLarge,
-            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.primary
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TextButton(onClick = onToggleExpand) { Text(if (expanded) "Hide workouts" else "See workouts") }
+            Spacer(Modifier.weight(1f))
+            if (!selected) {
+                Button(onClick = onUsePlan) { Text("Use this plan") }
+            } else {
+                Text("Current plan", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+        }
+        if (expanded) {
+            if (preview == null) {
+                Spacer(Modifier.height(12.dp))
+                LinearProgressIndicator(Modifier.fillMaxWidth())
+            } else {
+                Column(Modifier.padding(top = 12.dp)) {
+                    preview.weeks.forEach { week ->
+                        Text("Week ${week.number}", style = MaterialTheme.typography.labelLarge)
+                        week.workouts.forEach { workout ->
+                            val names = workout.sections.flatMap { it.exercises }.filterNot { it.isRest }.joinToString(", ") { it.name }
+                            Text("${workout.title}: $names", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        Spacer(Modifier.height(8.dp))
+                    }
+                }
+            }
+        }
     }
 }
 

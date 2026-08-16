@@ -16,6 +16,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -48,6 +49,7 @@ import androidx.core.net.toUri
 import com.personal.twelveweek.media.ExerciseMediaCarousel
 import com.personal.twelveweek.media.ExerciseMediaRepository
 import com.personal.twelveweek.media.MediaPage
+import com.personal.twelveweek.media.prefetchProgramMedia
 import com.personal.twelveweek.media.primaryInstructions
 import com.personal.twelveweek.programs.IndexEntry
 import com.personal.twelveweek.programs.LibraryProgram
@@ -108,6 +110,8 @@ fun AppRoot() {
     val selectedProgramStore = remember { SelectedProgramStore(RawPreferenceStore("twelve_week_selected_program")) }
     val library = remember { ProgramLibrary() }
     val syncRepo = remember { ProgramSyncRepository.default(context, library) }
+    val mediaKeyManager = remember { ApiKeyManager(context) }
+    val mediaRepository = remember { ExerciseMediaRepository.default(context, mediaKeyManager) }
 
     var screen: Screen by remember { mutableStateOf(Screen.Today) }
     var onboarded by remember { mutableStateOf(selectedProgramStore.hasOnboarded()) }
@@ -162,6 +166,15 @@ fun AppRoot() {
         val loaded = library.load(selectedProgramId)
         when {
             loaded != null -> activeProgram = loaded
+            activeProgram != null -> {
+                // A switch away from a working program failed. activeProgram
+                // is no longer nulled on switch (Step 1), so silently revert
+                // rather than leaving the user on stale/undefined state —
+                // matches this app's existing "best-effort and silent on
+                // failure" convention (see ProgramSyncRepository.sync()).
+                selectedProgramStore.set(activeProgram!!.meta.id)
+                selectedProgramId = activeProgram!!.meta.id
+            }
             selectedProgramId != SelectedProgramStore.DEFAULT_PROGRAM_ID -> {
                 selectedProgramStore.set(SelectedProgramStore.DEFAULT_PROGRAM_ID)
                 selectedProgramId = SelectedProgramStore.DEFAULT_PROGRAM_ID
@@ -170,10 +183,13 @@ fun AppRoot() {
         }
     }
 
+    LaunchedEffect(activeProgram?.meta?.id) {
+        activeProgram?.let { prefetchProgramMedia(it, mediaRepository) }
+    }
+
     fun selectProgram(id: String) {
         selectedProgramStore.set(id)
         loadFailed = false
-        activeProgram = null
         selectedProgramId = id
         screen = Screen.Today
     }
@@ -188,6 +204,7 @@ fun AppRoot() {
                     step = onboardingStep,
                     entries = libraryIndex,
                     selectedProgramId = selectedProgramId,
+                    library = library,
                     onShowPlans = { onboardingStep = OnboardingStep.PICK_PLAN },
                     onBack = { onboardingStep = OnboardingStep.WELCOME },
                     onProgramChosen = { id ->
@@ -201,24 +218,28 @@ fun AppRoot() {
                 activeProgram == null && loadFailed -> ProgramPickerScreen(
                     entries = libraryIndex,
                     selectedProgramId = selectedProgramId,
+                    library = library,
                     onSelect = ::selectProgram,
                     modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing)
                 )
 
                 activeProgram == null -> LoadingScreen()
 
-                else -> AppShell(
-                    program = activeProgram!!,
-                    libraryIndex = libraryIndex,
-                    selectedProgramId = selectedProgramId,
-                    progress = progress,
-                    screen = screen,
-                    onScreenChange = { screen = it },
-                    onSelectProgram = ::selectProgram,
-                    onImport = { importLauncher.launch("application/json") },
-                    importError = importError,
-                    onDismissImportError = { importError = null }
-                )
+                else -> Crossfade(targetState = activeProgram!!, label = "activeProgram") { program ->
+                    AppShell(
+                        program = program,
+                        libraryIndex = libraryIndex,
+                        selectedProgramId = selectedProgramId,
+                        library = library,
+                        progress = progress,
+                        screen = screen,
+                        onScreenChange = { screen = it },
+                        onSelectProgram = ::selectProgram,
+                        onImport = { importLauncher.launch("application/json") },
+                        importError = importError,
+                        onDismissImportError = { importError = null }
+                    )
+                }
             }
         }
     }
@@ -229,6 +250,7 @@ private fun OnboardingFlow(
     step: OnboardingStep,
     entries: List<IndexEntry>,
     selectedProgramId: String,
+    library: ProgramLibrary,
     onShowPlans: () -> Unit,
     onBack: () -> Unit,
     onProgramChosen: (String) -> Unit
@@ -240,6 +262,7 @@ private fun OnboardingFlow(
             ProgramPickerScreen(
                 entries = entries,
                 selectedProgramId = selectedProgramId,
+                library = library,
                 onSelect = onProgramChosen,
                 onSkip = { onProgramChosen(selectedProgramId) },
                 onBack = onBack,
@@ -370,6 +393,7 @@ private fun AppShell(
     program: LibraryProgram,
     libraryIndex: List<IndexEntry>,
     selectedProgramId: String,
+    library: ProgramLibrary,
     progress: ProgressStore,
     screen: Screen,
     onScreenChange: (Screen) -> Unit,
@@ -399,6 +423,7 @@ private fun AppShell(
                         program = program,
                         libraryIndex = libraryIndex,
                         selectedProgramId = selectedProgramId,
+                        library = library,
                         progress = progress,
                         screen = screen,
                         onScreenChange = onScreenChange,
@@ -426,6 +451,7 @@ private fun AppShell(
                     program = program,
                     libraryIndex = libraryIndex,
                     selectedProgramId = selectedProgramId,
+                    library = library,
                     progress = progress,
                     screen = screen,
                     onScreenChange = onScreenChange,
@@ -445,6 +471,7 @@ private fun AppScreenContent(
     program: LibraryProgram,
     libraryIndex: List<IndexEntry>,
     selectedProgramId: String,
+    library: ProgramLibrary,
     progress: ProgressStore,
     screen: Screen,
     onScreenChange: (Screen) -> Unit,
@@ -481,6 +508,7 @@ private fun AppScreenContent(
         Screen.Programs -> ProgramPickerScreen(
             entries = libraryIndex,
             selectedProgramId = selectedProgramId,
+            library = library,
             onSelect = onSelectProgram,
             onImport = onImport,
             importError = importError,
