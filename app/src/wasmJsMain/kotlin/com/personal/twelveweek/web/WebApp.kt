@@ -26,7 +26,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DoneAll
@@ -70,12 +77,15 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.animation.Crossfade
+import com.personal.twelveweek.MilestoneTracker
 import com.personal.twelveweek.ProgressStore
 import com.personal.twelveweek.SelectedProgramStore
+import com.personal.twelveweek.StreakTracker
 import com.personal.twelveweek.Week
 import com.personal.twelveweek.Workout
 import com.personal.twelveweek.programs.Equipment
@@ -110,7 +120,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun WebApp() {
     val library = remember { ProgramLibrary() }
-    val progress = remember { ProgressStore(RawKeyFlagStore("twelve_week_progress")) }
+    val streaks = remember { StreakTracker(RawKeyFlagStore("twelve_week_streak_days")) }
+    val progress = remember { ProgressStore(RawKeyFlagStore("twelve_week_progress"), streaks) }
+    val milestones = remember { MilestoneTracker(RawPreferenceStore("twelve_week_milestones")) }
     val selectedProgramStore = remember { SelectedProgramStore(RawPreferenceStore("twelve_week_selected_program")) }
     val settings = remember { WebSettings() }
     val installTipState = remember { WebInstallTipState() }
@@ -196,6 +208,7 @@ fun WebApp() {
                         libraryIndex = entries,
                         selectedProgramId = selectedProgramId,
                         progress = progress,
+                        milestones = milestones,
                         settings = settings,
                         library = library,
                         screen = screen,
@@ -253,6 +266,7 @@ private fun WebAppShell(
     libraryIndex: List<IndexEntry>,
     selectedProgramId: String,
     progress: ProgressStore,
+    milestones: MilestoneTracker,
     settings: WebSettings,
     library: ProgramLibrary,
     screen: WebScreen,
@@ -289,6 +303,7 @@ private fun WebAppShell(
                     libraryIndex = libraryIndex,
                     selectedProgramId = selectedProgramId,
                     progress = progress,
+                    milestones = milestones,
                     settings = settings,
                     library = library,
                     screen = screen,
@@ -305,6 +320,7 @@ private fun WebAppShell(
                     libraryIndex = libraryIndex,
                     selectedProgramId = selectedProgramId,
                     progress = progress,
+                    milestones = milestones,
                     settings = settings,
                     library = library,
                     screen = screen,
@@ -336,6 +352,7 @@ private fun WebAppContent(
     libraryIndex: List<IndexEntry>,
     selectedProgramId: String,
     progress: ProgressStore,
+    milestones: MilestoneTracker,
     settings: WebSettings,
     library: ProgramLibrary,
     screen: WebScreen,
@@ -362,6 +379,7 @@ private fun WebAppContent(
                 weeks = program.weeks,
                 programTitle = program.meta.title,
                 progress = progress,
+                milestones = milestones,
                 onOpenWeek = { onScreenChange(WebScreen.WeekDetail(it)) },
                 modifier = content
             )
@@ -411,12 +429,54 @@ private fun WebAppContent(
                 Box(modifier = content.fillMaxSize()) {
                     WebGuidedSessionScreen(
                         workout = workout,
+                        weeks = program.weeks,
                         progress = progress,
+                        milestones = milestones,
                         settings = settings,
                         onExit = { onScreenChange(WebScreen.WorkoutDetail(screen.week, screen.workout)) }
                     )
                 }
             }
+        }
+    }
+}
+
+/** Web port of the Android app's `StreakChip` — same shape, same pulse. */
+@Composable
+private fun WebStreakChip(streakDays: Int, modifier: Modifier = Modifier) {
+    val infiniteTransition = rememberInfiniteTransition(label = "streakPulse")
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.08f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 900, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "streakPulseScale"
+    )
+    Surface(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.tertiaryContainer
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.Filled.LocalFireDepartment,
+                contentDescription = "$streakDays day streak",
+                tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                modifier = Modifier
+                    .size(18.dp)
+                    .graphicsLayer(scaleX = scale, scaleY = scale)
+            )
+            Spacer(Modifier.width(4.dp))
+            Text(
+                "$streakDays",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
         }
     }
 }
@@ -454,8 +514,15 @@ private fun TodayScreen(
                     Spacer(Modifier.height(3.dp))
                     Text(programTitle, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                IconButton(onClick = onOpenSettings) {
-                    Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    val streakDays = progress.currentStreak()
+                    if (streakDays >= 1) {
+                        WebStreakChip(streakDays = streakDays)
+                        Spacer(Modifier.width(8.dp))
+                    }
+                    IconButton(onClick = onOpenSettings) {
+                        Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                    }
                 }
             }
         }
@@ -610,6 +677,7 @@ private fun PlanScreen(
     weeks: List<Week>,
     programTitle: String,
     progress: ProgressStore,
+    milestones: MilestoneTracker,
     onOpenWeek: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -675,7 +743,14 @@ private fun PlanScreen(
             title = { Text("Reset all progress?") },
             text = { Text("Every completed movement in every program will be cleared. This cannot be undone.") },
             confirmButton = {
-                Button(onClick = { progress.clearEverything(); confirmReset = false }, shape = MaterialTheme.shapes.medium) {
+                Button(
+                    onClick = {
+                        progress.clearEverything()
+                        milestones.resetAll()
+                        confirmReset = false
+                    },
+                    shape = MaterialTheme.shapes.medium
+                ) {
                     Text("Reset progress")
                 }
             },
