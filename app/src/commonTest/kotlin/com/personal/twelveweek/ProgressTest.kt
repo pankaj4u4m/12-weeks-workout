@@ -89,4 +89,28 @@ class ProgressTest {
         // masked in this instance's in-memory state
         assertFalse(ProgressStore(store).isDone("program-1:w1-o1-s0-i0"))
     }
+
+    @Test
+    fun `setDone true marks today active for streak tracking`() {
+        val streaks = StreakTracker(RawKeyFlagStore("progress_test_streaks_a").also { it.clear() })
+        val progress = ProgressStore(freshStore(), streaks)
+        progress.setDone("program-1:w1-o1-s0-i0", true)
+        assertEquals(1, progress.currentStreak())
+    }
+
+    @Test
+    fun `currentStreak is zero with no streak tracker wired in`() {
+        val progress = ProgressStore(freshStore())
+        assertEquals(0, progress.currentStreak())
+    }
+
+    @Test
+    fun `clearEverything also clears streak days`() {
+        val streaks = StreakTracker(RawKeyFlagStore("progress_test_streaks_b").also { it.clear() })
+        val progress = ProgressStore(freshStore(), streaks)
+        progress.setDone("program-1:w1-o1-s0-i0", true)
+        assertEquals(1, progress.currentStreak())
+        progress.clearEverything()
+        assertEquals(0, progress.currentStreak())
+    }
 }

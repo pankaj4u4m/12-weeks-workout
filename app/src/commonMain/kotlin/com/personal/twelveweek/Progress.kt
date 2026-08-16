@@ -14,8 +14,15 @@ import com.personal.twelveweek.storage.RawKeyFlagStore
  * under the hood, so [isDone]/[setDone] transparently fall back to/clean
  * up the legacy unprefixed form for `"program-1:..."` keys. Nobody's
  * existing tick history is lost by the program-library upgrade.
+ *
+ * [streaks], when provided, is marked active every time an item is newly
+ * completed — every completion path in the app already funnels through
+ * [setDone], so this is the one place streak tracking needs to be wired in.
  */
-class ProgressStore(private val store: RawKeyFlagStore) {
+class ProgressStore(
+    private val store: RawKeyFlagStore,
+    private val streaks: StreakTracker? = null
+) {
 
     private val done = mutableStateMapOf<String, Boolean>()
 
@@ -36,6 +43,7 @@ class ProgressStore(private val store: RawKeyFlagStore) {
         if (value) {
             done[key] = true
             store.setPresent(key)
+            streaks?.markActive()
         } else {
             done.remove(key)
             store.remove(key)
@@ -59,7 +67,12 @@ class ProgressStore(private val store: RawKeyFlagStore) {
     fun clearEverything() {
         done.clear()
         store.clear()
+        streaks?.clear()
     }
+
+    /** Current consecutive-day streak (see [StreakTracker.currentStreak]) —
+     *  0 when no [streaks] collaborator was provided. */
+    fun currentStreak(): Int = streaks?.currentStreak() ?: 0
 
     private companion object {
         const val LEGACY_PREFIX = "program-1:"
