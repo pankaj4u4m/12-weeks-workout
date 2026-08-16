@@ -1213,11 +1213,6 @@ private fun ProgramCard(
                 }
             }
         }
-        Text(
-            if (selected) "Current plan" else "Use this plan",
-            style = MaterialTheme.typography.labelLarge,
-            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.primary
-        )
     }
 }
 
