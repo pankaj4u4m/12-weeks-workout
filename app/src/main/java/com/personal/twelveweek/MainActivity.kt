@@ -49,6 +49,7 @@ import androidx.core.net.toUri
 import com.personal.twelveweek.media.ExerciseMediaCarousel
 import com.personal.twelveweek.media.ExerciseMediaRepository
 import com.personal.twelveweek.media.MediaPage
+import com.personal.twelveweek.media.prefetchProgramMedia
 import com.personal.twelveweek.media.primaryInstructions
 import com.personal.twelveweek.programs.IndexEntry
 import com.personal.twelveweek.programs.LibraryProgram
@@ -109,6 +110,8 @@ fun AppRoot() {
     val selectedProgramStore = remember { SelectedProgramStore(RawPreferenceStore("twelve_week_selected_program")) }
     val library = remember { ProgramLibrary() }
     val syncRepo = remember { ProgramSyncRepository.default(context, library) }
+    val mediaKeyManager = remember { ApiKeyManager(context) }
+    val mediaRepository = remember { ExerciseMediaRepository.default(context, mediaKeyManager) }
 
     var screen: Screen by remember { mutableStateOf(Screen.Today) }
     var onboarded by remember { mutableStateOf(selectedProgramStore.hasOnboarded()) }
@@ -178,6 +181,10 @@ fun AppRoot() {
             }
             else -> loadFailed = true
         }
+    }
+
+    LaunchedEffect(activeProgram?.meta?.id) {
+        activeProgram?.let { prefetchProgramMedia(it, mediaRepository) }
     }
 
     fun selectProgram(id: String) {
